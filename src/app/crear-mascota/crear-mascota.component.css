@@ -1,61 +1,80 @@
-main {
-    margin-top: 90px;
+ /* Estilo general */
+ body {
+    background-color: #f4f7fa;
+    font-family: Arial, sans-serif;
 }
 
+/* Espaciado superior */
+main {
+    margin-top: 60px;
+}
 
+/* Estilos del título principal */
 h1 {
     text-align: center;
     margin-bottom: 20px;
+    color: #333;
 }
 
-.tblanco {
-    color: white;
-}
-
-.tcenter {
+/* Subtítulo */
+p.text-muted {
     text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 30px;
 }
 
-form{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-top: 50px;
-    background-color: white;
+/* Estilos del formulario */
+form {
+    background-color: #ffffff;
     border-radius: 10px;
-    width: 50%;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
+/* Etiquetas de los campos */
 label {
     font-weight: bold;
-    margin-bottom: 5px;
+    color: #555;
 }
 
+/* Campos de texto y número */
 input[type="text"], 
-input[type="file"] {
+input[type="number"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
 }
 
-form button[type="submit"] {
+input[type="text"]:focus, 
+input[type="number"]:focus {
+    border-color: #508C9B;
+}
+
+/* Botón de enviar */
+button[type="submit"] {
     background-color: #508C9B;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px;
+    width: 100%;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s;
 }
 
-form button[type="submit"]:hover {
+button[type="submit"]:hover {
     background-color: #3B6C78;
+    transform: translateY(-2px);
 }

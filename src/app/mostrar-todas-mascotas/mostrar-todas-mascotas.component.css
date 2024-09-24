@@ -87,3 +87,27 @@ table, th, td {
     margin: 22px;
 
 }
+/* Centrar el contenedor del título */
+.titulos {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilo específico para el título */
+.titulos h1 {
+    margin: 0;
+    font-size: 2.5em; /* Ajusta el tamaño del título si es necesario */
+}
+
+/* Centrar solo el botón "Agregar Mascota" sin afectar los botones dentro de la tabla */
+#contenido > a.btn-success {
+    display: block;
+    margin: 0 auto 30px auto; /* Centrado horizontal y margen inferior */
+    width: fit-content;
+}
+
+/* Mantener el estilo de los botones dentro de la tabla */
+table .btn {
+    display: inline-block; /* Asegura que los botones de la tabla no se expandan */
+    margin: 5px; /* Añade un pequeño margen entre los botones */
+}
