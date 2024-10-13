@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -16,52 +18,54 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "TRATAMIENTO_TABLE")
 public class Tratamiento {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Date fecha;
-    private int cantidad_mascotas;
     private float precio;
 
-    @ManyToOne  // Relación con Mascota
+    @ManyToOne
+    @JoinColumn(name = "mascota_id")  // La clave foránea en la tabla Tratamiento que referencia a Mascota
     private Mascota mascota;
 
     @ManyToOne // Relación con veterinario
+    @JoinColumn(name = "veterinario_id")  // Nombre único para esta clave foránea
     private Veterinario veterinario;
 
-    @ManyToMany //Relación con medicamentos
+    @ManyToMany // Relación con medicamentos
+    @JoinTable(
+        name = "tratamiento_medicamento",
+        joinColumns = @JoinColumn(name = "tratamiento_id"),
+        inverseJoinColumns = @JoinColumn(name = "medicamento_id")
+    )
     private List<Medicamento> medicamentos = new ArrayList<>();
-    
-    //Constructor Vacio
-    public Tratamiento() {
-    
+
+    // Constructor vacío
+    public Tratamiento() {}
+
+    public Tratamiento(Date fecha, float precio, Mascota mascota, Veterinario veterinario,
+            List<Medicamento> medicamentos) {
+        this.fecha = fecha;
+        this.precio = precio;
+        this.mascota = mascota;
+        this.veterinario = veterinario;
+        this.medicamentos = medicamentos;
     }
 
-    //Constructor
-    public Tratamiento(Integer id, Date fecha, int cantidad_mascotas, float precio, Mascota mascota, Veterinario veterinario, List<Medicamento> medicamentos) {
+    public Tratamiento(Integer id, Date fecha, float precio, Mascota mascota, Veterinario veterinario,
+            List<Medicamento> medicamentos) {
         this.id = id;
         this.fecha = fecha;
-        this.cantidad_mascotas = cantidad_mascotas;
         this.precio = precio;
         this.mascota = mascota;
         this.veterinario = veterinario;
         this.medicamentos = medicamentos;
     }
 
-    //Constructor sin ID
-    public Tratamiento(Date fecha, int cantidad_mascotas, float precio, Mascota mascota, Veterinario veterinario, List<Medicamento> medicamentos) {
-        this.fecha = fecha;
-        this.cantidad_mascotas = cantidad_mascotas;
-        this.precio = precio;
-        this.mascota = mascota;
-        this.veterinario = veterinario;
-        this.medicamentos = medicamentos;
-    }
 
-    
-    //Getter and Setters
+
     public Integer getId() {
         return id;
     }
@@ -76,14 +80,6 @@ public class Tratamiento {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
-    }
-
-    public int getCantidad_mascotas() {
-        return cantidad_mascotas;
-    }
-
-    public void setCantidad_mascotas(int cantidad_mascotas) {
-        this.cantidad_mascotas = cantidad_mascotas;
     }
 
     public float getPrecio() {
@@ -117,5 +113,8 @@ public class Tratamiento {
     public void setMedicamentos(List<Medicamento> medicamentos) {
         this.medicamentos = medicamentos;
     }
+
+    // Constructor con todos los parámetros
+    
 
 }

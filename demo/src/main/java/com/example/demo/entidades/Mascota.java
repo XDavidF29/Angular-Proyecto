@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -21,10 +22,12 @@ public class Mascota {
     private String foto;
     private String enfermedad;
     private String estado;
+    
 
-    @ManyToOne  // Relación con Usuario
+    @ManyToOne
+    @JoinColumn(name = "cedula")
     private Usuario usuario;
-
+    
     // Constructores
 
     public Mascota() {}

@@ -3,7 +3,8 @@ package com.example.demo.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,8 +25,10 @@ public class Usuario {
     private int celular;
     private int cedula;
 
-    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL, orphanRemoval = true)  // Relación bidireccional
-    private List<Mascota> mascotas = new ArrayList<>();
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Mascota> mascotas;
+
 
     // Constructor vacío
     public Usuario() {

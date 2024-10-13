@@ -2,6 +2,8 @@ package com.example.demo.entidades;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class Veterinario {
     private String nombre;
     private String foto;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "veterinario")  // Relación uno a muchos con Tratamiento
     private List<Tratamiento> tratamientos;
 

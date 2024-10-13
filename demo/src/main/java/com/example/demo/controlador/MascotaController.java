@@ -1,56 +1,62 @@
 package com.example.demo.controlador;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entidades.Mascota;
 import com.example.demo.entidades.Usuario;
+import com.example.demo.repositorio.MascotaRepository;
+import com.example.demo.repositorio.UsuarioRepository;
 import com.example.demo.servicio.MascotaService;
 import com.example.demo.servicio.UsuarioService;
-import com.example.demo.repositorio.UsuarioRepository;
-import com.example.demo.repositorio.MascotaRepository;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-
-@Controller
+@RestController
 @RequestMapping("/mascota")
+@CrossOrigin(origins = "http://localhost:4200")  // Para permitir peticiones del frontend Angular
 public class MascotaController {
+
     @Autowired
-    private Mascota mascota;
+    MascotaService service;
 
-    @Autowired MascotaService service;
-    @Autowired UsuarioService UsuarioService;
+    @Autowired
+    UsuarioService usuarioService;
 
-    @Autowired UsuarioRepository usuarioRepository;
-    @Autowired MascotaRepository mascotaRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
+    @Autowired
+    MascotaRepository mascotaRepository;
+
+    // Obtener todas las mascotas
     @GetMapping("/all")
-    public String mostrarMascotas(Model model) {
-        model.addAttribute("mascotas", service.searchAll());
-        return "mostrar_todas_mascotas";
+    public List<Mascota> mostrarMascotas() {
+        return service.searchAll();
     }
 
-    @GetMapping("/find")
-    public String mostrarMascota(Model model, @RequestParam("id") Long idMascota) {
-        model.addAttribute("mascota", service.searchById(idMascota));
-        return "datos_mascota";
+
+    @GetMapping("/find/{id}")
+    public Mascota mostrarMascota(@PathVariable("id") Long idMascota) {
+        return service.searchById(idMascota);
     }
+
     
-    
-    @GetMapping("/info")    
+    /*@GetMapping("/info")    
     public String mostrarInformacionMascota(Model model){
-        model.addAttribute("mascota", mascota);
-        return "datos_mascota";
-    }
-
-
+        return service.searchById(idMascota);
+    }*/
     @GetMapping("/add")
     public String mostrarFormularioCrear(Model model) {
         Mascota mascota = new Mascota("", "", 0, 0, "", "", "");
@@ -58,17 +64,38 @@ public class MascotaController {
         return "crear_mascota";
     }
 
-    @PostMapping("/agregar")
-    public String agregarMascota(@ModelAttribute("mascota") Mascota mascota, @RequestParam("cdueno") int cdueno) {
-        Usuario usuario = usuarioRepository.findByCedula(cdueno);
-        if (usuario != null) {
-            usuario.addMascota(mascota);
-            usuarioRepository.save(usuario);
-        } else {
-            return "redirect:/error";
+    @PostMapping("/add")
+public ResponseEntity<?> agregarMascota(@RequestBody Mascota mascota) {
+    try {
+        // Verifica que el usuario exista a través de su cédula
+        if (mascota.getUsuario() == null || mascota.getUsuario().getCedula() == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cédula de usuario no proporcionada");
         }
-        return "redirect:/mascota/all";
+
+        // Busca el usuario por su cédula
+        Usuario usuario = usuarioRepository.findByCedula(mascota.getUsuario().getCedula());
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Usuario con cédula " + mascota.getUsuario().getCedula() + " no encontrado");
+        }
+
+        // Asocia el usuario a la mascota
+        mascota.setUsuario(usuario);
+
+        // Guarda la mascota
+        Mascota mascotaGuardada = mascotaRepository.save(mascota);
+        
+        // Actualiza la relación del usuario con la nueva mascota
+        usuario.getMascotas().add(mascotaGuardada);
+        usuarioRepository.save(usuario);  // Guarda el usuario con la mascota actualizada
+
+        return ResponseEntity.ok(mascotaGuardada);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error al registrar la mascota: " + e.getMessage());
     }
+}
 
     @GetMapping("/update/{id}")
     public String mostrarFormularioEditar(Model model, @PathVariable("id") Long idMascota) {
@@ -76,21 +103,18 @@ public class MascotaController {
         return "modificar_mascota";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateMascota(@PathVariable("id") Long idMascota, @ModelAttribute("mascota") Mascota mascota) {
-        mascota.setId(idMascota);
+    @PutMapping("/update/{id}")
+    public void updateMascota(@PathVariable("id") Long idMascota, @RequestBody Mascota mascota) {
+        /*mascota.setId(idMascota);
         Mascota pet=service.searchById(idMascota);
         mascota.setUsuario(pet.getUsuario());
-        mascota.setEstado(pet.getEstado());
+        mascota.setEstado(pet.getEstado());*/
         service.update(mascota);
-        return "redirect:/mascota/all";
     }
 
-    @GetMapping("/delete/{id}")
-    public String eliminarMascota( @PathVariable("id") Long idMascota) {
+    @DeleteMapping("/delete/{id}")
+    public void eliminarMascota(@PathVariable("id") Long idMascota) {
         service.deleteById(idMascota);
-        return "redirect:/mascota/all";
-    }
-
+    }    
     
 }

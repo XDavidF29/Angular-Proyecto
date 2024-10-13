@@ -3,6 +3,8 @@ package com.example.demo.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +23,12 @@ public class Medicamento {
     private Long id;
 
     private String nombre;
-    private float precio_compra;
-    private float precio_venta;
+    private double precio_compra;
+    private double  precio_venta;
     private int unidades_vendidas;
     private int unidades_disponibles;
-
+    
+    @JsonIgnore
     @ManyToMany(mappedBy = "medicamentos")  // Relación muchos a muchos bidireccional con Tratamiento
     private List<Tratamiento> tratamientos = new ArrayList<>();
     
@@ -73,19 +76,19 @@ public class Medicamento {
         this.nombre = nombre;
     }
 
-    public float getPrecio_compra() {
+    public double getPrecio_compra() {
         return precio_compra;
     }
 
-    public void setPrecio_compra(float precio_compra) {
+    public void setPrecio_compra(double precio_compra) {
         this.precio_compra = precio_compra;
     }
 
-    public float getPrecio_venta() {
+    public double getPrecio_venta() {
         return precio_venta;
     }
 
-    public void setPrecio_venta(float precio_venta) {
+    public void setPrecio_venta(double precio_venta) {
         this.precio_venta = precio_venta;
     }
 

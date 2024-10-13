@@ -1,17 +1,26 @@
 package com.example.demo.servicio;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entidades.Mascota;
 import com.example.demo.repositorio.MascotaRepository;
+import com.example.demo.repositorio.TratamientoRepository;
+import com.example.demo.repositorio.UsuarioRepository;
 
 @Service    
 public class MascotaServiceImpl implements MascotaService{
     @Autowired
     MascotaRepository repo;
+
+    @Autowired
+    UsuarioRepository repositorioUsuario;
+
+    @Autowired
+    TratamientoRepository repoTratamiento;
+
 
     @Override
     public Mascota searchById(Long id) {
@@ -19,19 +28,24 @@ public class MascotaServiceImpl implements MascotaService{
     }
 
     @Override
-    public Collection<Mascota> searchAll() {
+    public List<Mascota> searchAll() {
         return repo.findAll();
     }
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
+            // Primero eliminar los tratamientos relacionados con la mascota
+        repoTratamiento.deleteByMascotaId(id);
+    
+            // Luego eliminar la mascota
         repo.deleteById(id);
-    }
+}
+
 
     @Override
     public void update(Mascota mascota) {
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method stub arreglar la asociacion 
+        //mascota.setUsuario(UsuarioRepository.);
         repo.save(mascota);
     }
 
@@ -41,5 +55,8 @@ public class MascotaServiceImpl implements MascotaService{
         repo.save(mascota);
     }
 
-    
+    /*@Override
+    public List<Mascota> searchMascotasByUsuario(Integer usuarioId) {
+        return repo.findByUsuarioId(usuarioId);
+    }*/
 }

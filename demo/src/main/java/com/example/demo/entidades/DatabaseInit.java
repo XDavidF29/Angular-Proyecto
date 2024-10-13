@@ -1,21 +1,27 @@
 package com.example.demo.entidades;
 
-//
-
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.repositorio.MascotaRepository;
+import com.example.demo.repositorio.MascotaRepository; // Import correcto
+import com.example.demo.repositorio.MedicamentoRepository;
+import com.example.demo.repositorio.TratamientoRepository;
 import com.example.demo.repositorio.UsuarioRepository;
 import com.example.demo.repositorio.VeterinarioRepository;
 
 import jakarta.transaction.Transactional;
-
-//Cambios dataBase
 
 @Component
 @Transactional
@@ -30,6 +36,14 @@ public class DatabaseInit implements ApplicationRunner {
     @Autowired
     VeterinarioRepository veterinarioRepository;
 
+    @Autowired
+    MedicamentoRepository medicamentoRepository;
+
+    @Autowired
+    TratamientoRepository tratamientoRepository;
+
+    //@Autowired
+    //TratamientoRepository tratamientoRepository;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // Guardar 50 usuarios
@@ -294,14 +308,100 @@ public class DatabaseInit implements ApplicationRunner {
         List<Usuario> usuarios = usuarioRepository.findAll();
         List<Mascota> mascotas = mascotaRepository.findAll();
 
-    for (int i = 0; i < mascotas.size(); i++) {
-        Mascota mascota = mascotas.get(i);
-        Usuario usuario = usuarios.get(i % usuarios.size()); // Asociación cíclica
-        mascota.setUsuario(usuario);
-        mascotaRepository.save(mascota); // Guardar cada mascota con su usuario asociado
-    }
+        for (int i = 0; i < mascotas.size(); i++) {
+            Mascota mascota = mascotas.get(i);
+            Usuario usuario = usuarios.get(i % usuarios.size()); // Asociación cíclica
+            
+            // Establecer la relación en ambos lados
+            mascota.setUsuario(usuario);
+            usuario.getMascotas().add(mascota);
 
-    }
+            // Guardar ambos
+            usuarioRepository.save(usuario);
+            mascotaRepository.save(mascota);
+        }
 
+    //Cargar excel
+
+                InputStream inputStream = getClass().getResourceAsStream("/static/excel/MEDICAMENTOS_VETERINARIA.xlsx");
         
+                // Leer el archivo Excel
+                Workbook workbook = new XSSFWorkbook(inputStream);
+                Sheet sheet = workbook.getSheetAt(0); // Leer la primera hoja
+
+                // Iterar sobre las filas del archivo
+                Iterator<Row> rows = sheet.iterator();
+
+                while (rows.hasNext()) {
+                        Row row = rows.next();
+
+                        // Suponiendo que la primera fila contiene encabezados
+                        if (row.getRowNum() == 0) {
+                                continue; // Omitir encabezados
+                        }
+
+                        // Suponiendo que el archivo tiene las columnas: nombre, dosis, descripción,
+                        // etc.
+                        String nombre = row.getCell(0).getStringCellValue();
+                        double precioVenta = row.getCell(1).getNumericCellValue();
+                        double precioCompra = row.getCell(2).getNumericCellValue();
+                        int unidadesDisponibles = (int) row.getCell(3).getNumericCellValue();
+                        int unidadesVendidas = (int) row.getCell(4).getNumericCellValue();
+                        // Otros campos que puedas tener...
+
+                        // Crear una nueva instancia de Droga
+                        Medicamento droga = new Medicamento();
+                        droga.setNombre(nombre);
+                        droga.setPrecio_venta(precioVenta);
+                        droga.setPrecio_compra(precioCompra);
+                        droga.setUnidades_disponibles(unidadesDisponibles);
+                        droga.setUnidades_vendidas(unidadesVendidas);
+                        // Asignar otros campos...
+
+                        // Guardar el medicamento en la base de datos
+                        medicamentoRepository.save(droga);
+                }
+
+                // Cerrar el workbook y el InputStream
+                workbook.close();
+                inputStream.close();
+
+        //cREAR LOS 10 TRATAMIENTOS
+
+        List<Veterinario> veterinarios = veterinarioRepository.findAll();
+        List<Medicamento> medicamentos = medicamentoRepository.findAll();
+
+        Calendar calendar = Calendar.getInstance();
+
+        // Asegúrate de que los índices para veterinarios, medicamentos y mascotas son válidos.
+        calendar.set(2023, Calendar.MAY, 10);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 11.0f, mascotas.get(0), veterinarios.get(0), Arrays.asList(medicamentos.get(0))));
+
+        calendar.set(2023, Calendar.JUNE, 15);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 12.5f, mascotas.get(1), veterinarios.get(1), Arrays.asList(medicamentos.get(1))));
+
+        calendar.set(2023, Calendar.JULY, 20);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 10.0f, mascotas.get(2), veterinarios.get(2), Arrays.asList(medicamentos.get(2))));
+
+        calendar.set(2023, Calendar.AUGUST, 25);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 15.0f, mascotas.get(3), veterinarios.get(0), Arrays.asList(medicamentos.get(1), medicamentos.get(3))));
+
+        calendar.set(2023, Calendar.SEPTEMBER, 30);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 13.0f, mascotas.get(4), veterinarios.get(1), Arrays.asList(medicamentos.get(0), medicamentos.get(2))));
+
+        calendar.set(2023, Calendar.OCTOBER, 5);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 9.0f, mascotas.get(5), veterinarios.get(2), Arrays.asList(medicamentos.get(1))));
+
+        calendar.set(2023, Calendar.NOVEMBER, 10);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 8.5f, mascotas.get(0), veterinarios.get(0), Arrays.asList(medicamentos.get(2))));
+
+        calendar.set(2023, Calendar.DECEMBER, 15);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 14.0f, mascotas.get(1), veterinarios.get(1), Arrays.asList(medicamentos.get(0), medicamentos.get(3))));
+
+        calendar.set(2024, Calendar.JANUARY, 20);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 17.0f, mascotas.get(2), veterinarios.get(2), Arrays.asList(medicamentos.get(0))));
+
+        calendar.set(2024, Calendar.FEBRUARY, 25);
+        tratamientoRepository.save(new Tratamiento(calendar.getTime(), 19.0f, mascotas.get(3), veterinarios.get(0), Arrays.asList(medicamentos.get(1), medicamentos.get(3))));
+    }
 }

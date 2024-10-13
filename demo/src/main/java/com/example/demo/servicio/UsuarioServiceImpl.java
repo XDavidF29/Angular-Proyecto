@@ -1,10 +1,14 @@
 package com.example.demo.servicio;
 
-import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.entidades.Usuario;
+
 import com.example.demo.entidades.Mascota;
+import com.example.demo.entidades.Usuario;
+import com.example.demo.repositorio.MascotaRepository;
+import com.example.demo.repositorio.TratamientoRepository;
 import com.example.demo.repositorio.UsuarioRepository;
 
 @Service
@@ -13,13 +17,19 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     UsuarioRepository repo;
 
+    @Autowired
+    TratamientoRepository  repoTratamiento;
+
+    @Autowired
+    MascotaRepository repoMascota;
+
     @Override
     public Usuario searchById(int id) {
         return repo.findById(id).orElse(null);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Integer id) {
         repo.deleteById(id);
     }
 
@@ -34,7 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Collection<Usuario> searchAll() {
+    public List<Usuario> searchAll() {
         return repo.findAll();
     }
 
@@ -57,4 +67,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario searchByCedula(int cedula) {
         return repo.findByCedula(cedula);
     }
-}
+
+    @Override
+    public List<Mascota> findMascotasByUsuarioId(Integer usuarioId) {
+        return repoMascota.findByUsuarioCedula(usuarioId);
+    }
+}    
