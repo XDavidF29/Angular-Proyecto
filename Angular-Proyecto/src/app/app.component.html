@@ -5,6 +5,7 @@
     <li><a [routerLink]="['/modificar-mascota']">Modificar Mascota</a></li>
     <li><a [routerLink]="['/crear-usuario']">Crear Usuario</a></li>
     <li><a [routerLink]="['/modificar-usuario']">Modificar Usuario</a></li>
+    <li><a [routerLink]="['/modificar-veterinario']">Modificar Veterinario</a></li>
     <li><a [routerLink]="['/detalles-usuario']">Detalles Usuario</a></li>
     <li><a [routerLink]="['/mostrar-todos-usuarios']">Mostrar Todos Usuarios</a></li>
     <li><a [routerLink]="['/mostrar-todas-mascotas']">Mostrar Todas Mascotas</a></li>
@@ -18,6 +19,9 @@
   </ul>
 </nav>*/-->
 
-<app-header></app-header>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<div class="app-container">
+  <app-header></app-header>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</div>
+

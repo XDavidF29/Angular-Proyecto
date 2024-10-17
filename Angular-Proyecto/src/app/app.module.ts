@@ -21,9 +21,17 @@ import { ModificarMascotaComponent } from './modificar-mascota/modificar-mascota
 import { ModificarUsuarioComponent } from './modificar-usuario/modificar-usuario.component';
 import { MostrarTodasMascotasComponent } from './mostrar-todas-mascotas/mostrar-todas-mascotas.component';
 import { MostrarTodosUsuariosComponent } from './mostrar-todos-usuarios/mostrar-todos-usuarios.component';
+import { MostrarTodosVeterinariosComponent } from './mostrar-todos-veterinarios/mostrar-todos-veterinarios.component';
 import { PromocionesComponent } from './promociones/promociones.component';
 import { ServiciosComponent } from './servicios/servicios.component';
 import { UsuarioExitosoComponent } from './usuario-exitoso/usuario-exitoso.component';
+import { AplicarTratamientoComponent } from './aplicar-tratamiento/aplicar-tratamiento.component';
+import { DetallesVeterinarioComponent } from './detalles-veterinario/detalles-veterinario.component';
+import { CrearVeterinarioComponent } from './crear-veterinario/crear-veterinario.component';
+import { ModificarVeterinarioComponent } from './modificar-veterinario/modificar-veterinario.component';
+import { LoginVeterinarioComponent } from './login-veterinario/login-veterinario.component';
+import { AsignarTratamientoComponent } from './asignar-tratamiento/asignar-tratamiento.component';
+
 
 @NgModule({
   declarations: [
@@ -41,11 +49,18 @@ import { UsuarioExitosoComponent } from './usuario-exitoso/usuario-exitoso.compo
     ModificarUsuarioComponent,
     MostrarTodasMascotasComponent,
     MostrarTodosUsuariosComponent,
+    MostrarTodosVeterinariosComponent,
     PromocionesComponent,
     ServiciosComponent,
     FooterComponent,
     HeaderComponent,
-    UsuarioExitosoComponent
+    UsuarioExitosoComponent,
+    AplicarTratamientoComponent,
+    DetallesVeterinarioComponent,
+    CrearVeterinarioComponent,
+    ModificarVeterinarioComponent,
+    LoginVeterinarioComponent,
+    AsignarTratamientoComponent
   ],
   imports: [
     BrowserModule,

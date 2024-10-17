@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>Aplicar Tratamiento a Mascota</h2>
+  
+  <!-- Formulario para aplicar el tratamiento -->
+  <form (ngSubmit)="aplicarTratamiento()">
+    <div class="form-group">
+      <label for="mascotaId">ID de la Mascota</label>
+      <input type="number" id="mascotaId" [(ngModel)]="mascotaId" name="mascotaId" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cedulaVeterinario">Cédula del Veterinario</label>
+      <input type="text" id="cedulaVeterinario" [(ngModel)]="cedulaVeterinario" name="cedulaVeterinario" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="fecha">Fecha del Tratamiento</label>
+      <input type="date" id="fecha" [(ngModel)]="tratamiento.fecha" name="fecha" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="precio">Precio del Tratamiento</label>
+      <input type="number" id="precio" [(ngModel)]="tratamiento.precio" name="precio" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="medicamentos">Medicamentos</label>
+      <input type="text" id="medicamentos" placeholder="Medicamento 1" [(ngModel)]="tratamiento.medicamentos[0].nombre" name="medicamento1" class="form-control">
+      <input type="text" id="medicamentos" placeholder="Medicamento 2" [(ngModel)]="tratamiento.medicamentos[1].nombre" name="medicamento2" class="form-control">
+      <!-- Puedes agregar más campos de medicamentos según sea necesario -->
+    </div>
+
+    <button type="submit" class="btn btn-primary">Aplicar Tratamiento</button>
+  </form>
+
+  <div *ngIf="mascotaId && cedulaVeterinario" class="result">
+    <h4>Tratamiento Aplicado:</h4>
+    <p>ID de Mascota: {{ mascotaId }}</p>
+    <p>Cédula del Veterinario: {{ cedulaVeterinario }}</p>
+    <p>Fecha del Tratamiento: {{ tratamiento.fecha | date }}</p>
+    <p>Precio del Tratamiento: {{ tratamiento.precio }}</p>
+    <p>Medicamentos:</p>
+    <ul>
+      <li *ngFor="let medicamento of tratamiento.medicamentos">{{ medicamento.nombre }}</li>
+    </ul>
+  </div>
+</div>

@@ -1,97 +1,76 @@
-main {
-    margin-top: 90px;
-}
-
-.info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-    background-color: white;
-    border-radius: 10px;
-    width: 80%;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.info:hover {
-    transform: scale(1.02);
-}
-
-.info ul {
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px;
-    text-decoration: none;
-    list-style-type: none;
+/* Fondo y tipografía general */
+html, body {
+    height: 100%;
     margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+    font-family: Arial, sans-serif;
 }
 
-.info ul li {
-    font-size: 18px;
+/* Contenedor principal centrado */
+main {
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
 }
 
-button {
-    background-color: #508C9B;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+/* Contenedor del contenido */
+.container {
+    max-width: 800px;
+    width: 100%; /* Asegura que ocupe todo el espacio disponible */
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-button:hover {
-    background-color: #3B6C78;
+/* Títulos */
+h1, h2, h3 {
+    text-align: center;
+    color: #134b70;
+    margin-bottom: 20px;
 }
 
-.margin-top-50 {
-    margin-top: 50px;
+/* Detalle del usuario */
+.usuario-detalle, .mascota-detalle {
+    margin-bottom: 15px;
 }
 
-
-table {
-    margin: 0 auto;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    border-collapse: collapse;
-    overflow: hidden;
-    width: 60%;
-    font-size: 18px; 
-}
-
-
-th {
-    background-color: #4CAF50;
-    color: white;
+/* Ajuste de los textos dentro de las secciones */
+.usuario-detalle p, .mascota-detalle p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #495057;
     font-weight: bold;
-    padding: 12px;
-    text-transform: uppercase;
+    text-align: left;
+}
+
+/* Línea separadora entre mascotas */
+.mascota-detalle hr {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Mensaje de error */
+div[ngIf="errorMessage"] p {
+    color: red;
     text-align: center;
-    vertical-align: middle; 
+    font-size: 16px;
 }
 
-td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    vertical-align: middle; 
-}
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        max-width: 90%;
+    }
 
+    h1 {
+        font-size: 24px;
+    }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tr:hover {
-    background-color: #ddd;
-}
-
-
-table, th, td {
-    border: none;
+    p {
+        font-size: 14px;
+    }
 }

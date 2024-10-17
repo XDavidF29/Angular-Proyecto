@@ -18,6 +18,11 @@
             </div>
 
             <a [routerLink]="['/usuario/add']" class="btn btn-success">Agregar Usuarios <i class="bi bi-plus-lg"></i></a>
+
+            <div class="form-group">
+                <input type="text" [(ngModel)]="nombreBusqueda" placeholder="Buscar usuario por nombre" class="form-control"/>
+                <button (click)="buscarUsuarios()" class="btn btn-primary">Buscar</button>
+              </div>
       
             <table class="table table-striped">
                 <thead class="thead-dark">

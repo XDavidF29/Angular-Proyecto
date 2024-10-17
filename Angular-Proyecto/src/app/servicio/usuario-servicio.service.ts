@@ -26,7 +26,7 @@ export class UsuarioServicioService {
   }
 
   // Elimina un usuario por su id
-delete(id: number): Observable<void> {
+  delete(id: number): Observable<void> {
   return this.http.delete<void>(`http://localhost:8090/usuario/delete/${id}`);
 }
 
@@ -38,5 +38,11 @@ delete(id: number): Observable<void> {
   findMascotasByUsuarioId(usuarioId: number): Observable<Mascota[]> {
     return this.http.get<Mascota[]>(`http://localhost:8090/usuario/${usuarioId}/mascotas`); // Ajusta la URL según tu API
   }
+  loginUsuario(cedula: number): Observable<Usuario> {
+    return this.http.get<Usuario>(`http://localhost:8090/usuario/login-usuario?cedula=${cedula}`);
+  } 
 
+  buscarUsuarios(nombre: string): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`http://localhost:8090/usuario/buscar?nombre=${nombre}`);
+  }
 }

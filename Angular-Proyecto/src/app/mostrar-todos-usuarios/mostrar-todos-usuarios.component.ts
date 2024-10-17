@@ -9,6 +9,7 @@ import { UsuarioServicioService } from '../servicio/usuario-servicio.service';
 })
 export class MostrarTodosUsuariosComponent {
   usuarios: Usuario[] = [];
+  nombreBusqueda: string = ''; 
 
   constructor(private usuarioService: UsuarioServicioService){
   
@@ -28,25 +29,38 @@ export class MostrarTodosUsuariosComponent {
   
 
   deleteUsuario(id: number) {
-    // Suscribirse para eliminar la usuario
     this.usuarioService.delete(id).subscribe(
       () => {
-        // Refresca la lista de usuarios después de la eliminación
+        // Refrescar la lista de usuarios después de la eliminación
         this.usuarioService.findAll().subscribe(
           (data: Usuario[]) => {
-            this.usuarios = data;
+            this.usuarios = data;  // Verifica si data está siendo retornado correctamente
+            console.log('Usuarios después de la eliminación:', this.usuarios);
           },
           error => {
             console.error('Error al refrescar la lista de usuarios:', error);
             alert('Error al actualizar la lista de usuarios');
           }
         );
-        alert('Usuario eliminada con éxito');
+        alert('Usuario eliminado con éxito');
       },
       error => {
-        console.error('Error al eliminar la usuario:', error);
-        alert('Se pudo eliminar al usuario');
+        console.error('Error al eliminar el usuario:', error);
+        alert('Error al eliminar al usuario');
       }
     );
+  }
+
+  buscarUsuarios(): void {
+    if (this.nombreBusqueda.trim()) {
+      this.usuarioService.buscarUsuarios(this.nombreBusqueda).subscribe({
+        next: (usuarios) => {
+          this.usuarios = usuarios;
+        },
+        error: (error) => {
+          console.error('Error al buscar usuarios', error);
+        }
+      });
+    }
   }
 }

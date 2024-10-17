@@ -1,74 +1,105 @@
-/* Estilos personalizados para el sidebar y navbar */
-header {
-    background-color: #134b70;
-    color: white;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 900; /* Mantén el z-index alto pero por debajo del sidebar */
-    position: relative; /* Asegura que el navbar esté correctamente posicionado */
+body {
+  background-color: #f5f7fa;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-#sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 1000; /* Asegúrate de que el sidebar esté por encima del navbar */
-    padding-top: 60px; /* Aumenta el padding-top para evitar que se superponga con el navbar */
-    background-color: #134b70;
-    transition: width 0.3s;
-    margin-top: 0; /* Elimina cualquier margen superior */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#sidebar.collapsed {
-    width: 80px;
+h2 {
+  text-align: center;
+  color: #134b70;
+  margin-bottom: 30px;
 }
 
-#sidebar.expanded {
-    width: 250px;
+.dashboard-section {
+  margin-bottom: 40px;
 }
 
-#sidebar .nav-item .nav-link {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: white; /* Cambia el color del texto a blanco */
-    padding: 1rem;
+h3 {
+  color: #134b70;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #007bff;
+  display: inline-block;
+  padding-bottom: 5px;
 }
 
-#sidebar.collapsed .nav-item .nav-link {
-    text-align: center;
-    padding: 1rem 0;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
 }
 
-#sidebar.collapsed .nav-link span.text {
-    display: none;
+.stats-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
 }
 
-#sidebar.expanded .nav-link span.icon {
-    display: inline-block;
+.stats-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-main {
-    margin-left: 250px; /* Este margen se ajusta cuando el sidebar está expandido */
-    transition: margin-left 0.3s;
-    padding: 20px;
+h4 {
+  color: #007bff;
+  margin-bottom: 10px;
 }
 
-main.collapsed {
-    margin-left: 80px; /* Este margen se ajusta cuando el sidebar está colapsado */
+ul {
+  list-style: none;
+  padding: 0;
 }
 
-#toggleSidebar {
-    padding-right: 0; /* Quita cualquier padding extra a la derecha */
-    color: white; /* Asegura que el ícono del toggle sea blanco */
+ul li {
+  background-color: #e9ecef;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
 }
 
-.navbar-brand.ms-0 {
-    margin-left: -0.5rem; /* Reduce el margen entre el ícono y el texto */
-    color: white; /* Asegura que el título sea blanco */
-}
-.white {
-    color: white; /* Asegura que todo el texto sea blanco */
+.top-treatments {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
+p {
+  font-size: 1rem;
+  color: #495057;
+}
+
+.dashboard-section canvas {
+  display: block;
+  margin: 20px auto;
+  max-width: 600px;
+  height: auto;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

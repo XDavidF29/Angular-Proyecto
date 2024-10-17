@@ -5,7 +5,7 @@ import { Medicamento } from './Medicamento';
 export interface Tratamiento {
     id: number;
     fecha: Date;
-    cantidadMascotas: number;
+    //cantidadMascotas: number;
     precio: number;
     mascota: Mascota;  // Relación con Mascota
     veterinario: Veterinario;  // Relación con Veterinario

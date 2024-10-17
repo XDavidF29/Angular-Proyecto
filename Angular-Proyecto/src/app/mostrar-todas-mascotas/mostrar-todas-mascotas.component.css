@@ -111,3 +111,12 @@ table .btn {
     display: inline-block; /* Asegura que los botones de la tabla no se expandan */
     margin: 5px; /* Añade un pequeño margen entre los botones */
 }
+
+
+.form-group{
+
+    display: flex;
+    flex-direction: row;
+    margin : 30px;
+
+}

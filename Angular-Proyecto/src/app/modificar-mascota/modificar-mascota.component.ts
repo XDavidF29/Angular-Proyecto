@@ -31,22 +31,26 @@ export class ModificarMascotaComponent implements OnInit {
       }
     );
   }
-
   modificarMascota(): void {
     if (this.mascota) {
-      // Llama al servicio de actualización y suscríbete para manejar el resultado
-      this.mascotaService.update(this.mascota).subscribe(
-        () => {
-          alert('Mascota modificada con éxito');
-        },
-        error => {
-          console.error('Error al modificar la mascota:', error);
-          alert('Error al modificar la mascota');
+        // Verifica si el usuario se envía; si no, el backend lo mantendrá de todos modos
+        if (!this.mascota.usuario) {
+            console.warn('El usuario no está definido, pero el backend lo mantendrá.');
         }
-      );
+
+        this.mascotaService.update(this.mascota).subscribe(
+            () => {
+                alert('Mascota modificada con éxito');
+            },
+            error => {
+                console.error('Error al modificar la mascota:', error);
+                alert('Error al modificar la mascota');
+            }
+        );
     } else {
-      alert('No se pudo modificar la mascota porque no fue encontrada');
+        alert('No se pudo modificar la mascota porque no fue encontrada');
     }
-  }
+}
+
   
 }

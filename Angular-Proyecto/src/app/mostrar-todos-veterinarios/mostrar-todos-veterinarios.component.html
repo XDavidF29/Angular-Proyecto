@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <title>Veterinarios</title>
+</head>
+<body>
+    <main>
+        <div class="contenido" id="contenido">
+            <div class="titulos">
+                <br><br>
+                <h1>Veterinarios</h1>
+            </div>
+
+            <a [routerLink]="['/veterinario/add']" class="btn btn-success mb-3">Agregar Veterinario <i class="bi bi-plus-lg"></i></a>
+            
+            <div class="form-group">
+                <input type="text" [(ngModel)]="nombreBusqueda" placeholder="Buscar Veterinario por nombre" class="form-control"/>
+                <button (click)="buscarVeterinarios()" class="btn btn-primary">Buscar</button>
+            </div>
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Especialidad</th>
+                        <th>Atenciones</th>
+                        <th>Cédula</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let veterinario of veterinarios">
+                        <td>{{veterinario.nombre}}</td>
+                        <td>{{veterinario.especialidad}}</td>
+                        <td>{{veterinario.atenciones}}</td>
+                        <td>{{veterinario.cedula}}</td>
+                        <td>
+                            <a [routerLink]="['/veterinario/find', veterinario.id]" class="btn btn-success">
+                                <i class="bi bi-eye-fill"></i>
+                            </a> 
+                            <a [routerLink]="['/veterinario/update', veterinario.id]" class="btn btn-primary">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a (click)="deleteVeterinario(veterinario.id)" class="btn btn-danger">
+                                <i class="bi bi-trash3-fill"></i>
+                            </a>
+                            <a (click)="openAplicarTratamiento(veterinario.id)" class="btn btn-warning">
+                                Aplicar Tratamiento
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,100 @@
+/* Fondo general y fuentes */
+body {
+    background-color: #f5f7fa;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+  
+/* Contenedor principal centrado con mayor tamaño y margen superior */
+.container {
+    max-width: 1200px; /* Aumenta el ancho del cuadro */
+    margin: 150px auto; /* Aumenta la separación desde la parte superior */
+    padding: 40px; /* Aumenta el padding interno */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+  
+/* Títulos principales */
+h1 {
+    text-align: center;
+    color: #134b70;
+    margin-bottom: 30px;
+}
+  
+/* Subtítulos */
+h2 {
+    color: #134b70;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+  
+/* Cuadro de detalles centrado vertical y horizontalmente */
+.veterinario-detalle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrado vertical */
+    align-items: center; /* Centrado horizontal */
+    margin-top: 30px; /* Mayor separación interna */
+}
+  
+/* Ajuste del contenido dentro del cuadro */
+.veterinario-detalle p, 
+.veterinario-detalle h2, 
+.veterinario-detalle img {
+    text-align: center;
+    margin-bottom: 15px;
+    width: 85%; /* Aumenta el ancho de los elementos */
+}
+  
+/* Imagen del veterinario */
+.img-thumbnail {
+    max-width: 180px; /* Imagen ligeramente más grande */
+    height: auto;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+  
+/* Tratamientos */
+.tratamiento-detalle {
+    background-color: #e9ecef;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    margin-bottom: 15px;
+    padding: 20px; /* Aumenta el padding */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+  
+.tratamiento-detalle p {
+    margin: 5px 0;
+    color: #495057;
+    font-weight: bold;
+}
+  
+/* Mensaje de error */
+div[ngIf="errorMessage"] p {
+    color: red;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+}
+  
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}

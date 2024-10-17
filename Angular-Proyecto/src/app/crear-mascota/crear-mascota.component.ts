@@ -42,9 +42,11 @@ export class CrearMascotaComponent {
         },
         error => {
           console.error('Error al registrar la mascota:', error);
-          alert('Error al registrar la mascota.');
+          // Mostrar detalles del error en la alerta
+          alert(`Error al registrar la mascota: ${error.message || 'Error desconocido'}`);
         }
       );
+      
     }
   }  
 }
