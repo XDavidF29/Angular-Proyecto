@@ -5,17 +5,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entidades.Usuario;
 import com.example.demo.entidades.Veterinario;
 import com.example.demo.repositorio.VeterinarioRepository;
 
 @Service    
-public class VeterinarioServiceImpl implements VeterinarioService{
+public class VeterinarioServiceImpl implements VeterinarioService {
+    
     @Autowired
-    VeterinarioRepository repo;
+    private VeterinarioRepository repo;
 
     @Override
     public Veterinario searchById(Long id) {
-        return repo.findById(id).get();
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("Veterinario no encontrado"));
     }
 
     @Override
@@ -25,21 +27,33 @@ public class VeterinarioServiceImpl implements VeterinarioService{
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
         repo.deleteById(id);
     }
 
     @Override
-    public void update(Veterinario veterinario) {
-        // TODO Auto-generated method stub
-        repo.save(veterinario);
+    public Veterinario update(Veterinario veterinario) {
+        
+        return repo.save(veterinario); // Guardar y devolver el veterinario actualizado
     }
 
     @Override
     public void add(Veterinario veterinario) {
-        // TODO Auto-generated method stub
         repo.save(veterinario);
     }
 
-    
+    @Override
+    public boolean verificarCredenciales(String cedula) {
+        Veterinario veterinario = repo.findByCedula(cedula);
+        return veterinario != null && veterinario.getCedula().equals(cedula);
+    }
+
+    @Override
+    public Veterinario searchByCedula(String cedula) {
+        return repo.findByCedula(cedula);
+    }
+
+    @Override
+    public List<Veterinario> buscarPorNombre(String nombre) {
+        return repo.buscarPorNombre(nombre);
+    }
 }

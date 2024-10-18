@@ -24,7 +24,6 @@ import com.example.demo.repositorio.UsuarioRepository;
 import com.example.demo.servicio.MascotaService;
 import com.example.demo.servicio.UsuarioService;
 
-//@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/usuario")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -42,28 +41,33 @@ public class UsuarioController {
     MascotaRepository mascotaRepository;
 
     @GetMapping("/registro")
-    public String crear_Usuario(){
+    public String crearUsuario() {
         return "crear_usuario";
     }
 
     @GetMapping("/login")
     public String mostrarLoginForm(Model model) {
-        model.addAttribute("usuario", new Usuario(0, "", "", 0, 0,  null));
+        model.addAttribute("usuario", new Usuario(0, "", "", 0, 0, null));
         return "login_usuario";
     }
 
-    
+    @GetMapping("/login-usuario")
+    public Usuario autenticarUsuario(@RequestParam("cedula") int cedula) {
+        boolean autenticado = service.verificarCredenciales(cedula);
+
+        if (autenticado) {
+            return service.searchByCedula(cedula);  // Retorna el usuario si lo encuentra, o null si no
+        }
+        return null;  // Retorna null si no se encuentra el usuario o no está autenticado
+    }
+
     @PostMapping("/login")
     public String autenticarUsuario(@RequestParam("cedula") int cedula, Model model) {
-
         boolean autenticado = service.verificarCredenciales(cedula);
         
         if (autenticado) {
-
             Usuario usuario = service.searchByCedula(cedula);
-
             if (usuario != null) {
-                
                 model.addAttribute("usuario", usuario);
                 model.addAttribute("mascotas", usuario.getMascotas());
                 return "datalles_usuario"; 
@@ -76,46 +80,30 @@ public class UsuarioController {
     }
 
     @GetMapping("/all")
-    public List<Usuario>mostrarMascotas(Model model) {
-        //model.addAttribute("usuarios", service.searchAll());
+    public List<Usuario> mostrarUsuarios() {
         return service.searchAll();
     }
 
     @GetMapping("/add")
     public String mostrarFormularioCrear(Model model) {
-        Usuario usuario = new Usuario(0,"", "", 0, 0,null);
+        Usuario usuario = new Usuario(0, "", "", 0, 0, null);
         model.addAttribute("usuario", usuario);
         return "crear_usuario";
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> agregarUsuario(@RequestBody Usuario usuario) {
-        try {
-            // Validar que todos los campos necesarios estén presentes
-            if (usuario.getCedula() <= 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cédula no válida");
-            }
-
-            // Verificar si la cédula ya existe
-            //if (service.findByCedula(usuario.getCedula()) != null) {
-            //    return ResponseEntity.status(HttpStatus.CONFLICT).body("Ya existe un usuario con esa cédula");
-            //}
-
-            // Guardar el nuevo usuario
-            Usuario usuarioGuardado = UsuarioRepository.save(usuario);
-            
-            return ResponseEntity.ok(usuarioGuardado);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body("Error al registrar el usuario: " + e.getMessage());
+    public void agregarUsuario(@RequestBody Usuario usuario) {
+        // Validar que todos los campos necesarios estén presentes
+        if (usuario.getCedula() <= 0) {
+            throw new IllegalArgumentException("Cédula no válida");
         }
+        // Guardar el nuevo usuario
+        UsuarioRepository.save(usuario);
     }
 
-
     @PutMapping("/update/{id}")
-    public void updateUsuario(@RequestBody Usuario usuario){
-        //usuario.setId(idusuario);
+    public void updateUsuario(@RequestBody Usuario usuario) {
+        
         service.update(usuario);
     }
 
@@ -123,51 +111,35 @@ public class UsuarioController {
     public String mostrarFormularioEditar(Model model, @PathVariable("id") int idusuario) {
         Usuario usuario = service.searchById(idusuario);
         if (usuario == null) {
-            throw new NotFoundException(idusuario);
+            throw new IllegalArgumentException("Usuario no encontrado");
         }
         model.addAttribute("usuario", usuario);
         return "modificar_usuario";
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> eliminarUsuario(@PathVariable("id") Integer idusuario) {
-        // Buscar usuario por ID
-        Usuario usuario = UsuarioRepository.findById(idusuario).orElse(null);
-    
-        if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
-        }
-    
-        // Si hay mascotas asociadas, manejar la lógica deseada
-        if (usuario.getMascotas() != null && !usuario.getMascotas().isEmpty()) {
-            // Aquí puedes decidir si eliminar las mascotas o dejar que se mantengan
-            // Por ejemplo, puedes eliminar las mascotas asociadas:
-            for (Mascota mascota : usuario.getMascotas()) {
-                mascota.setUsuario(null); // Desasociar la mascota del usuario
-                mascotaRepository.save(mascota); // Guardar la mascota desasociada
-            }
-        }
-    
-        // Eliminar el usuario
+    public void eliminarUsuario(@PathVariable("id") Integer idusuario) {
+        Usuario usuario = UsuarioRepository.findById(idusuario)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         UsuarioRepository.delete(usuario);
-        return ResponseEntity.ok("Usuario eliminado con éxito");
     }
-    
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Usuario> mostrarUsuario(@PathVariable("id") int idUsuario) {
+    public Usuario mostrarUsuario(@PathVariable("id") int idUsuario) {
         Usuario usuario = service.searchById(idUsuario);
-    
-        if (usuario != null) {
-            // Las mascotas ya deberían estar cargadas por la relación en el Usuario
-            return ResponseEntity.ok(usuario); // Devuelve el usuario junto con sus mascotas
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Manejar el caso donde no se encuentra el usuario
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado");
         }
+        return usuario; // Devuelve el usuario junto con sus mascotas
     }
-    
-    @GetMapping("/{id}/mascotas") // Suponiendo que estás utilizando 'cedula' para la búsqueda
+
+    @GetMapping("/{id}/mascotas")
     public List<Mascota> obtenerMascotasPorUsuario(@PathVariable("id") int idUsuario) {
         return service.findMascotasByUsuarioId(idUsuario);
     }
-} 
+
+    @GetMapping("/buscar")
+    public List<Usuario> buscarUsuarios(@RequestParam("nombre") String nombre) {
+        return service.buscarPorNombre(nombre);
+    }
+}

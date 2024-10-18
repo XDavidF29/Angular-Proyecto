@@ -1,11 +1,18 @@
 package com.example.demo.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,11 +30,16 @@ public class Mascota {
     private String enfermedad;
     private String estado;
     
-
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "cedula")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tratamiento> tratamientos = new ArrayList<>();
     
+
     // Constructores
 
     public Mascota() {}
@@ -114,5 +126,13 @@ public class Mascota {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public List<Tratamiento> getTratamientos() {
+        return tratamientos;
+    }
+
+    public void setTratamientos(List<Tratamiento> tratamientos) {
+        this.tratamientos = tratamientos;
     }
 }

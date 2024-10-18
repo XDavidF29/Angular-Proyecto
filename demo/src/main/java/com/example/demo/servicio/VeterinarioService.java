@@ -9,7 +9,9 @@ public interface VeterinarioService {
     public Veterinario searchById(Long id);
     public List<Veterinario> searchAll();
     public void deleteById(Long id);
-    public void update(Veterinario veterinario);
+    public Veterinario update(Veterinario veterinario);
     public void add(Veterinario veterinario);
-    
+    public boolean verificarCredenciales(String cedula);
+    public Veterinario searchByCedula(String cedula);
+    public List<Veterinario> buscarPorNombre(String nombre);
 }

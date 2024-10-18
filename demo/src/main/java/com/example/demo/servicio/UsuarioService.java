@@ -15,4 +15,5 @@ public interface UsuarioService {
     public void addMascotaToUsuario(int idUsuario, Mascota mascota);  
     public boolean verificarCredenciales(int cedula);
     public List<Mascota> findMascotasByUsuarioId(Integer usuarioId);
+    public List<Usuario> buscarPorNombre(String nombre);
 } 
