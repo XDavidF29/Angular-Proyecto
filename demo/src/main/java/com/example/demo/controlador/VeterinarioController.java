@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entidades.Usuario;
+import com.example.demo.entidades.Mascota;
+import com.example.demo.entidades.Tratamiento;
 import com.example.demo.entidades.Veterinario;
 import com.example.demo.repositorio.VeterinarioRepository;
 import com.example.demo.servicio.VeterinarioService;
@@ -47,6 +48,12 @@ public class VeterinarioController {
         }
     }
 
+    // Obtener tratamientos por veterinario
+    @GetMapping("/{id}/tratamientos")
+    public List<Tratamiento> obtenerTratamientosPorVeterinario(@PathVariable("id") int idVeterinario) {
+        return service.findTratamientosByVeterinarioId(idVeterinario);
+    }
+
     // Agregar un veterinario
     @PostMapping("/add")
     public Veterinario agregarVeterinario(@RequestBody Veterinario veterinario) {
@@ -58,8 +65,15 @@ public class VeterinarioController {
     }
 
     // Actualizar un veterinario
+
     @PutMapping("/update/{id}")
-    public Veterinario updateVeterinario(@PathVariable("id") Long idVeterinario, @RequestBody Veterinario veterinario) {
+    public void updateVeterinario(@RequestBody Veterinario veterinario) {
+        
+        service.update(veterinario);
+    }
+
+    @GetMapping("/update/{id}")
+    public Veterinario updateVeterinarioFormulario(@PathVariable("id") Long idVeterinario, @RequestBody Veterinario veterinario) {
         Veterinario veterinarioExistente = service.searchById(idVeterinario);
 
         if (veterinarioExistente != null) {
@@ -81,9 +95,9 @@ public class VeterinarioController {
             throw new IllegalArgumentException("Veterinario no encontrado");
         }
     }
-    @GetMapping("/login-veterinario")
-    public Veterinario autenticarUsuario(@RequestParam("cedula") String cedula) {
-        boolean autenticado = service.verificarCredenciales(cedula);
+    @GetMapping("/login")
+    public Veterinario autenticarUsuario(@RequestParam("cedula") String cedula, @RequestParam("contrasena") String contrasena) {
+        boolean autenticado = service.verificarCredenciales(cedula, contrasena);
 
         if (autenticado) {
             return service.searchByCedula(cedula);  // Retorna el usuario si lo encuentra, o null si no

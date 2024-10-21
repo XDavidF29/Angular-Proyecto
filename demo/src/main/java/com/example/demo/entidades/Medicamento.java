@@ -25,8 +25,8 @@ public class Medicamento {
     private String nombre;
     private double precio_compra;
     private double  precio_venta;
-    private int unidades_vendidas;
-    private int unidades_disponibles;
+    private int unidadesVendidas;
+    private int unidadesDisponibles;
     
     @JsonIgnore
     @ManyToMany(mappedBy = "medicamentos")  // Relación muchos a muchos bidireccional con Tratamiento
@@ -37,25 +37,25 @@ public class Medicamento {
     }
 
     //Constructor
-    public Medicamento(Long id, String nombre, float precio_compra, float precio_venta, int unidades_vendidas,
-            int unidades_disponibles, List<Tratamiento> tratamientos) {
+    public Medicamento(Long id, String nombre, float precio_compra, float precio_venta, int unidadesVendidas,
+            int unidadesDisponibles, List<Tratamiento> tratamientos) {
         this.id = id;
         this.nombre = nombre;
         this.precio_compra = precio_compra;
         this.precio_venta = precio_venta;
-        this.unidades_vendidas = unidades_vendidas;
-        this.unidades_disponibles = unidades_disponibles;
+        this.unidadesVendidas = unidadesVendidas;
+        this.unidadesDisponibles = unidadesDisponibles;
         this.tratamientos = tratamientos;
     }
 
     //Constructor sin ID
-    public Medicamento(String nombre, float precio_compra, float precio_venta, int unidades_vendidas,
-            int unidades_disponibles, List<Tratamiento> tratamientos) {
+    public Medicamento(String nombre, float precio_compra, float precio_venta, int unidadesVendidas,
+            int unidadesDisponibles, List<Tratamiento> tratamientos) {
         this.nombre = nombre;
         this.precio_compra = precio_compra;
         this.precio_venta = precio_venta;
-        this.unidades_vendidas = unidades_vendidas;
-        this.unidades_disponibles = unidades_disponibles;
+        this.unidadesVendidas = unidadesVendidas;
+        this.unidadesDisponibles = unidadesDisponibles;
         this.tratamientos = tratamientos;
     }
     //Getters and Setters
@@ -92,20 +92,20 @@ public class Medicamento {
         this.precio_venta = precio_venta;
     }
 
-    public int getUnidades_vendidas() {
-        return unidades_vendidas;
+    public int getUnidadesVendidas() {
+        return unidadesVendidas;
     }
 
-    public void setUnidades_vendidas(int unidades_vendidas) {
-        this.unidades_vendidas = unidades_vendidas;
+    public void setUnidadesVendidas(int unidades_vendidas) {
+        this.unidadesVendidas = unidades_vendidas;
     }
 
-    public int getUnidades_disponibles() {
-        return unidades_disponibles;
+    public int getUnidadesDisponibles() {
+        return unidadesDisponibles;
     }
 
-    public void setUnidades_disponibles(int unidades_disponibles) {
-        this.unidades_disponibles = unidades_disponibles;
+    public void setUnidadesDisponibles(int unidades_disponibles) {
+        this.unidadesDisponibles = unidades_disponibles;
     }
 
     public List<Tratamiento> getTratamientos() {

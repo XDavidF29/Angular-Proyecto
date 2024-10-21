@@ -28,9 +28,9 @@ public class Mascota {
     private float peso;
     private String foto;
     private String enfermedad;
-    private String estado;
+    private Estado estado;
     
-    @JsonIgnore
+    
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -44,7 +44,7 @@ public class Mascota {
 
     public Mascota() {}
 
-    public Mascota(String nombre, String raza, int edad, float peso, String foto, String enfermedad, String estado) {
+    public Mascota(String nombre, String raza, int edad, float peso, String foto, String enfermedad, Estado estado) {
         this.nombre = nombre;
         this.raza = raza;
         this.edad = edad;
@@ -52,6 +52,11 @@ public class Mascota {
         this.foto = foto;
         this.enfermedad = enfermedad;
         this.estado = estado;
+    }
+
+    public enum Estado {
+        Activo,
+        Inactivo
     }
 
     // Getters y Setters
@@ -112,11 +117,11 @@ public class Mascota {
         this.enfermedad = enfermedad;
     }
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

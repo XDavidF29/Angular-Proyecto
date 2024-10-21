@@ -3,6 +3,7 @@ package com.example.demo.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -27,6 +28,7 @@ public class Veterinario {
     private int atenciones;
     private String nombre;
     private String foto;
+    private Estado estado;
 
     @OneToMany(mappedBy = "veterinario", cascade = CascadeType.ALL, orphanRemoval = true)  // Relación con Tratamiento
     @JsonIgnore
@@ -38,7 +40,7 @@ public class Veterinario {
 
     // Constructor con todos los campos
     public Veterinario(Long id, String cedula, String password, String especialidad, int atenciones, String nombre,
-                       String foto, List<Tratamiento> tratamientos) {
+                       String foto, ArrayList<Tratamiento> tratamientos, Estado activo) {
         this.id = id;
         this.cedula = cedula;
         this.password = password;
@@ -47,10 +49,16 @@ public class Veterinario {
         this.nombre = nombre;
         this.foto = foto;
         this.tratamientos = tratamientos != null ? tratamientos : new ArrayList<>();
+        this.estado = activo;
     }
-
+    // Enumeración para el estado del veterinario
+    public enum Estado {
+        Activo,
+        Inactivo
+    }
+    
     public Veterinario(String cedula, String password, String especialidad, int atenciones, String nombre, String foto,
-                       List<Tratamiento> tratamientos) {
+                       List<Tratamiento> tratamientos, Estado estado) {
         this.cedula = cedula;
         this.password = password;
         this.especialidad = especialidad;
@@ -58,7 +66,10 @@ public class Veterinario {
         this.nombre = nombre;
         this.foto = foto;
         this.tratamientos = tratamientos != null ? tratamientos : new ArrayList<>();
+        this.estado = estado;
     }
+
+
 
     // Getters y Setters
     public Long getId() {
@@ -126,6 +137,14 @@ public class Veterinario {
 
     public void setTratamientos(List<Tratamiento> tratamientos) {
         this.tratamientos = tratamientos;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     // Métodos para agregar y remover tratamientos

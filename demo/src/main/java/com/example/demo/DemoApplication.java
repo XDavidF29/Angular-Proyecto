@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.demo.entidades.Mascota;
+import com.example.demo.entidades.Mascota.Estado;
 
 //@SpringBootApplication
 @SuppressWarnings("unused")
@@ -28,7 +29,7 @@ public class DemoApplication {
 				12.3f,
 				"/images/eldoggy.jpg",
 				"ninguna",
-				"bien");
+				Estado.Activo);
 	}
 
 }

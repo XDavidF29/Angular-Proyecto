@@ -55,6 +55,7 @@ public class MedicamentoController {
         medicamento.setId(idMedicamento);
         service.update(medicamento);
     }
+    
 
     // Eliminar un medicamento
     @DeleteMapping("/delete/{id}")

@@ -11,8 +11,12 @@ import org.springframework.data.repository.query.Param;
 import com.example.demo.entidades.Tratamiento;
 
 import jakarta.transaction.Transactional;
+import com.example.demo.entidades.Veterinario;
+
 
 public interface TratamientoRepository extends JpaRepository<Tratamiento, Integer> {
+
+    List<Tratamiento> findByVeterinarioId(Integer id);
 
      // Eliminar todos los tratamientos asociados a una mascota por su id
     @Modifying
@@ -32,7 +36,7 @@ public interface TratamientoRepository extends JpaRepository<Tratamiento, Intege
     @Query("SELECT SUM(t.precio) FROM Tratamiento t")
     Double calcularGananciasTotales();
 
-    @Query("SELECT t, SUM(m.unidades_vendidas) as total_vendido FROM Tratamiento t JOIN t.medicamentos m GROUP BY t ORDER BY total_vendido DESC")
+    @Query("SELECT t, SUM(m.unidadesVendidas) as total_vendido FROM Tratamiento t JOIN t.medicamentos m GROUP BY t ORDER BY total_vendido DESC")
     List<Object[]> obtenerTop3Tratamientos();
 
 
