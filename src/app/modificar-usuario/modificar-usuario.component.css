@@ -1,0 +1,89 @@
+/* Estilo general */
+main {
+    margin-top: 150px; /* Aumenta la separación superior */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tblanco {
+    color: white;
+}
+
+.tcenter {
+    text-align: center;
+}
+
+/* Formulario centrado y ajustado en tamaño */
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; /* Centrado horizontal */
+    margin-top: 50px;
+    background-color: white;
+    border-radius: 10px;
+    width: 70%; /* Aumenta el ancho del formulario */
+    max-width: 800px; /* Controla el tamaño máximo */
+    padding: 40px; /* Aumenta el padding para más espacio interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* Ajuste de cada grupo del formulario */
+.form-group {
+    width: 100%; /* Asegura que los inputs ocupen todo el espacio disponible */
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Inputs con tamaño ajustado */
+input[type="text"], 
+input[type="file"], 
+input[type="email"] {
+    width: 100%;
+    padding: 15px; /* Aumenta el padding para inputs más grandes */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botón del formulario */
+form button[type="submit"] {
+    width: 100%; /* Botón ocupa todo el ancho */
+    background-color: #508C9B;
+    color: white;
+    border: none;
+    padding: 15px; /* Aumenta el padding para botones más grandes */
+    font-size: 18px; /* Tamaño de letra aumentado */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover en el botón */
+form button[type="submit"]:hover {
+    background-color: #3B6C78;
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 768px) {
+    form {
+        width: 90%; /* Ajusta el ancho en dispositivos pequeños */
+        padding: 20px;
+    }
+
+    input {
+        font-size: 14px;
+    }
+
+    form button[type="submit"] {
+        font-size: 16px;
+    }
+}

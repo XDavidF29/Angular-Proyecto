@@ -1,0 +1,506 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*Le da el color azul al header y hace que el header se mueva con la pantalla*/
+header {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #134b70;
+    justify-content: space-between;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+/*Ubica correctamente los elementos en el header*/
+.containerops {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    width: 80%;
+}
+
+.button-login-reg{
+    display: flex;
+    flex-direction: row;
+    width: 25%;
+    justify-content: space-between;
+}
+
+/*Se le da estetica a los botones del header*/
+.opciones, .opcionesSignIn, .opcionesRegister {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+    border:none;
+}
+
+/*Se le da el color y el bordado al boton de SignIn*/
+.opcionesSignIn {
+    background-color: #EEEEEE; 
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    margin-left: 10px;
+    align-self: center;
+    width: 100px;
+    height:40px;
+}
+
+/*Se le da el color y el bordado al boton de Register*/
+.opcionesRegister {
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    margin-left: 10px;
+    align-self: center;
+    width: 100px;
+    height:40px;
+}
+
+
+
+/*Se ubica la imagen principal de modo que se pueda ver bien*/
+.logoHeader img {
+    height: 80px;
+    
+}
+
+/*Se le da estetica a las opciones del header*/
+.opciones {
+    text-decoration: none;
+    color: #F3F3F3;
+}
+
+/*Se le da el color de fondo al main*/
+main{
+    background-color: #EEEEEE;
+    
+}
+
+
+.mascotaIm {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    
+}
+
+.mascotaIm img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0; 
+    padding: 0; 
+    
+}
+
+
+/*Se le da el degradado que separa a la imagen del contenido*/
+.contenido{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 41px;
+    margin:0;
+    background:linear-gradient(#134B70 , #EEEEEE );
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+/*Se le da estetica a los titulos para que queden alineados en el centro*/
+.titulos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.iconos{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 100px;
+    width: 800px;
+}
+
+.iconos p{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.presentacion p{
+    margin-top: 150px;
+    position: relative;
+    z-index: 1;
+    justify-content: center;
+    font-size: 25px;
+    text-align: center;
+  }
+
+  
+.presentacion img{
+    float: right
+    
+}
+
+.presentacion img::after{
+
+    background: linear-gradient(to right top, #05193799, #004d7a99, #00879399, #00bf7299, #a8eb1299);
+
+
+}
+.iconos img{
+    width: 100px;
+    height: 100px;
+}
+
+
+/*Se le da el color y el tamaño al titulo principal*/
+.contenido h1{
+    color: #f5f5f5;
+    font-size: 86px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+/*Se le da el color y el tamaño al subtitulo del slogan*/
+.contenido h2{
+    color: #f5f5f5;
+    font-size: 38px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.opiniones {
+    display: flex;
+    flex-direction: column;
+    padding: 1px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.opiniones h3{
+    color: black;
+    text-align: center;
+    font-size: 30px;
+}
+
+.opiniones p{
+    color: black;
+    text-align: center;
+    font-size: 20px;
+}
+
+.opiniones .opinion p {
+    color: initial;
+    font-size: initial;
+}
+
+.ops{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px;
+    gap: 30px;
+}
+
+.productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px;
+    gap: 30px; 
+    width: 100%;
+    
+}
+
+.opinion {
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 8px 8px #134B70;
+    background-color: white;
+}
+
+.opinion img{
+    width: 100px;
+    height: 95px;
+    border-radius: 100%;
+    margin-bottom: 20px;
+}
+
+main h4{
+    display: flex;
+    background-color: #134B70;
+    color: white;
+    width: 90%;
+    height: 60px;
+    padding: 8px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+}
+
+.productosGenerales{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 50px;
+    padding:20px;
+}
+
+.product {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 12px 12px #134B70;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.product h5 {
+    text-align: center;
+}
+
+.product ul {
+    text-align: left;
+    width: 100%;
+}
+
+.product .verMas {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.verMas{
+    background-color: #134B70;
+    color: white;
+    width:100%;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px #134B70;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+}
+
+.verMas:hover{
+
+    transform: scale(1.05);
+}
+
+/*Personalizacion del boton "Conoce mas"*/
+.conoceMas {
+    width: 240px;
+    border-radius: 25px;
+    border: 1px solid #3D2525;
+    background: linear-gradient(45deg, #508C9B, #134B70);
+    padding: 12px;
+    margin-top: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/*Impresion optica cuando se pone el cursor sobre el boton*/
+.conoceMas:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px #508C9B;
+}
+
+
+/*Se personaliza la imagen principal*/
+.parallax {
+    height: 100vh; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/*Se le da estetico al boton de conoce mas*/
+.conoceMas .icono{
+    width: 20px; 
+    height: auto; 
+    margin-right: 8px;
+}
+
+.mensajes{
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.mensajes h1, .mensajes h2 {
+    color: #134B70;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.mensajes h2 {
+    font-size: 24px;
+}
+
+.mensajes form {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px; /* Limita el ancho máximo del formulario */
+    margin-bottom:30px /* Centra el formulario horizontalmente */
+}
+
+.mensajes form label {
+    font-size: 16px;
+    color: #134B70;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.mensajes form input,
+.mensajes form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+.mensajes form input:focus,
+.mensajes form textarea:focus {
+    outline: none;
+    border-color: #508C9B;
+    box-shadow: 0 0 8px rgba(80, 140, 155, 0.2);
+}
+
+.mensajes form #enviar {
+    background-color: #134B70;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mensajes form #enviar:hover {
+    background-color: #508C9B;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Estilo general del footer */
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 300px;
+    background: linear-gradient(#EEEEEE 20%, #508C9B);
+    padding: 20px 50px;
+    color: white;
+}
+
+/* Sección de nosotros */
+footer .nosotros {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding: 0 20px;
+}
+
+footer .nosotros img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+footer .nosotros p {
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Estilo de la sección de copyright */
+footer .copy {
+    width: 30%;
+    color: black;
+    margin-left: 20px;
+    text-align: left;
+}
+
+/* Redes sociales */
+footer .redes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+footer .redes img {
+    width: 50px;
+    height: 50px;
+    margin: 0 15px;
+    border-radius: 30%;
+    transition: transform 0.3s;
+}
+
+footer .redes img:hover {
+    transform: scale(1.1);
+}
+
+/* Ajustes de estilo para los textos */
+footer h3 {
+    margin-bottom: 20px;
+    color: black;
+}
+
+footer a {
+    text-decoration: none;
+    color: white;
+}
+
+footer a:hover {
+    color: #f8f9fa;
+}

@@ -1,0 +1,72 @@
+<div class="dashboard-container">
+
+    <h2>Dashboard Administrativo</h2>
+  
+    <!-- Sección: Atenciones por Veterinario -->
+    <div class="dashboard-section">
+      <h3>Atenciones por Veterinario</h3>
+      <div class="stats-grid">
+        <div class="stats-card" *ngFor="let atencion of atencionesVeterinarios">
+          <h4>Veterinario: {{ atencion[0] }}</h4>
+          <p>Atenciones: {{ atencion[1] }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Sección: Estadísticas de Mascotas -->
+    <div class="dashboard-section">
+      <h3>Estadísticas de Mascotas</h3>
+      <div class="stats-grid">
+        <div class="stats-card" *ngFor="let estadistica of estadisticasMascotas">
+          <h4>Raza: {{ estadistica[0] }}</h4>
+          <p>Cantidad: {{ estadistica[1] }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Sección: Crecimiento de Usuarios -->
+    <div class="dashboard-section">
+      <h3>Crecimiento de Usuarios</h3>
+      <div class="stats-grid">
+        <div class="stats-card" *ngFor="let crecimiento of crecimientoUsuarios">
+          <h4>Mes: {{ crecimiento[0] }}</h4>
+          <p>Usuarios Nuevos: {{ crecimiento[1] }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h3>Ganancias Totales</h3>
+      <p>Ganancias: {{ gananciasTotales | currency }}</p>
+    </div>
+
+    <div class="dashboard-section">
+      <h3>Mascotas</h3>
+      <p>Total de mascotas: {{ mascotasTotales }}</p>
+    </div>
+
+    <div class="dashboard-section">
+      <h3>Top 3 Tratamientos</h3>
+      <ul>
+        <li *ngFor="let tratamiento of top3Tratamientos">
+          Tratamiento: {{ tratamiento[0].nombre }} - Unidades vendidas: {{ tratamiento[1] }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="dashboard-section">
+      <h3>Tratamientos en el último mes</h3>
+      <p>Total: {{ tratamientosUltimoMes }}</p>
+    </div>
+  
+<!--    <div class="dashboard-section">
+      <h3>Tratamientos por medicamento (último mes)</h3>
+      <ul>
+        <li *ngFor="let tratamiento of tratamientosPorMedicamentoUltimoMes">
+          Medicamento: {{ tratamiento[0] }} - Cantidad: {{ tratamiento[1] }}
+        </li>
+      </ul>
+    </div>-->
+
+  </div>
+  
