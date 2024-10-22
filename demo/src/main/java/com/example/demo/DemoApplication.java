@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import com.example.demo.entidades.Mascota;
 import com.example.demo.entidades.Mascota.Estado;
 
-//@SpringBootApplication
+@SpringBootApplication
 @SuppressWarnings("unused")
 @Configuration
 @EnableAutoConfiguration

@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.entidades.Mascota.Estado;
@@ -27,6 +28,7 @@ import jakarta.transaction.Transactional;
 
 @Component
 @Transactional
+@Profile("default")
 public class DatabaseInit implements ApplicationRunner {
     
     @Autowired

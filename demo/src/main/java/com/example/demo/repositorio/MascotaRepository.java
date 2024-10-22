@@ -21,4 +21,6 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
     @Query("SELECT m FROM Mascota m WHERE LOWER(m.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     List<Mascota> buscarPorNombre(String nombre);
 
+    
+
 }
