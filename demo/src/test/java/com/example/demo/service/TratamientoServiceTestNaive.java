@@ -17,13 +17,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.example.demo.DemoApplication;
 import com.example.demo.entidades.Mascota;
 import com.example.demo.entidades.Tratamiento;
 import com.example.demo.entidades.Veterinario;
 import com.example.demo.repositorio.TratamientoRepository;
 import com.example.demo.servicio.TratamientoServiceImpl;
 
-@SpringBootTest
+@SpringBootTest(classes = DemoApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 public class TratamientoServiceTestNaive {

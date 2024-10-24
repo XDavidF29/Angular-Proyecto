@@ -10,7 +10,7 @@ public interface UsuarioService {
     public List<Usuario> searchAll();
     public void deleteById(Integer id);
     public void update(Usuario usuario);
-    public void add(Usuario usuario);
+    public Usuario add(Usuario usuario);
     public Usuario searchByCedula(int cedula);
     public void addMascotaToUsuario(int idUsuario, Mascota mascota);  
     public boolean verificarCredenciales(int cedula);

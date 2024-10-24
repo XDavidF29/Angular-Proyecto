@@ -3,7 +3,7 @@ package com.example.demo.repository;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +81,92 @@ public class MascotaRepositoryTest {
 
         //Assert
         Assertions.assertThat(mascotas).isNotNull();
-        Assertions.assertThat(mascotas.size()).isEqualTo(1);
+        Assertions.assertThat(mascotas.size()).isEqualTo(107);
         Assertions.assertThat(mascotas.size()).isGreaterThan(0);
+    }
+    @Test
+    public void MascotaRepository_update_Mascota() {
+        // Arrange
+        Mascota mascota = mascotaRepository.findById(1L).get();
+        mascota.setNombre("Firulais2");
+    
+        // Act
+        Mascota updatedMascota = mascotaRepository.save(mascota);
+    
+        // Assert
+        Assertions.assertThat(updatedMascota.getNombre()).isEqualTo("Firulais2");  
+    }
+    @Test
+    public void MascotaRepository_delete_Mascota() {
+        // Arrange
+        Mascota mascota = mascotaRepository.findById(1L).get();
+    
+        // Act
+        mascotaRepository.delete(mascota);
+        Mascota deletedMascota = mascotaRepository.findById(1L).orElse(null);
+    
+        // Assert
+        Assertions.assertThat(deletedMascota).isNull();  
+    }
+
+    //Pruebas de las querys
+
+    @Test
+    public void MascotaRepository_findByUsuarioCedula() {
+        // Arrange
+        Usuario usuario = usuarioRepository.findById(1).get();
+    
+        // Act
+        List<Mascota> mascotas = mascotaRepository.findByUsuarioCedula(usuario.getCedula());
+    
+        // Assert
+        Assertions.assertThat(mascotas).isNotEmpty(); 
+        Assertions.assertThat(mascotas.get(0).getUsuario().getCedula()).isEqualTo(usuario.getCedula()); 
+    }
+
+
+    @Test
+    public void MascotaRepository_obtenerEstadisticasMascotas() {
+    // Act
+    List<Object[]> estadisticas = mascotaRepository.obtenerEstadisticasMascotas();
+
+    // Assert
+    Assertions.assertThat(estadisticas).isNotEmpty();  
+    Assertions.assertThat(estadisticas.get(0)[0]).isInstanceOf(String.class); 
+    Assertions.assertThat(estadisticas.get(0)[1]).isInstanceOf(Long.class);  
+    }
+
+    @Test
+    public void MascotaRepository_contarMascotasTotales() {
+        // Act
+        Long totalMascotas = mascotaRepository.contarMascotasTotales();
+    
+        // Assert
+        Assertions.assertThat(totalMascotas).isGreaterThan(0); 
+    }
+
+    @Test
+    public void MascotaRepository_buscarPorNombre() {
+        // Arrange
+        String nombre = "Pepe";
+    
+        // Act
+        List<Mascota> mascotas = mascotaRepository.buscarPorNombre(nombre);
+    
+        // Assert
+        Assertions.assertThat(mascotas).isNotEmpty();
+        Assertions.assertThat(mascotas.get(0).getNombre()).containsIgnoringCase(nombre);
+    }
+    
+    
+    @Test
+    public void MascotaRepository_findAll() {
+        // Act
+        List<Mascota> mascotas = mascotaRepository.findAll();
+    
+        // Assert
+        Assertions.assertThat(mascotas).isNotEmpty();  
+        Assertions.assertThat(mascotas.size()).isGreaterThanOrEqualTo(3);  
     }
     
 }

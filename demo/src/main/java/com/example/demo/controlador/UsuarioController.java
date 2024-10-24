@@ -19,50 +19,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entidades.Mascota;
 import com.example.demo.entidades.Usuario;
-import com.example.demo.repositorio.MascotaRepository;
-import com.example.demo.repositorio.UsuarioRepository;
-import com.example.demo.servicio.MascotaService;
+
 import com.example.demo.servicio.UsuarioService;
 
 @RestController
 @RequestMapping("/usuario")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UsuarioController {
+    
     @Autowired
     UsuarioService service;
 
-    @Autowired
-    MascotaService mascotaService;
-
-    @Autowired
-    UsuarioRepository UsuarioRepository;
-
-    @Autowired
-    MascotaRepository mascotaRepository;
+    
+    
 
     @GetMapping("/registro")
-    public String crearUsuario() {
-        return "crear_usuario";
+    public ResponseEntity<String> crearUsuario() {
+        return new ResponseEntity<>("crear_usuario", HttpStatus.OK);
     }
 
     @GetMapping("/login")
-    public String mostrarLoginForm(Model model) {
+    public ResponseEntity<String> mostrarLoginForm(Model model) {
         model.addAttribute("usuario", new Usuario(0, "", "", 0, 0, null));
-        return "login_usuario";
+        return new ResponseEntity<>("login_usuario", HttpStatus.OK);
     }
 
     @GetMapping("/login-usuario")
-    public Usuario autenticarUsuario(@RequestParam("cedula") int cedula) {
+    public ResponseEntity<Usuario> autenticarUsuario(@RequestParam("cedula") int cedula) {
         boolean autenticado = service.verificarCredenciales(cedula);
 
         if (autenticado) {
-            return service.searchByCedula(cedula);  // Retorna el usuario si lo encuentra, o null si no
+            Usuario usuario = service.searchByCedula(cedula);
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
         }
-        return null;  // Retorna null si no se encuentra el usuario o no está autenticado
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/login")
-    public String autenticarUsuario(@RequestParam("cedula") int cedula, Model model) {
+    public ResponseEntity<String> autenticarUsuario(@RequestParam("cedula") int cedula, Model model) {
         boolean autenticado = service.verificarCredenciales(cedula);
         
         if (autenticado) {
@@ -70,76 +64,79 @@ public class UsuarioController {
             if (usuario != null) {
                 model.addAttribute("usuario", usuario);
                 model.addAttribute("mascotas", usuario.getMascotas());
-                return "datalles_usuario"; 
+                return new ResponseEntity<>("datalles_usuario", HttpStatus.OK); 
             }
         } else {
             model.addAttribute("error", "Correo o contraseña incorrectos");
         }
         
-        return "login_usuario"; 
+        return new ResponseEntity<>("login_usuario", HttpStatus.UNAUTHORIZED); 
     }
 
     @GetMapping("/all")
-    public List<Usuario> mostrarUsuarios() {
-        return service.searchAll();
+    public ResponseEntity<List<Usuario>> mostrarUsuarios() {
+        List<Usuario> usuarios = service.searchAll();
+        return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
     @GetMapping("/add")
-    public String mostrarFormularioCrear(Model model) {
+    public ResponseEntity<String> mostrarFormularioCrear(Model model) {
         Usuario usuario = new Usuario(0, "", "", 0, 0, null);
         model.addAttribute("usuario", usuario);
-        return "crear_usuario";
+        return new ResponseEntity<>("crear_usuario", HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public void agregarUsuario(@RequestBody Usuario usuario) {
-        // Validar que todos los campos necesarios estén presentes
+    public ResponseEntity<Usuario> agregarUsuario(@RequestBody Usuario usuario) {
         if (usuario.getCedula() <= 0) {
-            throw new IllegalArgumentException("Cédula no válida");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        // Guardar el nuevo usuario
-        UsuarioRepository.save(usuario);
+        Usuario saved = service.add(usuario);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public void updateUsuario(@RequestBody Usuario usuario) {
-        
+    public ResponseEntity<Void> updateUsuario(@RequestBody Usuario usuario) {
         service.update(usuario);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/update/{id}")
-    public String mostrarFormularioEditar(Model model, @PathVariable("id") int idusuario) {
+    public ResponseEntity<String> mostrarFormularioEditar(Model model, @PathVariable("id") int idusuario) {
         Usuario usuario = service.searchById(idusuario);
         if (usuario == null) {
-            throw new IllegalArgumentException("Usuario no encontrado");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         model.addAttribute("usuario", usuario);
-        return "modificar_usuario";
+        return new ResponseEntity<>("modificar_usuario", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void eliminarUsuario(@PathVariable("id") Integer idusuario) {
-        Usuario usuario = UsuarioRepository.findById(idusuario)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-        UsuarioRepository.delete(usuario);
+    public ResponseEntity<Void> eliminarUsuario(@PathVariable("id") Integer idusuario) {
+        Usuario usuario = service.searchById(idusuario);
+                //.orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        service.deleteById(idusuario);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/find/{id}")
-    public Usuario mostrarUsuario(@PathVariable("id") int idUsuario) {
+    public ResponseEntity<Usuario> mostrarUsuario(@PathVariable("id") int idUsuario) {
         Usuario usuario = service.searchById(idUsuario);
         if (usuario == null) {
-            throw new IllegalArgumentException("Usuario no encontrado");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return usuario; // Devuelve el usuario junto con sus mascotas
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/mascotas")
-    public List<Mascota> obtenerMascotasPorUsuario(@PathVariable("id") int idUsuario) {
-        return service.findMascotasByUsuarioId(idUsuario);
+    public ResponseEntity<List<Mascota>> obtenerMascotasPorUsuario(@PathVariable("id") int idUsuario) {
+        List<Mascota> mascotas = service.findMascotasByUsuarioId(idUsuario);
+        return new ResponseEntity<>(mascotas, HttpStatus.OK);
     }
 
     @GetMapping("/buscar")
-    public List<Usuario> buscarUsuarios(@RequestParam("nombre") String nombre) {
-        return service.buscarPorNombre(nombre);
+    public ResponseEntity<List<Usuario>> buscarUsuarios(@RequestParam("nombre") String nombre) {
+        List<Usuario> usuarios = service.buscarPorNombre(nombre);
+        return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 }
