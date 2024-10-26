@@ -42,7 +42,7 @@ public class TratamientoServiceTestNaive {
 
     @Test
     public void testSearchById() {
-        // Arrange
+        
         Tratamiento tratamiento = new Tratamiento();
         tratamiento.setId(1);
         tratamiento.setFecha(new Date());
@@ -50,10 +50,10 @@ public class TratamientoServiceTestNaive {
 
         when(tratamientoRepository.findById(1)).thenReturn(Optional.of(tratamiento));
 
-        // Act
+        
         Tratamiento foundTratamiento = tratamientoService.searchById(1);
 
-        // Assert
+        
         Assertions.assertThat(foundTratamiento).isNotNull();
         Assertions.assertThat(foundTratamiento.getId()).isEqualTo(1);
         Assertions.assertThat(foundTratamiento.getPrecio()).isEqualTo(200);
@@ -107,4 +107,6 @@ public class TratamientoServiceTestNaive {
         // Assert
         verify(tratamientoRepository, times(1)).save(tratamiento);
     }
+
+   
 }

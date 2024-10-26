@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import static org.mockito.Mockito.when;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -93,5 +91,67 @@ public class UsuarioControllerTest {
             .andExpect(content().contentType("application/json"))
             .andExpect(jsonPath("$.size()").value(2));
     }
+
+   /* @Test
+    public void UsuarioControllerTest_actualizarUsuario_UsuarioActualizado() throws Exception {
+        Usuario usuarioActualizado = new Usuario(
+            "Juan Actualizado",
+            "juan.actualizado@correo.com",
+            789,
+            789,
+            null
+        );
+
+        usuarioActualizado.setId(1);
+
+        when(usuarioService.searchById(anyLong())).thenReturn() 
+
+        when(usuarioService.update(anyLong(), Mockito.any(Usuario.class))).thenReturn(usuarioActualizado);
+
+        ResultActions response = mockMvc.perform(
+            put("/usuario/update/1")
+            .contentType("application/json")
+            .content(objectMapper.writeValueAsString(usuarioActualizado)));
+
+        response.andExpect(status().isOk())
+            .andExpect(content().contentType("application/json"))
+            .andExpect(header().string("Content-Type", "application/json"))  // Verifica el encabezado
+            .andExpect(jsonPath("$.nombre").value("Juan Actualizado"))
+            .andExpect(jsonPath("$.correo").value(usuarioActualizado.getCorreo()));
+}
+
+*/
+    @Test
+    public void UsuarioControllerTest_actualizarUsuario_UsuarioActualizado() throws Exception {
+        Usuario usuarioActualizado = new Usuario(
+            1,  
+            "Juan Actualizado",
+            "juan.actualizado@correo.com",
+            789,
+            789,
+            null
+        );
+
+        when(usuarioService.update(Mockito.any(Usuario.class))).thenReturn(usuarioActualizado);
+
+        mockMvc.perform(put("/usuario/update/{id}", usuarioActualizado.getId())
+            .contentType("application/json")
+            .content(objectMapper.writeValueAsString(usuarioActualizado)))
+            .andExpect(status().isOk());  
+    }
+
+    @Test
+    public void UsuarioControllerTest_eliminarUsuario_UsuarioEliminado() throws Exception {
+        int idUsuario = 1;
+
+        Usuario usuario = new Usuario(idUsuario, "Juan", "juan@correo.com", 123, 456, null);
+        when(usuarioService.searchById(idUsuario)).thenReturn(usuario);
+
+        doNothing().when(usuarioService).deleteById(idUsuario);
+
+        mockMvc.perform(delete("/usuario/delete/{id}", idUsuario))
+            .andExpect(status().isNoContent());  
+    }
+
 
 }

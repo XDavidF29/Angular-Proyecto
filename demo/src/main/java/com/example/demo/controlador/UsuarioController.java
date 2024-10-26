@@ -95,12 +95,14 @@ public class UsuarioController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
+
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateUsuario(@RequestBody Usuario usuario) {
-        service.update(usuario);
+    public ResponseEntity<Void> updateUsuario(@PathVariable("id") Integer id, @RequestBody Usuario usuario) {
+        usuario.setId(id); // Asegurar que el ID del usuario se establezca correctamente
+        service.update(usuario); // Usar el servicio para actualizar
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    
     @GetMapping("/update/{id}")
     public ResponseEntity<String> mostrarFormularioEditar(Model model, @PathVariable("id") int idusuario) {
         Usuario usuario = service.searchById(idusuario);

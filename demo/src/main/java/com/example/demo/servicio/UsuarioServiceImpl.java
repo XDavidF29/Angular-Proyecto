@@ -33,7 +33,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         repo.deleteById(id);
     }
 
-    public void update(Usuario usuario) {
+    public Usuario update(Usuario usuario) {
         // Buscar el usuario actual en la base de datos
         Usuario usuarioExistente = repo.findById(usuario.getId()).orElse(null);
 
@@ -70,6 +70,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             // Guardar el usuario con las mascotas actualizadas
             repo.save(usuarioExistente);
         }
+        return usuarioExistente;
     }
 
     @Override
