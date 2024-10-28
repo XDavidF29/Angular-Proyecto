@@ -14,6 +14,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Usuario findByCedula(Integer cedula);
 
+    Usuario findByCorreo(String correo);
+
     @Query("SELECT m FROM Usuario m WHERE LOWER(m.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     List<Usuario> buscarPorNombre(String nombre);
 

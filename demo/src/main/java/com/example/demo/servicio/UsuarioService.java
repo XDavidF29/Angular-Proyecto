@@ -16,4 +16,5 @@ public interface UsuarioService {
     public boolean verificarCredenciales(int cedula);
     public List<Mascota> findMascotasByUsuarioId(Integer usuarioId);
     public List<Usuario> buscarPorNombre(String nombre);
+    public Usuario findByCorreo(String correo);
 } 

@@ -3,8 +3,11 @@ package com.example.demo.controlador;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,14 +99,23 @@ public class VeterinarioController {
         }
     }
     @GetMapping("/login")
-    public Veterinario autenticarUsuario(@RequestParam("cedula") String cedula, @RequestParam("contrasena") String contrasena) {
+    public ResponseEntity<?> autenticarUsuario(@RequestParam("cedula") String cedula, @RequestParam("contrasena") String contrasena) {
         boolean autenticado = service.verificarCredenciales(cedula, contrasena);
 
         if (autenticado) {
-            return service.searchByCedula(cedula);  // Retorna el usuario si lo encuentra, o null si no
+            // Buscar el veterinario por la cédula si se ha autenticado correctamente
+            Veterinario veterinario = service.searchByCedula(cedula);
+
+            if (veterinario != null) {
+                // Devolver el objeto veterinario con estado 200 (OK)
+                return new ResponseEntity<>(veterinario, HttpStatus.OK);
+            }
         }
-        return null;  // Retorna null si no se encuentra el usuario o no está autenticado
+
+        // Si no se autentica correctamente o no se encuentra el veterinario, devuelve un mensaje de error con estado 401 (No autorizado)
+        return new ResponseEntity<>("Correo o contraseña incorrectos", HttpStatus.UNAUTHORIZED);
     }
+
 
     @GetMapping("/buscar")
     public List<Veterinario> buscarVeterinarios(@RequestParam("nombre") String nombre) {

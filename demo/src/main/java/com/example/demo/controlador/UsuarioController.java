@@ -62,8 +62,6 @@ public class UsuarioController {
         if (autenticado) {
             Usuario usuario = service.searchByCedula(cedula);
             if (usuario != null) {
-                model.addAttribute("usuario", usuario);
-                model.addAttribute("mascotas", usuario.getMascotas());
                 return new ResponseEntity<>("datalles_usuario", HttpStatus.OK); 
             }
         } else {
@@ -88,12 +86,34 @@ public class UsuarioController {
 
     @PostMapping("/add")
     public ResponseEntity<Usuario> agregarUsuario(@RequestBody Usuario usuario) {
+        // Mensaje para verificar los datos recibidos
+        System.out.println("Datos recibidos: " + usuario);
+
         if (usuario.getCedula() <= 0) {
+            System.out.println("Error: Cédula no válida.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        // Verificar si el usuario ya existe por cédula
+        if (service.searchByCedula(usuario.getCedula()) != null) {
+            System.out.println("Error: Usuario con cédula " + usuario.getCedula() + " ya existe.");
+            return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 Conflict
+        }
+
+        // Verificar si el usuario ya existe por correo
+        if (service.findByCorreo(usuario.getCorreo()) != null) {
+            System.out.println("Error: Usuario con correo " + usuario.getCorreo() + " ya existe.");
+            return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 Conflict
+        }
+
+        // Guardar el usuario
         Usuario saved = service.add(usuario);
+        System.out.println("Usuario guardado exitosamente: " + saved);
+
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
+
+
 
 
     @PutMapping("/update/{id}")

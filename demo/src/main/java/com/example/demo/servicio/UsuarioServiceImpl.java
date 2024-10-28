@@ -113,4 +113,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<Usuario> buscarPorNombre(String nombre) {
         return repo.buscarPorNombre(nombre);
     }
+
+    @Override
+    public Usuario findByCorreo(String correo) {
+        return repo.findByCorreo(correo);
+    }
 }    

@@ -63,41 +63,58 @@ public class MascotaController {
     @GetMapping("/add")
     public String mostrarFormularioCrear(Model model) {
         Mascota mascota = new Mascota("", "", 0, 0, "", "", Mascota.Estado.Activo);
+        System.out.println("Mostrar formulario para crear nueva mascota.");
         model.addAttribute("mascota", mascota);
         return "crear_mascota";
     }
 
- @PostMapping("/add")
-public ResponseEntity<String> crearMascota(@RequestBody Mascota mascota) {
+    @PostMapping("/add")
+public ResponseEntity<Mascota> crearMascota(@RequestBody Mascota mascota) {
     try {
+        System.out.println("Intentando crear una nueva mascota.");
+
         // Validar que se haya enviado la cédula del usuario
         if (mascota.getUsuario() == null || mascota.getUsuario().getCedula() == 0) {
+            System.out.println("Error: se necesita una cédula válida del usuario.");
             throw new IllegalArgumentException("Error: se necesita una cédula válida del usuario.");
         }
 
         // Buscar el usuario por la cédula
+        System.out.println("Buscando usuario con cédula: " + mascota.getUsuario().getCedula());
         Usuario usuario = usuarioRepository.findByCedula(mascota.getUsuario().getCedula());
 
+        if (usuario == null) {
+            System.out.println("Usuario no encontrado.");
+            throw new IllegalArgumentException("Error: Usuario no encontrado.");
+        }
+
         // Asignar el usuario a la mascota
+        System.out.println("Usuario encontrado, asignando usuario a la mascota.");
         mascota.setUsuario(usuario);
 
         // Inicializar la lista de tratamientos si es null
         if (mascota.getTratamientos() == null) {
-            mascota.setTratamientos(new ArrayList<>());  // Inicializar como lista vacía
+            System.out.println("Inicializando lista de tratamientos vacía.");
+            mascota.setTratamientos(new ArrayList<>());
         }
 
         // Guardar la nueva mascota
-        mascotaRepository.save(mascota);
+        System.out.println("Guardando la nueva mascota.");
+        Mascota nuevaMascota = mascotaRepository.save(mascota);
 
-        // Retornar un mensaje de éxito
-        return ResponseEntity.ok("{\"message\": \"Mascota creada exitosamente\"}");
+        // Retornar la mascota guardada con su ID generado
+        System.out.println("Mascota creada exitosamente.");
+        return ResponseEntity.ok(nuevaMascota);
 
     } catch (Exception e) {
         // Captura cualquier error y devuelve una respuesta con un mensaje claro
+        System.out.println("Error al registrar la mascota: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("{\"error\": \"Error al registrar la mascota: " + e.getMessage() + "\"}");
+                .body(null); // En caso de error, devuelve null o un ResponseEntity vacío
     }
 }
+
+
 
     
 
