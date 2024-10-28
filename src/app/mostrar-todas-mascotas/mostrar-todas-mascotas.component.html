@@ -19,7 +19,7 @@
             <a [routerLink]="['/mascota/add']" class="btn btn-success">Agregar Mascota <i class="bi bi-plus-lg"></i></a>
       
             <div class="form-group">
-                <input type="text" [(ngModel)]="nombreBusqueda" (input)="filtrarMascotas()" placeholder="Buscar mascota por nombre" class="form-control"/>
+                <input type="text" id = "nombreBusquedaMascota"[(ngModel)]="nombreBusqueda" (input)="filtrarMascotas()" placeholder="Buscar mascota por nombre" class="form-control"/>
             </div>
           
             <table class="table table-striped">
