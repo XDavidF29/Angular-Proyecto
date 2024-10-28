@@ -26,12 +26,12 @@
                     <label for="contraseña" class="form-label">Contraseña</label>
                     <input type="password" id="contraseña" class="form-control" placeholder="Ingrese su contraseña" name="contraseña" [(ngModel)]="contrasena" required>
                 </div>
+                <button type="submit" class="btn btn-primary w-100" id="btn-vlogin" [disabled]="!formLogin.form.valid">Ingresar</button>
 
                 <div *ngIf="error" class="alert alert-danger text-center">
                     {{ error }}
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100" [disabled]="!formLogin.form.valid">Ingresar</button>
             </form>
             
         </div>        

@@ -31,6 +31,7 @@ const routes: Routes = [
   { path: 'admin/dashboard', component: AdminDashboardComponent },
   { path: 'admin/mascotas/estadisticas', component: AdminDashboardComponent },
   { path: 'mascota/tratamiento/:id', component: AsignarTratamientoComponent},
+  { path: 'mascota/add/:cedula?', component: CrearMascotaComponent },
   { path: 'mascota/add', component: CrearMascotaComponent },
   { path: 'usuario/add', component: CrearUsuarioComponent },
   { path: 'usuario/find/:id', component: DetallesUsuarioComponent },

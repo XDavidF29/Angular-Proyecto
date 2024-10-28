@@ -11,16 +11,17 @@
         <div class="contenido" id="contenido">
           <h1>Información de Mascota</h1>
           <div *ngIf="mascota" class="info">
-            <img class="info-item foto" [src]="mascota.foto" alt="Foto de la mascota" >
+            <img id="foto-mascota" class="info-item foto" [src]="mascota.foto" alt="Foto de la mascota">
             <ul class="mascota-info">
-              <li><strong>Nombre:</strong> <span class="info-item nombre">{{ mascota.nombre }}</span></li>
-              <li><strong>Raza:</strong> <span class="info-item raza">{{ mascota.raza }}</span></li>
-              <li><strong>Edad:</strong> <span class="info-item edad">{{ mascota.edad }}</span> años</li>
-              <li><strong>Peso:</strong> <span class="info-item peso">{{ mascota.peso }}</span> kg</li>
-              <li><strong>Enfermedad:</strong> <span class="info-item enfermedad">{{ mascota.enfermedad }}</span></li>
-              <li><strong>Estado:</strong> <span class="info-item estado">{{ mascota.estado }}</span></li>
+              <li><strong>Nombre:</strong> <span id="nombre-mascota" class="info-item nombre">{{ mascota.nombre }}</span></li>
+              <li><strong>Raza:</strong> <span id="raza-mascota" class="info-item raza">{{ mascota.raza }}</span></li>
+              <li><strong>Edad:</strong> <span id="edad-mascota" class="info-item edad">{{ mascota.edad }}</span> años</li>
+              <li><strong>Peso:</strong> <span id="peso-mascota" class="info-item peso">{{ mascota.peso }}</span> kg</li>
+              <li><strong>Enfermedad:</strong> <span id="enfermedad-mascota" class="info-item enfermedad">{{ mascota.enfermedad }}</span></li>
+              <li><strong>Estado:</strong> <span id="estado-mascota" class="info-item estado">{{ mascota.estado }}</span></li>
             </ul>
           </div>
+          
       
           <!-- En caso de que no se encuentre la mascota -->
           <div *ngIf="!mascota && !errorMessage">

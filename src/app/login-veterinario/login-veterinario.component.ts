@@ -23,6 +23,8 @@ export class LoginVeterinarioComponent {
       },
       error: (err) => {
         this.error = 'Cédula o contraseña incorrecta';
+        this.cedula = 0;
+        this.contrasena = '';
       }
     });
   }

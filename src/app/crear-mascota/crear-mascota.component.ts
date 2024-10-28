@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router'; // Importar Router
 import { Mascota } from '../models/Mascota';
 import { MascotaServicioService } from '../servicio/mascota-servicio.service';
 
@@ -8,7 +9,7 @@ import { MascotaServicioService } from '../servicio/mascota-servicio.service';
   templateUrl: './crear-mascota.component.html',
   styleUrls: ['./crear-mascota.component.css']
 })
-export class CrearMascotaComponent {
+export class CrearMascotaComponent implements OnInit {
   nuevaMascota: Mascota = {
     id: 0,
     nombre: '',
@@ -17,35 +18,50 @@ export class CrearMascotaComponent {
     peso: 0,
     foto: '',
     enfermedad: '',
-    estado: 'Saludable',
+    estado: 'Activo',
     usuario: {
       cedula: 0,
     }
   };
 
-  constructor(private mascotaServicio: MascotaServicioService) {}
+  mensajeError: string = ''; // Variable para almacenar errores
+
+  constructor(
+    private mascotaServicio: MascotaServicioService, 
+    private route: ActivatedRoute,
+    private router: Router // Inyectar Router
+  ) {}
+
+  ngOnInit() {
+    // Obtener la cédula del usuario desde los parámetros de la ruta
+    this.route.params.subscribe(params => {
+      if (params['cedula?']) {
+        this.nuevaMascota.usuario.cedula = +params['cedula?']; // Convertir a número
+      }
+    });
+  }
 
   addMascota(form: NgForm) {
+    this.mensajeError = '';
+
     if (form.valid) {
       // Verificación adicional de que la cédula no sea 0 o vacía
       if (this.nuevaMascota.usuario.cedula <= 0) {
-        alert('Debe ingresar una cédula válida para el usuario.');
+        this.mensajeError = 'Debe ingresar una cédula válida para el usuario.';
         return;
       }
 
-      this.mascotaServicio.addMascota(this.nuevaMascota).subscribe(
-        () => {
-          alert('Mascota registrada exitosamente.');
-          form.reset(); // Limpiar el formulario después de registrar
+      // Llamada al servicio para agregar mascota
+      this.mascotaServicio.addMascota(this.nuevaMascota).subscribe({
+        next: (response:Mascota) => {
+          // Redireccionar a la página de detalles de la mascota
+          this.router.navigate(['/mascota/find/', response.id]);
         },
-        error => {
-          console.error('Error al registrar la mascota:', error);
-          // Mostrar detalles del error en la alerta
-          alert(`Error al registrar la mascota: ${error.message || 'Error desconocido'}`);
+        error: (err) => {
+          console.error('Error al registrar la mascota:', err);
+          this.mensajeError = `Error al registrar la mascota. Inténtelo de nuevo.`;
         }
-      );
-      
+      });
     }
-  }  
+  }
 }
-  

@@ -16,7 +16,20 @@
                 <h1>Veterinarios</h1>
             </div>
 
-            <a [routerLink]="['/veterinario/add']" class="btn btn-success mb-3">Agregar Veterinario <i class="bi bi-plus-lg"></i></a>
+            <div class="d-flex justify-content-between mb-3">
+                <!-- Botón mejorado para Register Usuario -->
+                <a [routerLink]="['/usuario/all']" class="btn btn-primary">
+                    Todos los Usuarios <i class="bi bi-person-plus-fill"></i>
+                </a>
+                <!-- Botón para agregar Veterinario -->
+                <a [routerLink]="['/veterinario/add']" class="btn btn-success">
+                    Agregar Veterinario <i class="bi bi-plus-lg"></i>
+                </a>
+
+                <a [routerLink]="['/mascota/all']" class="btn btn-danger">
+                    Todas las Mascotas <i class="bi bi-house-fill"></i>
+                </a>
+            </div>
             
             <div class="form-group">
                 <input type="text" [(ngModel)]="nombreBusqueda" placeholder="Buscar Veterinario por nombre" class="form-control"/>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router'; // Importar Router
 import { Usuario } from '../models/Usuario';
 import { UsuarioServicioService } from '../servicio/usuario-servicio.service';
 
@@ -18,28 +19,35 @@ export class CrearUsuarioComponent {
     mascotas: []
   };
 
-  constructor(private usuarioServicio: UsuarioServicioService) {}
+  mensajeError: string = '';
+
+  constructor(private usuarioServicio: UsuarioServicioService, private router: Router) {} // Inyectar Router
 
   addUsuario(form: NgForm) {
-    if (form.valid) {
-      // Verificación de la cédula
-      if (this.nuevoUsuario.cedula <= 0) {
-        alert('Debe ingresar una cédula válida.');
-        return;
+    this.mensajeError = ''; 
+
+    // Agregar usuario
+    this.usuarioServicio.addUsuario(this.nuevoUsuario).subscribe({
+      next: (response: Usuario) => {
+        this.router.navigate(['/usuario/find/', response.id]);
+      },
+      error: (err) => {
+        console.error('Error al registrar el Usuario:', err);
+        this.mensajeError = 'Error al registrar el Usuario. Inténtelo de nuevo.';
+        this.limpiarCampos();
       }
+    });
+  }
 
-      console.log('Datos del Usuario a enviar:', this.nuevoUsuario); // Verificar los datos
-
-      this.usuarioServicio.addUsuario(this.nuevoUsuario).subscribe(
-        () => {
-          alert('Usuario registrado exitosamente.');
-          form.reset(); // Limpiar el formulario después de registrar
-        },
-        error => {
-          console.error('Error al registrar el Usuario:', error);
-          alert('Error al registrar el Usuario.');
-        }
-      );
-    }
-  }  
+  
+  limpiarCampos() {
+    this.nuevoUsuario = {
+      id: 0,
+      nombre: '',
+      correo: '',
+      celular: 0,
+      cedula: 0,
+      mascotas: []
+    };
+  }
 }

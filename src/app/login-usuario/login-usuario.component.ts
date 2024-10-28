@@ -22,6 +22,7 @@ export class LoginUsuarioComponent {
       },
       error: (err) => {
         this.error = 'Cédula incorrecta o usuario no encontrado';
+        this.cedula = 0;
       }
     });
   }
