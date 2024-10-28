@@ -10,6 +10,7 @@ import { MascotaServicioService } from '../servicio/mascota-servicio.service';
 export class MostrarTodasMascotasComponent implements OnInit {
 
   mascotas: Mascota[] = [];
+  mascotasFiltradas: Mascota[] = []; // Nueva propiedad para los usuarios filtrados
   nombreBusqueda: string = ''; 
 
   constructor(private mascotaServicio: MascotaServicioService) { }
@@ -18,6 +19,7 @@ export class MostrarTodasMascotasComponent implements OnInit {
     this.mascotaServicio.findAll().subscribe(
       (data: Mascota[]) => {
         this.mascotas = data;
+        this.mascotasFiltradas = data; // Inicialmente, las mascotas filtradas son todas las mascotas
       },
       error => {
         console.error('Error al obtener las mascotas:', error);
@@ -25,11 +27,13 @@ export class MostrarTodasMascotasComponent implements OnInit {
       }
     );
   }
+
   deleteMascota(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar esta mascota?')) {
       this.mascotaServicio.delete(id).subscribe(
         (response: any) => {
           this.mascotas = this.mascotas.filter(mascota => mascota.id !== id);
+          this.filtrarMascotas(); // Filtrar después de la eliminación
           alert(response.message || 'Mascota eliminada con éxito');
         },
         error => {
@@ -39,16 +43,14 @@ export class MostrarTodasMascotasComponent implements OnInit {
       );
     }
   }
-  buscarMascotas(): void {
+
+  filtrarMascotas(): void {
     if (this.nombreBusqueda.trim()) {
-      this.mascotaServicio.buscarMascotas(this.nombreBusqueda).subscribe({
-        next: (mascotas) => {
-          this.mascotas = mascotas;
-        },
-        error: (error) => {
-          console.error('Error al buscar mascotas', error);
-        }
-      });
+      this.mascotasFiltradas = this.mascotas.filter(mascota => 
+        mascota.nombre.toLowerCase().includes(this.nombreBusqueda.toLowerCase())
+      );
+    } else {
+      this.mascotasFiltradas = this.mascotas; // Si no hay búsqueda, mostrar todas
     }
   }
 }

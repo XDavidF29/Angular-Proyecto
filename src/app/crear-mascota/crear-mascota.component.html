@@ -45,9 +45,18 @@
               
                 <div class="form-group mb-3">
                   <label for="cdueno" class="form-label">Cédula del Dueño</label>
-                  <input type="number" id="cdueno" class="form-control" placeholder="Cédula del dueño" name="usuario.cedula" [(ngModel)]="nuevaMascota.usuario.cedula" required>
-                </div>
-                
+                  <input type="text" id="cdueno" class="form-control" placeholder="Cédula del dueño" name="usuario.cedula" [(ngModel)]="nuevaMascota.usuario.cedula" required (input)="filtrarUsuarios()">
+                  <div *ngIf="mostrarSugerencias" class="sugerencias" >
+                      <ul class="list-group">
+                        <li *ngFor="let usuario of usuariosFiltrados" 
+                          class="list-group-item list-group-item-action" 
+                          (click)="seleccionarUsuario(usuario)">
+                          <span class="nombre-dueño">{{ usuario.nombre }} - </span>
+                          <span class="cedula-dueño">{{ usuario.cedula }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                               
                 <div class="form-group mb-3">
                   <label for="imagen" class="form-label">URL de Imagen de la Mascota</label>

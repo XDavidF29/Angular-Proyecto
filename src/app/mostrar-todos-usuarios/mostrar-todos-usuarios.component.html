@@ -20,9 +20,9 @@
             <a [routerLink]="['/usuario/add']" class="btn btn-success">Agregar Usuarios <i class="bi bi-plus-lg"></i></a>
 
             <div class="form-group">
-                <input type="text" [(ngModel)]="nombreBusqueda" placeholder="Buscar usuario por nombre" class="form-control"/>
-                <button (click)="buscarUsuarios()" class="btn btn-primary">Buscar</button>
-              </div>
+                <input type="text" [(ngModel)]="nombreBusqueda" (input)="filtrarUsuarios()" placeholder="Buscar usuario por nombre" class="form-control"/>
+                <!-- <button (click)="buscarUsuarios()" class="btn btn-primary">Buscar</button> -->
+            </div>
       
             <table class="table table-striped">
                 <thead class="thead-dark">
@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor = "let usuario of usuarios">
+                    <tr *ngFor = "let usuario of usuariosFiltrados">
                         <td>{{usuario.nombre}}</td>
                         <td>{{usuario.correo}}</td>
                         <td>{{usuario.celular}}</td>

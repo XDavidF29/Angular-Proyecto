@@ -9,6 +9,7 @@ import { UsuarioServicioService } from '../servicio/usuario-servicio.service';
 })
 export class MostrarTodosUsuariosComponent {
   usuarios: Usuario[] = [];
+  usuariosFiltrados: Usuario[] = []; // Nueva propiedad para los usuarios filtrados
   nombreBusqueda: string = ''; 
   cantidadMascotas: { [key: number]: number } = {}; // Almacena la cantidad de mascotas por usuario
 
@@ -18,13 +19,14 @@ export class MostrarTodosUsuariosComponent {
     this.usuarioService.findAll().subscribe(
       (data: Usuario[]) => {
         this.usuarios = data;
+        this.usuariosFiltrados = data; // Inicialmente, los usuarios filtrados son todos los usuarios
         // Obtener la cantidad de mascotas para cada usuario
         this.usuarios.forEach(usuario => {
           this.obtenerCantidadMascotas(usuario.cedula);
         });
       },
       error => {
-        console.error('Error al obtener las usuarios:', error);
+        console.error('Error al obtener los usuarios:', error);
         alert('Error al cargar la lista de usuarios');
       }
     );
@@ -48,6 +50,7 @@ export class MostrarTodosUsuariosComponent {
         this.usuarioService.findAll().subscribe(
           (data: Usuario[]) => {
             this.usuarios = data;  // Verifica si data está siendo retornado correctamente
+            this.filtrarUsuarios(); // Filtrar usuarios después de la eliminación
             console.log('Usuarios después de la eliminación:', this.usuarios);
           },
           error => {
@@ -64,20 +67,13 @@ export class MostrarTodosUsuariosComponent {
     );
   }
 
-  buscarUsuarios(): void {
+  filtrarUsuarios(): void {
     if (this.nombreBusqueda.trim()) {
-      this.usuarioService.buscarUsuarios(this.nombreBusqueda).subscribe({
-        next: (usuarios) => {
-          this.usuarios = usuarios;
-          // Actualiza la cantidad de mascotas al buscar
-          this.usuarios.forEach(usuario => {
-            this.obtenerCantidadMascotas(usuario.cedula);
-          });
-        },
-        error: (error) => {
-          console.error('Error al buscar usuarios', error);
-        }
-      });
+      this.usuariosFiltrados = this.usuarios.filter(usuario => 
+        usuario.nombre.toLowerCase().includes(this.nombreBusqueda.toLowerCase())
+      );
+    } else {
+      this.usuariosFiltrados = this.usuarios; // Si no hay búsqueda, mostrar todos
     }
   }
 }

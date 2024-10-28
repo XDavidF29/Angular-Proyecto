@@ -38,6 +38,56 @@ label {
     margin-bottom: 5px;
 }
 
+.form-group {
+    position: relative; /* Permite posicionar el contenedor de sugerencias de manera absoluta */
+}
+
+#cdueno {
+    width: 100%; /* Asegura que el campo ocupe todo el ancho del contenedor */
+}
+
+.sugerencias {
+    position: absolute; /* Posiciona el contenedor de sugerencias en relación al contenedor padre */
+    background-color: white; /* Fondo blanco para las sugerencias */
+    border: 1px solid #ccc; /* Borde gris claro */
+    z-index: 1000; /* Asegura que se muestre sobre otros elementos */
+    max-height: 200px; /* Altura máxima para el contenedor */
+    overflow-y: auto; /* Permite desplazamiento vertical si hay muchas opciones */
+    width: 100%; /* Ancho completo para que coincida con el campo de entrada */
+    border-radius: 0.25rem; /* Bordes redondeados */
+}
+
+.list-group {
+    padding: 0; /* Elimina el padding por defecto */
+    margin: 0; /* Elimina el margin por defecto */
+}
+
+.list-group-item {
+    padding: 10px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor a puntero */
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0; /* Color de fondo al hacer hover */
+}
+
+/* Estilo para el nombre del dueño */
+.nombre-dueño {
+    font-weight: bold; /* Hace que el nombre sea más prominente */
+}
+
+/* Estilo para la cédula */
+.cedula-dueño {
+    font-size: 0.9em; /* Tamaño de fuente más pequeño */
+    color: #6c757d; /* Color gris para que sea menos visible */
+}
+
+/* Opcional: Efecto de transición suave */
+.list-group-item {
+    transition: background-color 0.3s ease; /* Suaviza el cambio de color de fondo */
+}
+
+
 input[type="text"], 
 input[type="file"] {
     width: 100%;

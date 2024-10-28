@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Si quieres redirigir a otra página después de aplicar un tratamiento
+import { Router } from '@angular/router';
 import { Veterinario } from '../models/Veterinario';
 import { VeterinarioServicioService } from '../servicio/veterinario-servicio.service';
 
@@ -14,7 +14,7 @@ export class MostrarTodosVeterinariosComponent implements OnInit {
   
   constructor(
     private veterinarioService: VeterinarioServicioService,
-    private router: Router // Para manejar la redirección si es necesario
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -51,11 +51,8 @@ export class MostrarTodosVeterinariosComponent implements OnInit {
   }
 
   openAplicarTratamiento(id: number): void {
-    // Aquí puedes agregar la lógica para aplicar el tratamiento o redirigir a otra página
     console.log(`Aplicar tratamiento al veterinario con ID: ${id}`);
-    
-    // Si quieres redirigir a una página donde se aplique el tratamiento, podrías hacer algo como esto:
-    // this.router.navigate(['/tratamiento', id]);
+    // Lógica para aplicar el tratamiento o redirigir
   }
 
   buscarVeterinarios(): void {
@@ -65,9 +62,12 @@ export class MostrarTodosVeterinariosComponent implements OnInit {
           this.veterinarios = veterinarios;
         },
         error: (error) => {
-          console.error('Error al buscar usuarios', error);
+          console.error('Error al buscar veterinarios', error);
         }
       });
+    } else {
+      // Si el campo de búsqueda está vacío, recarga la lista completa
+      this.cargarVeterinarios();
     }
   }
 }
