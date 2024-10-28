@@ -59,7 +59,7 @@ public class VeterinarioServiceImpl implements VeterinarioService {
         if (veterinario == null) {
             System.out.println("No se encontró un veterinario con la cédula: " + cedula);
             return false;
-        } else {
+        } else { 
             System.out.println("Veterinario encontrado: " + veterinario.getCedula());
         }
     

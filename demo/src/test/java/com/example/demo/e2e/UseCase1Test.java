@@ -50,7 +50,6 @@ public class UseCase1Test  {
         this.driver = new ChromeDriver(chromeOptions);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
-    
 
     @Test
     public void RegistroClienteMascotaTest() throws InterruptedException {
