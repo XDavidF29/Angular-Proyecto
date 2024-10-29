@@ -14,5 +14,5 @@ public interface MascotaService {
     public void add(Mascota mascota);
     public Mascota agregarTratamiento(Long mascotaId, Tratamiento tratamiento, String cedulaVeterinario);
     public List<Mascota> buscarPorNombre(String nombre);
-
+    public List<Tratamiento> buscarTratamientosPorMascotaId(Long mascotaId);
 }

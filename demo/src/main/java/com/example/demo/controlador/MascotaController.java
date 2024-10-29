@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entidades.Mascota;
+import com.example.demo.entidades.Medicamento;
 import com.example.demo.entidades.Tratamiento;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.repositorio.MascotaRepository;
@@ -26,6 +27,7 @@ import com.example.demo.repositorio.TratamientoRepository;
 import com.example.demo.repositorio.UsuarioRepository;
 import com.example.demo.servicio.MascotaService;
 import com.example.demo.servicio.UsuarioService;
+import com.example.demo.servicio.MedicamentoService;
 
 
 @RestController
@@ -38,6 +40,9 @@ public class MascotaController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    MedicamentoService medicamentoService;
 
     @Autowired
     UsuarioRepository usuarioRepository;
@@ -180,9 +185,27 @@ public ResponseEntity<Mascota> crearMascota(@RequestBody Mascota mascota) {
     }
      
     @PostMapping("/tratamiento/{mascotaId}")
-    public ResponseEntity<Mascota> agregarTratamiento(@PathVariable Long mascotaId, @RequestBody Tratamiento tratamiento, @RequestParam String cedulaVeterinario) {
+    public ResponseEntity<?> agregarTratamiento(@PathVariable Long mascotaId, @RequestBody Tratamiento tratamiento, @RequestParam String cedulaVeterinario) {
+        List<String> medicamentosSinStock = new ArrayList<>(); // Lista para almacenar los medicamentos sin stock
+
+        for (Medicamento medicamento : tratamiento.getMedicamentos()) {
+            if (medicamento.getUnidadesDisponibles() <= 0) {
+                medicamentosSinStock.add(medicamento.getNombre()); // O usar otro atributo que identifique el medicamento
+            } else {
+                medicamento.setUnidadesDisponibles(medicamento.getUnidadesDisponibles() - 1);
+                medicamento.setUnidadesVendidas(medicamento.getUnidadesVendidas() + 1);
+                medicamentoService.update(medicamento);
+            }
+        }
+
+        // Si hay medicamentos sin stock, retorna un error con los nombres
+        if (!medicamentosSinStock.isEmpty()) {
+            return ResponseEntity.badRequest().body("No hay suficientes unidades disponibles para los siguientes medicamentos: " + String.join(", ", medicamentosSinStock));
+        }
+
+        // Solo si todo está bien, agrega el tratamiento a la mascota
         Mascota mascota = service.agregarTratamiento(mascotaId, tratamiento, cedulaVeterinario);
-    
+
         if (mascota != null) {
             return ResponseEntity.ok(mascota); // Retorna la mascota actualizada si todo está bien
         } else {
@@ -190,9 +213,16 @@ public ResponseEntity<Mascota> crearMascota(@RequestBody Mascota mascota) {
         }
     }
 
+
+
     @GetMapping("/buscar")
     public List<Mascota> buscarMascotas(@RequestParam("nombre") String nombre) {
         return service.buscarPorNombre(nombre);
+    }
+
+    @GetMapping("/tratamientos/{mascotaId}")
+    public List<Tratamiento> buscarTratamientosPorMascota(@PathVariable Long mascotaId) {
+        return service.buscarTratamientosPorMascotaId(mascotaId);
     }
 
 }

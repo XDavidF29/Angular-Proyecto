@@ -102,4 +102,9 @@ public class MascotaServiceImpl implements MascotaService{
         return null;  // Devolver null si no se encuentra la mascota o el veterinario
     }
 
+    @Override
+    public List<Tratamiento> buscarTratamientosPorMascotaId(Long mascotaId) {
+        return repoTratamiento.findByMascotaId(mascotaId);
+    }
+
 }

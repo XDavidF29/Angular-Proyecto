@@ -57,4 +57,10 @@ public class TratamientoController {
     public void eliminarTratamiento(@PathVariable("id") Integer idTratamiento) {
         service.deleteById(idTratamiento);
     }
+
+    // Buscar tratamientos por mascota
+    @GetMapping("/find/mascota/{id}")
+    public List<Tratamiento> buscarPorMascota(@PathVariable("id") Long idMascota) {
+        return service.buscarPorMascotaId(idMascota);
+    }
 }

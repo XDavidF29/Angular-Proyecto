@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entidades.Mascota;
+import com.example.demo.entidades.Tratamiento;
 
 @Repository
 public interface MascotaRepository extends JpaRepository<Mascota, Long> {
@@ -21,6 +22,6 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
     @Query("SELECT m FROM Mascota m WHERE LOWER(m.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     List<Mascota> buscarPorNombre(String nombre);
 
-    
+    List<Tratamiento> findByTratamientosId(Long id);
 
 }

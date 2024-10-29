@@ -10,4 +10,5 @@ public interface TratamientoService {
     public void deleteById(Integer id);
     public void update(Tratamiento tratamiento);
     public void add(Tratamiento tratamiento);
+    public List<Tratamiento> buscarPorMascotaId(Long mascotaId);
 }

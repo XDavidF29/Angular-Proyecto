@@ -45,8 +45,9 @@ public class Tratamiento {
     // Constructor vacío
     public Tratamiento() {}
 
-    public Tratamiento(Date fecha, float precio, Mascota mascota, Veterinario veterinario,
+    public Tratamiento(Integer id,Date fecha, float precio, Mascota mascota, Veterinario veterinario,
             List<Medicamento> medicamentos) {
+        this.id = id;
         this.fecha = fecha;
         this.precio = precio;
         this.mascota = mascota;
@@ -54,9 +55,9 @@ public class Tratamiento {
         this.medicamentos = medicamentos;
     }
 
-    public Tratamiento(Integer id, Date fecha, float precio, Mascota mascota, Veterinario veterinario,
+    public Tratamiento( Date fecha, float precio, Mascota mascota, Veterinario veterinario,
             List<Medicamento> medicamentos) {
-        this.id = id;
+        
         this.fecha = fecha;
         this.precio = precio;
         this.mascota = mascota;

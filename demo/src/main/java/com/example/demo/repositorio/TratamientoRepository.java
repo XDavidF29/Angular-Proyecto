@@ -39,6 +39,8 @@ public interface TratamientoRepository extends JpaRepository<Tratamiento, Intege
     @Query("SELECT t, SUM(m.unidadesVendidas) as total_vendido FROM Tratamiento t JOIN t.medicamentos m GROUP BY t ORDER BY total_vendido DESC")
     List<Object[]> obtenerTop3Tratamientos();
 
+    
+    List<Tratamiento> findByMascotaId(Long mascotaId);
 
 
 }

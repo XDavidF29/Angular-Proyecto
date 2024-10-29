@@ -38,4 +38,9 @@ public class TratamientoServiceImpl implements TratamientoService {
     public void add(Tratamiento tratamiento) {
         repo.save(tratamiento);
     }
+
+    @Override
+    public List<Tratamiento> buscarPorMascotaId(Long mascotaId) {
+        return repo.findByMascotaId(mascotaId);
+    }
 }
