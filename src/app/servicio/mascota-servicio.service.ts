@@ -41,16 +41,19 @@ export class MascotaServicioService {
   }
 
 // Asignar un tratamiento, incluyendo la cédula del veterinario
-addTratamiento(mascotaId: number, tratamiento: Tratamiento, cedulaVeterinario: string): Observable<Mascota> {
-  const url = `http://localhost:8090/mascota/tratamiento/${mascotaId}`;
-  const params = { cedulaVeterinario };  // Parámetro de la cédula del veterinario
+  addTratamiento(mascotaId: number, tratamiento: Tratamiento, cedulaVeterinario: string): Observable<Mascota> {
+    const url = `http://localhost:8090/mascota/tratamiento/${mascotaId}`;
+    const params = { cedulaVeterinario };  // Parámetro de la cédula del veterinario
 
-  // Aquí enviamos el tratamiento en el cuerpo de la solicitud
-  return this.http.post<Mascota>(url, tratamiento, { params });
-}
+    // Aquí enviamos el tratamiento en el cuerpo de la solicitud
+    return this.http.post<Mascota>(url, tratamiento, { params });
+  }
 
-buscarMascotas(nombre: string): Observable<Mascota[]> {
-  return this.http.get<Mascota[]>(`http://localhost:8090/mascota/buscar?nombre=${nombre}`);
-}
+  buscarMascotas(nombre: string): Observable<Mascota[]> {
+    return this.http.get<Mascota[]>(`http://localhost:8090/mascota/buscar?nombre=${nombre}`);
+  }
 
+  buscarTratamientoPorMascota(id: number): Observable<Tratamiento[]> {
+    return this.http.get<Tratamiento[]>(`http://localhost:8090/mascota/tratamientos/${id}`);
+  }
 }

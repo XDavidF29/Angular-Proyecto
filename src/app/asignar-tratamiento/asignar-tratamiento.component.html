@@ -37,11 +37,11 @@
 
                 <div>
                   <h3>Medicamentos Seleccionados:</h3>
-                  <ul class="list-unstyled"> <!-- Clase para eliminar el estilo de lista por defecto -->
+                  <ul class="list-unstyled"> 
                       <li *ngFor="let medicamento of medicamentosSeleccionados; let i = index" class="d-flex justify-content-between align-items-center mb-2">
                           {{ medicamento.nombre }}
                           <button type="button" (click)="eliminarMedicamento(i)" class="btn btn-danger btn-sm">
-                              <i class="bi bi-trash"></i> <!-- Icono de borrar de Bootstrap Icons -->
+                              <i class="bi bi-trash"></i> 
                           </button>
                       </li>
                   </ul>
@@ -58,6 +58,10 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Asignar Tratamiento</button>
+                <br>
+                <div *ngIf="mensajeError" class="alert alert-danger text-center">
+                    {{ mensajeError }}
+                </div>
             </form>
         </div>        
     </main>

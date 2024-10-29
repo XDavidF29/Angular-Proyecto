@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Mascota } from '../models/Mascota';
 import { MascotaServicioService } from '../servicio/mascota-servicio.service';
+import { Tratamiento } from '../models/Tratamiento';
 
 @Component({
   selector: 'app-detalles-mascota',
@@ -25,6 +26,19 @@ export class DetallesMascotaComponent{
         this.mascotaService.findById(id).subscribe(
           (data: Mascota) => {
             this.mascota = data;
+
+            this.mascotaService.buscarTratamientoPorMascota(this.mascota.id).subscribe(
+              (tratamientos: Tratamiento[]) => {
+                if (this.mascota) {
+                  this.mascota.tratamientos = tratamientos;
+                  console.log(tratamientos);
+                }
+              },
+              error => {
+                console.error('Error fetching tratamientos:', error);
+                this.errorMessage = 'Error al obtener los tratamientos de la mascota';
+              }
+            );
           },
           error => {
             console.error('Error fetching mascota:', error);

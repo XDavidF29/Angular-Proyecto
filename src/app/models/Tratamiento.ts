@@ -3,7 +3,7 @@ import { Veterinario } from './Veterinario';
 import { Medicamento } from './Medicamento';
 
 export interface Tratamiento {
-    id: number;
+    id?: number;
     fecha: Date;
     //cantidadMascotas: number;
     precio: number;

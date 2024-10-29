@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MedicamentoService } from '../servicio/medicamento.service';
 import { MascotaServicioService } from '../servicio/mascota-servicio.service';
 import { VeterinarioServicioService } from '../servicio/veterinario-servicio.service';
@@ -20,6 +20,7 @@ export class AsignarTratamientoComponent implements OnInit {
   medicamentosSeleccionados: Medicamento[] = [];  // Lista de medicamentos seleccionados
   veterinariosDisponibles: Veterinario[] = [];
   veterinarioSeleccionado: Veterinario | undefined;
+  mensajeError: string = '';
 
   // Nuevas propiedades para el tratamiento
   tratamiento = {
@@ -33,7 +34,8 @@ export class AsignarTratamientoComponent implements OnInit {
     private medicamentoService: MedicamentoService,
     private mascotaServicio: MascotaServicioService,
     private veterinarioService: VeterinarioServicioService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -86,49 +88,34 @@ export class AsignarTratamientoComponent implements OnInit {
 
   // Función para agregar un tratamiento a la mascota actual con un veterinario y medicamentos
   agregarTratamiento(): void {
+    this.mensajeError = '';
     if (this.mascota && this.veterinarioSeleccionado && this.medicamentosSeleccionados.length > 0) {
-      const nuevoTratamiento: Tratamiento = {
-        id: 1, // Ajustar según el ID real o manejarlo desde el backend
-        fecha: this.tratamiento.fecha,
-        precio: this.tratamiento.precio,
-        mascota: this.mascota,
-        veterinario: this.veterinarioSeleccionado,
-        medicamentos: this.medicamentosSeleccionados
-      };
-      for (const medic of this.medicamentosSeleccionados) {
-        console.log('Medicamento antes de actualizar:', medic);
-      
-        if (medic.unidadesDisponibles > 0) {
-          medic.unidadesDisponibles -= 1;  // Restar una unidad disponible
-          medic.unidadesVendidas += 1;     // Aumentar una unidad vendida
-      
-          // Actualizar el medicamento en el backend
-          this.medicamentoService.update(medic).subscribe(
-            (response) => console.log('Medicamento actualizado en el servidor:', response),
-            (error) => console.error('Error al actualizar el medicamento', error)
-          );
-        } else {
-          console.error(`No hay suficientes unidades disponibles para el medicamento: ${medic.nombre}`);
-        }
-      }
-      
-      
+        const nuevoTratamiento: Tratamiento = {
+            fecha: this.tratamiento.fecha,
+            precio: this.tratamiento.precio,
+            mascota: this.mascota,
+            veterinario: this.veterinarioSeleccionado,
+            medicamentos: this.medicamentosSeleccionados
+        };
 
-      // Llama al servicio para crear el tratamiento
-      this.mascotaServicio.addTratamiento(this.mascota.id, nuevoTratamiento, this.veterinarioSeleccionado.cedula).subscribe({
-        next: (response) => {
-          console.log('Tratamiento asignado exitosamente', response);
-          // Aquí podrías resetear la lista de medicamentos seleccionados después de agregar el tratamiento
-          this.medicamentosSeleccionados = []; // Limpiar la lista de medicamentos seleccionados
-        },
-        error: (error) => {
-          console.error('Error al asignar tratamiento', error);
-        }
-      });
+        // Llama al servicio para crear el tratamiento
+        this.mascotaServicio.addTratamiento(this.mascota.id, nuevoTratamiento, this.veterinarioSeleccionado.cedula).subscribe({
+            next: (response) => {
+                this.router.navigate(['/mascota/find/', response.id]);
+            },
+            error: (error) => {
+                if (error.status === 400) {
+                    this.mensajeError = error.error; 
+                } else {
+                    console.error('Error al asignar tratamiento', error);
+                }
+            }
+        });
     } else {
-      console.error('Debe seleccionar un veterinario y al menos un medicamento');
+        console.error('Debe seleccionar un veterinario y al menos un medicamento');
     }
-  }
+}
+
 
   // Función para agregar un medicamento a la lista de medicamentos seleccionados
   agregarMedicamento(): void {
@@ -139,8 +126,6 @@ export class AsignarTratamientoComponent implements OnInit {
       if (this.medicamentoSeleccionado) {
         this.medicamentosDisponibles = this.medicamentosDisponibles.filter(medicamento => medicamento.id !== this.medicamentoSeleccionado!.id);
       }
-
-      
       
       this.medicamentoSeleccionado = undefined; // Limpiar la selección
     } else {
