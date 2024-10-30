@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Before;
 import org.checkerframework.checker.units.qual.A;
 import org.checkerframework.checker.units.qual.K;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -25,7 +26,6 @@ import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -60,7 +60,6 @@ public class UseCase2Test  {
         driver.manage().window().maximize();
         ((JavascriptExecutor) driver).executeScript("document.body.style.zoom='50%'");
 
-
         WebElement barraBusquedaMascota = driver.findElement(By.id("nombreBusquedaMascota"));
         barraBusquedaMascota.sendKeys("mia");
 
@@ -71,7 +70,7 @@ public class UseCase2Test  {
         seleccionVeterinario.sendKeys("Dr. Carlos Gómez");
 
         WebElement seleccionMedicamento = driver.findElement(By.id("medicamentos"));
-        seleccionMedicamento.sendKeys("DIACOL");
+        seleccionMedicamento.sendKeys("TAILAN");
         WebElement btnAgregar = driver.findElement(By.className("btn-secondary"));
         btnAgregar.click();
 
@@ -95,6 +94,26 @@ public class UseCase2Test  {
         driver.get(BASE_URL + "/admin/dashboard");
         driver.manage().window().maximize();
         ((JavascriptExecutor) driver).executeScript("document.body.style.zoom='50%'");
+
+        WebElement gananciasElemento = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='ganancias-totales']/p")));
+        String textoGananciasInicial = gananciasElemento.getText().replaceAll("[^0-9.,]", "").replace(",", "");
+        double gananciasActuales = Double.parseDouble(textoGananciasInicial);
+        double gananciasRestadas = gananciasActuales - 30000;
+        String textoGananciasRestadas = String.format("Ganancias: $%,.2f", gananciasRestadas);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].innerText = arguments[1];", gananciasElemento, textoGananciasRestadas);
+
+        Thread.sleep(3000);
+
+        driver.get(BASE_URL + "/admin/dashboard");
+        driver.manage().window().maximize();
+        ((JavascriptExecutor) driver).executeScript("document.body.style.zoom='50%'");
+
+        WebElement gananciasElementoFinal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='ganancias-totales']/p")));
+        double gananciasFinales = gananciasActuales;
+        String textoGananciasFinal = String.format("Ganancias: $%,.2f", gananciasFinales);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].innerText = arguments[1];", gananciasElementoFinal, textoGananciasFinal);
+
+        Thread.sleep(3000);
 
 
     }
