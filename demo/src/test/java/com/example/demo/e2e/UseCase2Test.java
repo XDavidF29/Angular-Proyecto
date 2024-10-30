@@ -54,16 +54,18 @@ public class UseCase2Test  {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
     
+    
     @Test
     public void SuministrarNuevoMedicamentoTest() throws InterruptedException {
+
         driver.get(BASE_URL + "/mascota/all");
         driver.manage().window().maximize();
-        ((JavascriptExecutor) driver).executeScript("document.body.style.zoom='50%'");
 
         WebElement barraBusquedaMascota = driver.findElement(By.id("nombreBusquedaMascota"));
         barraBusquedaMascota.sendKeys("mia");
 
         WebElement btnAplicarTratamiento = driver.findElement(By.className("btn-warning"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", btnAplicarTratamiento);
         btnAplicarTratamiento.click();
 
         WebElement seleccionVeterinario = driver.findElement(By.id("veterinario"));
@@ -71,34 +73,42 @@ public class UseCase2Test  {
 
         WebElement seleccionMedicamento = driver.findElement(By.id("medicamentos"));
         seleccionMedicamento.sendKeys("TAILAN");
+
         WebElement btnAgregar = driver.findElement(By.className("btn-secondary"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", btnAgregar);
         btnAgregar.click();
 
-        WebElement precio = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("precio")));
-        precio.sendKeys(Keys.BACK_SPACE);
-        precio.sendKeys("30000");
+        WebElement precioElemento = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("precio")));
+        precioElemento.sendKeys(Keys.BACK_SPACE);
+        precioElemento.sendKeys("30000");
+
+        String textoPrecio = precioElemento.getAttribute("value").replaceAll("[^0-9.,]", "").replace(",", "");
+        double precio = Double.parseDouble(textoPrecio);
 
         WebElement btnAsignarTratamiento = wait.until(ExpectedConditions.elementToBeClickable(By.className("btn-primary")));
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500);");
+        Thread.sleep(500); 
         btnAsignarTratamiento.click();
 
         driver.get(BASE_URL + "/mascota/all");
         driver.manage().window().maximize();
-        ((JavascriptExecutor) driver).executeScript("document.body.style.zoom='50%'");
 
         WebElement barraBusquedaMascotaComprobacion = driver.findElement(By.id("nombreBusquedaMascota"));
         barraBusquedaMascotaComprobacion.sendKeys("mia");
 
         WebElement btnVerMascota = wait.until(ExpectedConditions.elementToBeClickable(By.className("bi-eye-fill")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", btnVerMascota);
         btnVerMascota.click();
 
         driver.get(BASE_URL + "/admin/dashboard");
         driver.manage().window().maximize();
-        ((JavascriptExecutor) driver).executeScript("document.body.style.zoom='50%'");
 
         WebElement gananciasElemento = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='ganancias-totales']/p")));
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500);");
+
         String textoGananciasInicial = gananciasElemento.getText().replaceAll("[^0-9.,]", "").replace(",", "");
         double gananciasActuales = Double.parseDouble(textoGananciasInicial);
-        double gananciasRestadas = gananciasActuales - 30000;
+        double gananciasRestadas = gananciasActuales - precio;
         String textoGananciasRestadas = String.format("Ganancias: $%,.2f", gananciasRestadas);
         ((JavascriptExecutor) driver).executeScript("arguments[0].innerText = arguments[1];", gananciasElemento, textoGananciasRestadas);
 
@@ -106,16 +116,17 @@ public class UseCase2Test  {
 
         driver.get(BASE_URL + "/admin/dashboard");
         driver.manage().window().maximize();
-        ((JavascriptExecutor) driver).executeScript("document.body.style.zoom='50%'");
 
         WebElement gananciasElementoFinal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='ganancias-totales']/p")));
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500);");
+        Thread.sleep(500); 
+
         double gananciasFinales = gananciasActuales;
         String textoGananciasFinal = String.format("Ganancias: $%,.2f", gananciasFinales);
         ((JavascriptExecutor) driver).executeScript("arguments[0].innerText = arguments[1];", gananciasElementoFinal, textoGananciasFinal);
 
         Thread.sleep(3000);
-
-
     }
+
 
 }
