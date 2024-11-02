@@ -12,9 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "USUARIOS_TABLE")
+@Data
+@NoArgsConstructor
 public class Usuario {
 
     @Id
@@ -30,11 +34,6 @@ public class Usuario {
     @JsonIgnore
     private List<Mascota> mascotas;
 
-
-    // Constructor vacío
-    public Usuario() {
-    
-    }
 
     // Constructor con todos los campos
     public Usuario(Integer id, String nombre, String correo, int celular, int cedula, List<Mascota> mascotas) {
@@ -54,58 +53,6 @@ public class Usuario {
         this.mascotas = mascotas != null ? mascotas : new ArrayList<>();  // Asegura que mascotas no sea null
     }
 
-    // Getters y Setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public int getCelular() {
-        return celular;
-    }
-
-    public void setCelular(int celular) {
-        this.celular = celular;
-    }
-
-    public int getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(int cedula) {
-        this.cedula = cedula;
-    }
-
-    public List<Mascota> getMascotas() {
-        if (mascotas == null) {
-            mascotas = new ArrayList<>();  // Inicializa la lista si es null
-        }
-        return mascotas;
-    }
-
-    public void setMascotas(List<Mascota> mascotas) {
-        this.mascotas = mascotas;
-    }
 
     public void addMascota(Mascota mascota) {
         mascotas.add(mascota);

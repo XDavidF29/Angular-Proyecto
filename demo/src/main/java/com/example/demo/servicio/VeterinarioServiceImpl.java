@@ -47,8 +47,9 @@ public class VeterinarioServiceImpl implements VeterinarioService {
     }
 
     @Override
-    public void add(Veterinario veterinario) {
+    public Veterinario add(Veterinario veterinario) {
         repo.save(veterinario);
+        return veterinario;
     }
 
     @Override

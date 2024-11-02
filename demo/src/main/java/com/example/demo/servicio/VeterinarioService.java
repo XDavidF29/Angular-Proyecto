@@ -10,7 +10,7 @@ public interface VeterinarioService {
     public List<Veterinario> searchAll();
     public void deleteById(Long id);
     public Veterinario update(Veterinario veterinario);
-    public void add(Veterinario veterinario);
+    public Veterinario add(Veterinario veterinario);
     public boolean verificarCredenciales(String cedula,String contrasena);
     public Veterinario searchByCedula(String cedula);
     public List<Veterinario> buscarPorNombre(String nombre);

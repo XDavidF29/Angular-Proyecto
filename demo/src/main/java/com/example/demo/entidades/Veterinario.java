@@ -13,9 +13,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "VETERINARIOS_TABLE")
+@Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Veterinario {
 
     @Id
@@ -34,9 +42,6 @@ public class Veterinario {
     @JsonIgnore
     private List<Tratamiento> tratamientos = new ArrayList<>();
 
-    // Constructor vacío
-    public Veterinario() {
-    }
 
     // Constructor con todos los campos
     public Veterinario(Long id, String cedula, String password, String especialidad, int atenciones, String nombre,
@@ -69,83 +74,6 @@ public class Veterinario {
         this.estado = estado;
     }
 
-
-
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
-    }
-
-    public int getAtenciones() {
-        return atenciones;
-    }
-
-    public void setAtenciones(int atenciones) {
-        this.atenciones = atenciones;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
-
-    public List<Tratamiento> getTratamientos() {
-        if (tratamientos == null) {
-            tratamientos = new ArrayList<>();
-        }
-        return tratamientos;
-    }
-
-    public void setTratamientos(List<Tratamiento> tratamientos) {
-        this.tratamientos = tratamientos;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
 
     // Métodos para agregar y remover tratamientos
     public void addTratamiento(Tratamiento tratamiento) {

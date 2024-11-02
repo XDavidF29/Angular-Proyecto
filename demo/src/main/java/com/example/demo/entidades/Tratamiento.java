@@ -13,10 +13,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "TRATAMIENTO_TABLE")
+@Data
+@NoArgsConstructor
 public class Tratamiento {
     
     @Id
@@ -42,9 +46,7 @@ public class Tratamiento {
     )
     private List<Medicamento> medicamentos = new ArrayList<>();
 
-    // Constructor vacío
-    public Tratamiento() {}
-
+    
     public Tratamiento(Integer id,Date fecha, float precio, Mascota mascota, Veterinario veterinario,
             List<Medicamento> medicamentos) {
         this.id = id;
@@ -65,57 +67,5 @@ public class Tratamiento {
         this.medicamentos = medicamentos;
     }
 
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-
-    public Mascota getMascota() {
-        return mascota;
-    }
-
-    public void setMascota(Mascota mascota) {
-        this.mascota = mascota;
-    }
-
-    public Veterinario getVeterinario() {
-        return veterinario;
-    }
-
-    public void setVeterinario(Veterinario veterinario) {
-        this.veterinario = veterinario;
-    }
-
-    public List<Medicamento> getMedicamentos() {
-        return medicamentos;
-    }
-
-    public void setMedicamentos(List<Medicamento> medicamentos) {
-        this.medicamentos = medicamentos;
-    }
-
-    // Constructor con todos los parámetros
-    
 
 }
