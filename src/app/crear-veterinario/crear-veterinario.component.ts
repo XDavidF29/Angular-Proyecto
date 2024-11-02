@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router'; // Importar Router
 import { Veterinario } from '../models/Veterinario'; // Importa el modelo Veterinario
 import { VeterinarioServicioService } from '../servicio/veterinario-servicio.service'; // Importa el servicio de Veterinario
 
@@ -20,23 +21,37 @@ export class CrearVeterinarioComponent {
     atenciones: 0
   };
 
-  constructor(private veterinarioServicio: VeterinarioServicioService) {}
+  mensajeError: string = ''; // Variable para manejar mensajes de error
+
+  constructor(private veterinarioServicio: VeterinarioServicioService, private router: Router) {} // Inyectar Router
 
   addVeterinario(form: NgForm) {
-    if (form.valid) {
+    this.mensajeError = ''; // Reiniciar mensaje de error
 
-      console.log('Datos del Veterinario a enviar:', this.nuevoVeterinario); // Verificar los datos
+    // Agregar veterinario
+    this.veterinarioServicio.addveterinario(this.nuevoVeterinario).subscribe({
+      next: (response: Veterinario) => {
+        console.log('Veterinario creado:', response);
+        this.router.navigate(['/veterinario/find/', response.id]); // Redirigir al veterinario creado
+      },
+      error: (err) => {
+        console.error('Error al registrar el Veterinario:', err);
+        this.mensajeError = 'Error al registrar el Veterinario. Inténtelo de nuevo.'; // Mostrar mensaje de error
+        this.limpiarCampos(); // Limpiar campos en caso de error
+      }
+    });
+  }
 
-      this.veterinarioServicio.addveterinario(this.nuevoVeterinario).subscribe(
-        () => {
-          alert('Veterinario registrado exitosamente.');
-          form.reset(); // Limpiar el formulario después de registrar
-        },
-        error => {
-          console.error('Error al registrar el Veterinario:', error);
-          alert('Error al registrar el Veterinario.');
-        }
-      );
-    }
+  limpiarCampos() {
+    this.nuevoVeterinario = {
+      id: 0,
+      nombre: '',
+      especialidad: '',
+      foto: '',
+      tratamientos: [],
+      cedula: '',
+      password: '',
+      atenciones: 0
+    };
   }
 }

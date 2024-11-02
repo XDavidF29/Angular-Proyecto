@@ -24,6 +24,11 @@
                 </div>
 
                 <div class="form-group mb-3">
+                    <label for="contrasena" class="form-label">Contraseña</label>
+                    <input type="password" id="contrasena" class="form-control" placeholder="Contraseña del veterinario" name="contrasena" [(ngModel)]="nuevoVeterinario.password" required>
+                </div>
+
+                <div class="form-group mb-3">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" id="nombre" class="form-control" placeholder="Nombre del veterinario" name="nombre" [(ngModel)]="nuevoVeterinario.nombre" required>
                 </div>

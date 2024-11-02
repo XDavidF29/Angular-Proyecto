@@ -46,8 +46,8 @@ export class VeterinarioServicioService {
   }
 
   // Accede a la información del veterinario en el login
-  loginVeterinario(cedula: number, contrasena: string): Observable<Veterinario> {
-    return this.http.get<Veterinario>(`http://localhost:8090/veterinario/login?cedula=${cedula}&contrasena=${contrasena}`);
+  loginVeterinario(veterinario:Veterinario): Observable<Veterinario> {
+    return this.http.post<Veterinario>(`http://localhost:8090/veterinario/login`, veterinario);
   }
 
 
