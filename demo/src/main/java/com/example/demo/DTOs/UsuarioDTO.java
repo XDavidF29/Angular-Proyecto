@@ -1,11 +1,13 @@
 package com.example.demo.DTOs;
 
+
 import lombok.Data;
 
 @Data
-public class VeterinarioDTO {
+public class UsuarioDTO {
+
     private Long id;
     private String nombre;
     private String cedula;
+    
 }
-//veterinario -> veterinarioDTO

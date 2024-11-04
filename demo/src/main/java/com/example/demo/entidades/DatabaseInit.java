@@ -7,20 +7,26 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.management.relation.Role;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.h2.engine.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.entidades.Mascota.Estado;
 import com.example.demo.repositorio.MascotaRepository; // Import correcto
 import com.example.demo.repositorio.MedicamentoRepository;
+import com.example.demo.repositorio.RolRepository;
 import com.example.demo.repositorio.TratamientoRepository;
+import com.example.demo.repositorio.UserRepository;
 import com.example.demo.repositorio.UsuarioRepository;
 import com.example.demo.repositorio.VeterinarioRepository;
 
@@ -46,61 +52,228 @@ public class DatabaseInit implements ApplicationRunner {
     @Autowired
     TratamientoRepository tratamientoRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    RolRepository rolRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
     //@Autowired
     //TratamientoRepository tratamientoRepository;
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
+
+        rolRepository.save(new Rol("Veterinario"));
+        rolRepository.save(new Rol("Usuario"));
+
+        Usuario userSave;
+        UserEntity userEntity;
+
+
         // Guardar 50 usuarios
-        usuarioRepository.save(new Usuario(null, "Juan", "juan@example.com", 123456789, 111222335, null));
-        usuarioRepository.save(new Usuario(null, "Pedro", "pedro@example.com", 987654321, 444555666, null));
-        usuarioRepository.save(new Usuario(null, "Carlos", "carlos@example.com", 112233445, 222333444, null));
-        usuarioRepository.save(new Usuario(null, "Ana", "ana@example.com", 554433221, 665544332, null));
-        usuarioRepository.save(new Usuario(null, "María", "maria@example.com", 777888999, 888777666, null));
-        usuarioRepository.save(new Usuario(null, "Luis", "luis@example.com", 123123123, 321321321, null));
-        usuarioRepository.save(new Usuario(null, "Sofía", "sofia@example.com", 456456456, 654654654, null));
-        usuarioRepository.save(new Usuario(null, "Miguel", "miguel@example.com", 789789789, 987987987, null));
-        usuarioRepository.save(new Usuario(null, "Raquel", "raquel@example.com", 147258369, 963852741, null));
-        usuarioRepository.save(new Usuario(null, "David", "david@example.com", 258369147, 741852963, null));
-        usuarioRepository.save(new Usuario(null, "Lucía", "lucia@example.com", 369147258, 852963741, null));
-        usuarioRepository.save(new Usuario(null, "Ricardo", "ricardo@example.com", 987123654, 654321987, null));
-        usuarioRepository.save(new Usuario(null, "Elena", "elena@example.com", 654987321, 321789654, null));
-        usuarioRepository.save(new Usuario(null, "José", "jose@example.com", 123654789, 987456321, null));
-        usuarioRepository.save(new Usuario(null, "Carmen", "carmen@example.com", 456789123, 789123456, null));
-        usuarioRepository.save(new Usuario(null, "Francisco", "francisco@example.com", 741963852, 852147963, null));
-        usuarioRepository.save(new Usuario(null, "Isabel", "isabel@example.com", 963741258, 258963147, null));
-        usuarioRepository.save(new Usuario(null, "Jesús", "jesus@example.com", 159753486, 486357159, null));
-        usuarioRepository.save(new Usuario(null, "Verónica", "veronica@example.com", 753159846, 846951753, null));
-        usuarioRepository.save(new Usuario(null, "Gustavo", "gustavo@example.com", 987654321, 123456789, null));
-        usuarioRepository.save(new Usuario(null, "Patricia", "patricia@example.com", 112233445, 554433221, null));
-        usuarioRepository.save(new Usuario(null, "Felipe", "felipe@example.com", 998877665, 332211554, null));
-        usuarioRepository.save(new Usuario(null, "Daniel", "daniel@example.com", 111222333, 444555666, null));
-        usuarioRepository.save(new Usuario(null, "Andrea", "andrea@example.com", 666555444, 333222111, null));
-        usuarioRepository.save(new Usuario(null, "Fernando", "fernando@example.com", 222111333, 666444555, null));
-        usuarioRepository.save(new Usuario(null, "Rosa", "rosa@example.com", 555666777, 444333222, null));
-        usuarioRepository.save(new Usuario(null, "Oscar", "oscar@example.com", 777666555, 222333444, null));
-        usuarioRepository.save(new Usuario(null, "Natalia", "natalia@example.com", 888999000, 99888, null));
-        usuarioRepository.save(new Usuario(null, "Sergio", "sergio@example.com", 333222111, 111222333, null));
-        usuarioRepository.save(new Usuario(null, "Laura", "laura@example.com", 444555666, 666555444, null));
-        usuarioRepository.save(new Usuario(null, "Hugo", "hugo@example.com", 222333444, 555666777, null));
-        usuarioRepository.save(new Usuario(null, "Valeria", "valeria@example.com", 000111222, 333444555, null));
-        usuarioRepository.save(new Usuario(null, "Alejandro", "alejandro@example.com", 555444333, 111000999, null));
-        usuarioRepository.save(new Usuario(null, "Carla", "carla@example.com", 666777888, 222111000, null));
-        usuarioRepository.save(new Usuario(null, "Ramiro", "ramiro@example.com", 111999888, 888777666, null));
-        usuarioRepository.save(new Usuario(null, "Sara", "sara@example.com", 000555444, 333111222, null));
-        usuarioRepository.save(new Usuario(null, "Iván", "ivan@example.com", 444333222, 666000999, null));
-        usuarioRepository.save(new Usuario(null, "Paula", "paula@example.com", 333666555, 444222111, null));
-        usuarioRepository.save(new Usuario(null, "Javier", "javier@example.com", 555999666, 777000111, null));
-        usuarioRepository.save(new Usuario(null, "Ángela", "angela@example.com", 777333111, 888222000, null));
-        usuarioRepository.save(new Usuario(null, "Mauricio", "mauricio@example.com", 999888777, 000111333, null));
-        usuarioRepository.save(new Usuario(null, "Liliana", "liliana@example.com", 111222333, 444555666, null));
-        usuarioRepository.save(new Usuario(null, "Rodrigo", "rodrigo@example.com", 222333444, 555666777, null));
-        usuarioRepository.save(new Usuario(null, "Camila", "camila@example.com", 33344555, 666777888, null));
-        usuarioRepository.save(new Usuario(null, "Matías", "matias@example.com", 444555666, 777888999, null));
-        usuarioRepository.save(new Usuario(null, "Elisa", "elisa@example.com", 555666777, 888999000, null));
-        usuarioRepository.save(new Usuario(null, "Pablo", "pablo@example.com", 666777888, 999000111, null));
-        usuarioRepository.save(new Usuario(null, "Adriana", "adriana@example.com", 777888999, 1112223339, null));
-        usuarioRepository.save(new Usuario(null, "Tomás", "tomas@example.com", 888999000, 222333444, null));
-        usuarioRepository.save(new Usuario(null, "Olga", "olga@example.com", 999000111, 333444555, null));
+        userSave=new Usuario(null, "Juan", "juan@example.com", 123456789, 111222335, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        userSave=new Usuario(null, "Pedro", "pedro@example.com", 987654321, 444555666, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Carlos", "carlos@example.com", 112233445, 222333444, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Ana", "ana@example.com", 554433221, 665544332, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "María", "maria@example.com", 777888999, 888777666, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Luis", "luis@example.com", 123123123, 321321321, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Sofía", "sofia@example.com", 456456456, 654654654, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Miguel", "miguel@example.com", 789789789, 987987987, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Raquel", "raquel@example.com", 147258369, 963852741, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "David", "david@example.com", 258369147, 741852963, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Lucía", "lucia@example.com", 369147258, 852963741, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Ricardo", "ricardo@example.com", 987123654, 654321987, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Elena", "elena@example.com", 654987321, 321789654, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "José", "jose@example.com", 123654789, 987456321, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Carmen", "carmen@example.com", 456789123, 789123456, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Francisco", "francisco@example.com", 741963852, 852147963, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Isabel", "isabel@example.com", 963741258, 258963147, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Jesús", "jesus@example.com", 159753486, 486357159, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Verónica", "veronica@example.com", 753159846, 846951753, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Gustavo", "gustavo@example.com", 987654321, 123456789, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Patricia", "patricia@example.com", 112233445, 554433221, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Felipe", "felipe@example.com", 998877665, 332211554, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Daniel", "daniel@example.com", 111222333, 444555667, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Andrea", "andrea@example.com", 666555444, 333222111, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Fernando", "fernando@example.com", 222111333, 666444555, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Rosa", "rosa@example.com", 555666777, 444333222, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Oscar", "oscar@example.com", 777666555, 222333449, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Natalia", "natalia@example.com", 888999000, 99888, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Sergio", "sergio@example.com", 333222111, 111222333, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Laura", "laura@example.com", 444555666, 666555444, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Hugo", "hugo@example.com", 222333444, 555666777, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Valeria", "valeria@example.com", 000111222, 333444555, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Alejandro", "alejandro@example.com", 555444333, 111000999, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Carla", "carla@example.com", 666777888, 222111000, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Ramiro", "ramiro@example.com", 111999888, 888777661, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Sara", "sara@example.com", 000555444, 333111222, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Iván", "ivan@example.com", 444333222, 666000999, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Paula", "paula@example.com", 333666555, 444222111, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Javier", "javier@example.com", 555999666, 777000111, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Ángela", "angela@example.com", 777333111, 888222000, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Mauricio", "mauricio@example.com", 999888777, 000111333, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Liliana", "liliana@example.com", 111222333, 444555668, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Rodrigo", "rodrigo@example.com", 222333444, 555666778, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Camila", "camila@example.com", 33344555, 666777888, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Matías", "matias@example.com", 444555666, 777888999, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Elisa", "elisa@example.com", 555666777, 888999000, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Pablo", "pablo@example.com", 666777888, 999000111, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Adriana", "adriana@example.com", 777888999, 111222339, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Tomás", "tomas@example.com", 888999000, 222333440, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
+        userSave=new Usuario(null, "Olga", "olga@example.com", 999000111, 333444553, null);
+        userEntity=saveUserUsuario(userSave);
+        userSave.setUser(userEntity);
+        usuarioRepository.save(userSave);
 
         mascotaRepository.save(new Mascota("pepe", "chiquita", 1, 12.3f, "https://plus.unsplash.com/premium_photo-1676390051589-bead49b416a6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZG9nfGVufDB8fDB8fHww", "ninguna", Estado.Inactivo));
         mascotaRepository.save(new Mascota("lola", "chiquita", 1, 12.3f, "https://images.unsplash.com/photo-1534361960057-19889db9621e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9nfGVufDB8fDB8fHww", "ninguna", Estado.Inactivo));
@@ -208,59 +381,135 @@ public class DatabaseInit implements ApplicationRunner {
 
 
         Veterinario veterinarioEntity = Veterinario.builder().cedula("V024").password("pass456").especialidad("Medicina Felina").atenciones(115).nombre("Dra. Patricia Gómez").foto("https://www.shutterstock.com/image-photo/veterinarian-cute-dog-on-white-260nw-1538054498.jpg").estado(Veterinario.Estado.Activo).build();
-        veterinarioRepository.save(new Veterinario( "V024", "pass456", "Medicina Felina", 115, "Dra. Patricia Gómez", 
-        "https://www.shutterstock.com/image-photo/veterinarian-cute-dog-on-white-260nw-1538054498.jpg",new ArrayList<>(),Veterinario. Estado.Activo));
+        userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
+        veterinarioRepository.save(veterinarioEntity);
 
         veterinarioEntity= Veterinario.builder().cedula("V001").password("pass123").especialidad("Cardiología").atenciones(100).nombre("Dr. Juan Pérez").foto("https://images.unsplash.com/photo-1532615863397-4a6b7ad973d1?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+        userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V002").password("pass234").especialidad("Dermatología").atenciones(120).nombre("Dra. Ana López").foto("https://images.unsplash.com/photo-1513244904703-e01f705cce44?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V003").password("pass345").especialidad("Odontología").atenciones(150).nombre("Dr. Carlos Gómez").foto("https://images.unsplash.com/photo-1517351683210-3d58f3e2a2e1?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V004").password("pass456").especialidad("Oncología").atenciones(80).nombre("Dra. Laura Fernández").foto("https://images.unsplash.com/photo-1542902322-28ae53d46f96?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V005").password("pass567").especialidad("Neurología").atenciones(90).nombre("Dr. Jorge Ramírez").foto("https://images.unsplash.com/photo-1509092276505-431b39b9b5cb?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V006").password("pass678").especialidad("Ortopedia").atenciones(110).nombre("Dra. María Torres").foto("https://images.unsplash.com/photo-1519133456630-d95ecedc58b0?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V007").password("pass789").especialidad("Reproducción").atenciones(130).nombre("Dr. Luis Martínez").foto("https://images.unsplash.com/photo-1555685818-5f3c5a18c637?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V008").password("pass890").especialidad("Medicina Interna").atenciones(140).nombre("Dra. Isabel García").foto("https://images.unsplash.com/photo-1606765086304-f69c4a774062?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V009").password("pass901").especialidad("Anestesiología").atenciones(75).nombre("Dr. Sergio Vargas").foto("https://images.unsplash.com/photo-1513050665636-8a8dbf6e885e?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V010").password("pass012").especialidad("Emergencias").atenciones(160).nombre("Dra. Elena Ruiz").foto("https://images.unsplash.com/photo-1566497625-fc589c781c83?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V011").password("pass123").especialidad("Geriatría").atenciones(95).nombre("Dr. Roberto Morales").foto("https://images.unsplash.com/photo-1543441330-4d717f8a2306?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V012").password("pass234").especialidad("Psiquiatría").atenciones(105).nombre("Dra. Verónica Pérez").foto("https://images.unsplash.com/photo-1529665213090-9b23559a5827?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V013").password("pass345").especialidad("Cirugía General").atenciones(200).nombre("Dr. Felipe Gómez").foto("https://images.unsplash.com/photo-1542255974-e0f3d2e1f865?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V014").password("pass456").especialidad("Medicina Preventiva").atenciones(85).nombre("Dra. Patricia Fernández").foto("https://images.unsplash.com/photo-1546454364-cb1eaf27f6c5?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V015").password("pass567").especialidad("Hematología").atenciones(70).nombre("Dr. Álvaro López").foto("https://images.unsplash.com/photo-1543278583-9dc6576581cb?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V016").password("pass678").especialidad("Neumología").atenciones(60).nombre("Dra. Carmen Jiménez").foto("https://images.unsplash.com/photo-1514294236627-3bb26d50c5c7?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V017").password("pass789").especialidad("Terapia Física").atenciones(110).nombre("Dr. Nicolás Silva").foto("https://images.unsplash.com/photo-1530972758556-79d3e7d95cb1?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V018").password("pass890").especialidad("Medicina Tropical").atenciones(125).nombre("Dra. Julia Mendoza").foto("https://images.unsplash.com/photo-1589397094520-bd226a15ff7e?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V019").password("pass901").especialidad("Gastroenterología").atenciones(95).nombre("Dr. Guillermo Soto").foto("https://images.unsplash.com/photo-1554963150-d2d8810aa6a8?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V020").password("pass012").especialidad("Medicina de Urgencias").atenciones(140).nombre("Dra. Alejandra Ruiz").foto("https://images.unsplash.com/photo-1525902959531-89114f1c51e4?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V021").password("pass123").especialidad("Toxicología").atenciones(80).nombre("Dr. Ricardo Molina").foto("https://images.unsplash.com/photo-1541672284511-28a74f012b94?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V022").password("pass234").especialidad("Parasitología").atenciones(100).nombre("Dra. Gabriela González").foto("https://images.unsplash.com/photo-1542239750-57942d4e5e04?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V023").password("pass345").especialidad("Medicina de Animales Exóticos").atenciones(65).nombre("Dr. Martín Ortega").foto("https://images.unsplash.com/photo-1575579643-5656494d5875?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V024").password("pass456").especialidad("Medicina Felina").atenciones(115).nombre("Dra. Patricia Gómez").foto("https://images.unsplash.com/photo-1531512970898-7f9d5ea5b7d7?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
         veterinarioEntity= Veterinario.builder().cedula("V025").password("pass567").especialidad("Medicina Canina").atenciones(140).nombre("Dr. Hugo Martínez").foto("https://images.unsplash.com/photo-1565070851-0a8b023e9448?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
+
 
 
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -361,5 +610,23 @@ public class DatabaseInit implements ApplicationRunner {
 
         calendar.set(2024, Calendar.FEBRUARY, 25);
         tratamientoRepository.save(new Tratamiento(calendar.getTime(), 19.0f, mascotas.get(3), veterinarios.get(0), Arrays.asList(medicamentos.get(1), medicamentos.get(3))));
+    }
+
+    private UserEntity saveUserUsuario(Usuario usuario){
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(usuario.getCorreo());
+        userEntity.setPassword(passwordEncoder.encode("123"));
+        Rol rol = rolRepository.findByName("Usuario").get();
+        userEntity.setRoles(new ArrayList<>(List.of(rol)));
+        return userRepository.save(userEntity);
+    }
+
+    private UserEntity saveUserVeterinario(Veterinario veterinario){
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(veterinario.getCedula());
+        userEntity.setPassword(passwordEncoder.encode(veterinario.getPassword()));
+        Rol rol = rolRepository.findByName("Veterinario").get();
+        userEntity.setRoles(new ArrayList<>(List.of(rol)));
+        return userRepository.save(userEntity);
     }
 }

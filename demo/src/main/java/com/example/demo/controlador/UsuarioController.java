@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTOs.UsuarioDTO;
 import com.example.demo.entidades.Mascota;
 import com.example.demo.entidades.Usuario;
+import com.example.demo.DTOs.UsuarioMapper;
 
 import com.example.demo.servicio.UsuarioService;
 
@@ -29,6 +31,7 @@ public class UsuarioController {
     
     @Autowired
     UsuarioService service;
+
 
     
     
@@ -44,32 +47,23 @@ public class UsuarioController {
         return new ResponseEntity<>("login_usuario", HttpStatus.OK);
     }
 
-    @GetMapping("/login-usuario")
-    public ResponseEntity<Usuario> autenticarUsuario(@RequestParam("cedula") int cedula) {
-        boolean autenticado = service.verificarCredenciales(cedula);
-
-        if (autenticado) {
-            Usuario usuario = service.searchByCedula(cedula);
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-    }
 
     @PostMapping("/login")
-    public ResponseEntity<String> autenticarUsuario(@RequestParam("cedula") int cedula, Model model) {
+    public ResponseEntity autenticarUsuario(@RequestBody Usuario usuario) {
+        int cedula = usuario.getCedula();
         boolean autenticado = service.verificarCredenciales(cedula);
-        
+
         if (autenticado) {
-            Usuario usuario = service.searchByCedula(cedula);
+            Usuario usuarioActual = service.searchByCedula(cedula);
             if (usuario != null) {
-                return new ResponseEntity<>("datalles_usuario", HttpStatus.OK); 
+                UsuarioDTO usuarioDTO= UsuarioMapper.INSTANCE.convert(usuarioActual);
+                return new ResponseEntity<UsuarioDTO>(usuarioDTO, HttpStatus.OK); 
             }
-        } else {
-            model.addAttribute("error", "Correo o contraseña incorrectos");
         }
-        
-        return new ResponseEntity<>("login_usuario", HttpStatus.UNAUTHORIZED); 
+
+        return new ResponseEntity<>("Correo o contraseña incorrectos", HttpStatus.UNAUTHORIZED); 
     }
+
 
     @GetMapping("/all")
     public ResponseEntity<List<Usuario>> mostrarUsuarios() {
