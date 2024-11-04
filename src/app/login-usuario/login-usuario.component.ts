@@ -15,7 +15,12 @@ export class LoginUsuarioComponent {
   constructor(private usuarioService: UsuarioServicioService, private router: Router) {}
 
   login() {
-    this.usuarioService.loginUsuario(this.cedula).subscribe({
+
+    const usuario = {
+      cedula: this.cedula,
+    } as Usuario;
+
+    this.usuarioService.loginUsuario(usuario).subscribe({
       next: (usuario: Usuario) => {
         // Redirigir a la página de detalles del usuario
         this.router.navigate(['/usuario/find/', usuario.id]);

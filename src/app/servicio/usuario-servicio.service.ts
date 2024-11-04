@@ -38,9 +38,10 @@ export class UsuarioServicioService {
   findMascotasByUsuarioId(usuarioId: number): Observable<Mascota[]> {
     return this.http.get<Mascota[]>(`http://localhost:8090/usuario/${usuarioId}/mascotas`); // Ajusta la URL según tu API
   }
-  loginUsuario(cedula: number): Observable<Usuario> {
-    return this.http.get<Usuario>(`http://localhost:8090/usuario/login-usuario?cedula=${cedula}`);
-  } 
+  loginUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>(`http://localhost:8090/usuario/login`, usuario);
+  }
+
 
   buscarUsuarios(nombre: string): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(`http://localhost:8090/usuario/buscar?nombre=${nombre}`);
