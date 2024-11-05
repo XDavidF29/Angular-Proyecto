@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTOs.UsuarioDTO;
 import com.example.demo.entidades.Mascota;
+import com.example.demo.entidades.UserEntity;
 import com.example.demo.entidades.Usuario;
+import com.example.demo.repositorio.UserRepository;
+import com.example.demo.security.CustomUserDetailService;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.DTOs.UsuarioMapper;
 
 import com.example.demo.servicio.UsuarioService;
@@ -32,9 +40,19 @@ public class UsuarioController {
     @Autowired
     UsuarioService service;
 
+    @Autowired
+    UserRepository userRepository;
 
-    
-    
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JWTGenerator jwtGenerator;
+
+
 
     @GetMapping("/registro")
     public ResponseEntity<String> crearUsuario() {
@@ -50,6 +68,8 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity autenticarUsuario(@RequestBody Usuario usuario) {
+
+        /* 
         int cedula = usuario.getCedula();
         boolean autenticado = service.verificarCredenciales(cedula);
 
@@ -62,6 +82,17 @@ public class UsuarioController {
         }
 
         return new ResponseEntity<>("Correo o contraseña incorrectos", HttpStatus.UNAUTHORIZED); 
+        */
+
+
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(usuario.getCedula(), "123"));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String token = jwtGenerator.generateToken(authentication);
+
+            return new ResponseEntity<String>(token, HttpStatus.OK);
     }
 
 
@@ -78,9 +109,12 @@ public class UsuarioController {
         return new ResponseEntity<>("crear_usuario", HttpStatus.OK);
     }
 
+
     @PostMapping("/add")
     public ResponseEntity<Usuario> agregarUsuario(@RequestBody Usuario usuario) {
-        // Mensaje para verificar los datos recibidos
+
+        /* 
+        
         System.out.println("Datos recibidos: " + usuario);
 
         if (usuario.getCedula() <= 0) {
@@ -88,23 +122,40 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // Verificar si el usuario ya existe por cédula
+       
         if (service.searchByCedula(usuario.getCedula()) != null) {
             System.out.println("Error: Usuario con cédula " + usuario.getCedula() + " ya existe.");
             return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 Conflict
         }
 
-        // Verificar si el usuario ya existe por correo
+        
         if (service.findByCorreo(usuario.getCorreo()) != null) {
             System.out.println("Error: Usuario con correo " + usuario.getCorreo() + " ya existe.");
             return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 Conflict
         }
 
-        // Guardar el usuario
+        
         Usuario saved = service.add(usuario);
         System.out.println("Usuario guardado exitosamente: " + saved);
 
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        
+        */
+
+        if(userRepository.existsByUsername(usuario.getCorreo())){
+            return new ResponseEntity<Usuario>(usuario, HttpStatus.BAD_REQUEST); 
+        }
+
+        UserEntity userEntity = customUserDetailService.UserToUser(usuario);
+        usuario.setUser(userEntity);
+        Usuario newUsuario = service.add(usuario);
+
+        if(newUsuario == null){
+            return new ResponseEntity<Usuario>(newUsuario,HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Usuario>(newUsuario, HttpStatus.CREATED);
+
     }
 
 

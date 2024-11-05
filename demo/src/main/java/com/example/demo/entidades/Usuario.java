@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 public class Usuario {
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private UserEntity user;
 
     @Id

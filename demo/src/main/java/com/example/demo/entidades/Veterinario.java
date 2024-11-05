@@ -90,4 +90,5 @@ public class Veterinario {
         tratamientos.remove(tratamiento);
         tratamiento.setVeterinario(null);  // Rompe la relación bidireccional
     }
+
 }

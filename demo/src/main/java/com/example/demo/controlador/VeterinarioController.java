@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.ui.Model;
@@ -21,8 +25,13 @@ import com.example.demo.DTOs.VeterinarioDTO;
 import com.example.demo.DTOs.VeterinarioMapper;
 import com.example.demo.entidades.Mascota;
 import com.example.demo.entidades.Tratamiento;
+import com.example.demo.entidades.UserEntity;
+import com.example.demo.entidades.Usuario;
 import com.example.demo.entidades.Veterinario;
+import com.example.demo.repositorio.UserRepository;
 import com.example.demo.repositorio.VeterinarioRepository;
+import com.example.demo.security.CustomUserDetailService;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.servicio.VeterinarioService;
 
 @RestController
@@ -35,6 +44,18 @@ public class VeterinarioController {
 
     @Autowired
     VeterinarioRepository veterinarioRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JWTGenerator jwtGenerator;
 
     // Obtener todos los veterinarios
     @GetMapping("/all")
@@ -62,6 +83,8 @@ public class VeterinarioController {
     // Agregar un veterinario
     @PostMapping("/add")
     public ResponseEntity agregarVeterinario(@RequestBody Veterinario veterinario) {
+
+        /* 
         System.out.println("Iniciando el método agregarVeterinario...");
 
         if (veterinario.getCedula() == null || veterinario.getCedula().isEmpty()) {
@@ -85,6 +108,26 @@ public class VeterinarioController {
         System.out.println("Veterinario convertido a DTO: " + veterinarioDTO);
         
         return new ResponseEntity<VeterinarioDTO>(veterinarioDTO, HttpStatus.CREATED);
+
+        */
+
+        if(userRepository.existsByUsername(veterinario.getCedula())){
+            return new ResponseEntity<String>("Este usuario ya existe", HttpStatus.BAD_REQUEST); 
+        }
+
+        UserEntity userEntity = customUserDetailService.VeterinarioToUser(veterinario);
+        veterinario.setUser(userEntity);
+        Veterinario veterinarioDB = service.add(veterinario);
+        VeterinarioDTO newVeterinario = VeterinarioMapper.INSTANCE.convert(veterinarioDB);
+
+        if(newVeterinario == null){
+            return new ResponseEntity<VeterinarioDTO>(newVeterinario,HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<VeterinarioDTO>(newVeterinario, HttpStatus.CREATED);
+
+
+
     }
 
 
@@ -121,6 +164,8 @@ public class VeterinarioController {
     }
     @PostMapping("/login")
     public ResponseEntity autenticarUsuario(@RequestBody Veterinario veterinarioLogin) {
+
+        /* 
         String cedula = veterinarioLogin.getCedula();
         String contrasena = veterinarioLogin.getPassword();
 
@@ -136,10 +181,18 @@ public class VeterinarioController {
         // Convertir a DTO si se autenticó correctamente
         VeterinarioDTO veterinarioDTO = VeterinarioMapper.INSTANCE.convert(veterinario);
         return new ResponseEntity<VeterinarioDTO>(veterinarioDTO, HttpStatus.OK);
+
+        */
+
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(veterinarioLogin.getCedula(), veterinarioLogin.getPassword()));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String token = jwtGenerator.generateToken(authentication);
+
+            return new ResponseEntity<String>(token, HttpStatus.OK);
     }
-
-
-
 
     @GetMapping("/buscar")
     public List<Veterinario> buscarVeterinarios(@RequestParam("nombre") String nombre) {
