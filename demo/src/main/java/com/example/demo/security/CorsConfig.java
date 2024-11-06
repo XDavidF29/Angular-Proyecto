@@ -24,12 +24,12 @@ public class CorsConfig {
         config.setAllowedHeaders(Arrays.asList(
             HttpHeaders.AUTHORIZATION,
             HttpHeaders.CONTENT_TYPE,
-            HttpHeaders.ORIGIN
+            HttpHeaders.ACCEPT
         ));
         config.setAllowedMethods(Arrays.asList(
             HttpMethod.GET.name(),
-            HttpMethod.POST.name(),
             HttpMethod.DELETE.name(),
+            HttpMethod.POST.name(),
             HttpMethod.PUT.name()
         ));
         source.registerCorsConfiguration("/**", config);

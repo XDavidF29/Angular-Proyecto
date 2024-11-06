@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.ui.Model;
@@ -21,8 +25,13 @@ import com.example.demo.DTOs.VeterinarioDTO;
 import com.example.demo.DTOs.VeterinarioMapper;
 import com.example.demo.entidades.Mascota;
 import com.example.demo.entidades.Tratamiento;
+import com.example.demo.entidades.UserEntity;
+import com.example.demo.entidades.Usuario;
 import com.example.demo.entidades.Veterinario;
+import com.example.demo.repositorio.UserRepository;
 import com.example.demo.repositorio.VeterinarioRepository;
+import com.example.demo.security.CustomUserDetailService;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.servicio.VeterinarioService;
 
 @RestController
@@ -36,6 +45,18 @@ public class VeterinarioController {
     @Autowired
     VeterinarioRepository veterinarioRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired 
+    private CustomUserDetailService customUserDetailService;
+
+     @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JWTGenerator jwtGenerator;
+    
     // Obtener todos los veterinarios
     @GetMapping("/all")
     public List<Veterinario> mostrarVeterinarios() {
@@ -62,29 +83,22 @@ public class VeterinarioController {
     // Agregar un veterinario
     @PostMapping("/add")
     public ResponseEntity agregarVeterinario(@RequestBody Veterinario veterinario) {
-        System.out.println("Iniciando el método agregarVeterinario...");
 
-        if (veterinario.getCedula() == null || veterinario.getCedula().isEmpty()) {
-            System.out.println("Cédula no válida: " + veterinario.getCedula());
-            throw new IllegalArgumentException("Cédula no válida");
+        
+        if(userRepository.existsByUsername(String.valueOf(veterinario.getCedula()))) {
+            return new ResponseEntity<String>("Este veterinario ya existe", HttpStatus.BAD_REQUEST);
         }
 
-        if(service.searchByCedula(veterinario.getCedula()) != null) {
-            System.out.println("Cédula duplicada: " + veterinario.getCedula());
-            throw new IllegalArgumentException("Cédula duplicada");
-        }
-
-        System.out.println("Cédula válida, agregando veterinario: " + veterinario);
-        veterinario.setEstado(Veterinario.Estado.Activo);
-        Veterinario newVeterinario=service.add(veterinario);
+        UserEntity userEntity = customUserDetailService.VeterinarioToUser(veterinario);
+        veterinario.setUser(userEntity);
+        Veterinario veterinarioDB = service.add(veterinario);
+        VeterinarioDTO newVeterinario = VeterinarioMapper.INSTANCE.convert(veterinarioDB);
 
         if(newVeterinario == null) {
-            return new ResponseEntity<String>("No fue posible crear el veterinario",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<VeterinarioDTO>(HttpStatus.BAD_REQUEST);
         }
-        VeterinarioDTO veterinarioDTO = VeterinarioMapper.INSTANCE.convert(newVeterinario);
-        System.out.println("Veterinario convertido a DTO: " + veterinarioDTO);
-        
-        return new ResponseEntity<VeterinarioDTO>(veterinarioDTO, HttpStatus.CREATED);
+        return new ResponseEntity<VeterinarioDTO>(newVeterinario, HttpStatus.CREATED);
+
     }
 
 
@@ -119,23 +133,34 @@ public class VeterinarioController {
             throw new IllegalArgumentException("Veterinario no encontrado");
         }
     }
-    @PostMapping("/login")
-    public ResponseEntity autenticarUsuario(@RequestBody Veterinario veterinarioLogin) {
-        String cedula = veterinarioLogin.getCedula();
-        String contrasena = veterinarioLogin.getPassword();
 
+    @GetMapping("/details")
+    public ResponseEntity<VeterinarioDTO> buscarEstudiante() {
+
+        String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Veterinario veterinario = service.searchByCedula(cedula);
 
-        // Verificar si el veterinario existe y si las credenciales son correctas
+        VeterinarioDTO veterinarioDTO = VeterinarioMapper.INSTANCE.convert(veterinario);
+
         if (veterinario == null) {
-            return new ResponseEntity<>("Veterinario no encontrado", HttpStatus.NOT_FOUND);
-        } else if (!service.verificarCredenciales(cedula, contrasena)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<VeterinarioDTO>(HttpStatus.NOT_FOUND);
         }
 
-        // Convertir a DTO si se autenticó correctamente
-        VeterinarioDTO veterinarioDTO = VeterinarioMapper.INSTANCE.convert(veterinario);
         return new ResponseEntity<VeterinarioDTO>(veterinarioDTO, HttpStatus.OK);
+    }
+    
+
+    @PostMapping("/login")
+    public ResponseEntity autenticarUsuario(@RequestBody VeterinarioDTO veterinarioDTO) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(veterinarioDTO.getCedula(), veterinarioDTO.getClave()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtGenerator.generateToken(authentication);
+
+        return new ResponseEntity<String>(token, HttpStatus.OK); 
     }
 
 

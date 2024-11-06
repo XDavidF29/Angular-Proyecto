@@ -7,5 +7,6 @@ public class VeterinarioDTO {
     private Long id;
     private String nombre;
     private String cedula;
+    private String clave;
 }
 //veterinario -> veterinarioDTO

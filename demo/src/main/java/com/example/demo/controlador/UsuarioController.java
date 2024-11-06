@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTOs.UsuarioDTO;
 import com.example.demo.entidades.Mascota;
+import com.example.demo.entidades.UserEntity;
 import com.example.demo.entidades.Usuario;
+import com.example.demo.repositorio.UserRepository;
+import com.example.demo.security.CustomUserDetailService;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.DTOs.UsuarioMapper;
 
 import com.example.demo.servicio.UsuarioService;
@@ -32,9 +40,18 @@ public class UsuarioController {
     @Autowired
     UsuarioService service;
 
+    @Autowired
+    UserRepository userRepository;
 
-    
-    
+    @Autowired 
+    private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JWTGenerator jwtGenerator;
+
 
     @GetMapping("/registro")
     public ResponseEntity<String> crearUsuario() {
@@ -47,21 +64,31 @@ public class UsuarioController {
         return new ResponseEntity<>("login_usuario", HttpStatus.OK);
     }
 
+    @GetMapping("/details")
+    public ResponseEntity<Usuario> buscarEstudiante() {
+        Usuario usuario = service.searchByCedula(Integer.parseInt(
+                SecurityContextHolder.getContext().getAuthentication().getName()));
 
-    @PostMapping("/login")
-    public ResponseEntity autenticarUsuario(@RequestBody Usuario usuario) {
-        int cedula = usuario.getCedula();
-        boolean autenticado = service.verificarCredenciales(cedula);
-
-        if (autenticado) {
-            Usuario usuarioActual = service.searchByCedula(cedula);
-            if (usuario != null) {
-                UsuarioDTO usuarioDTO= UsuarioMapper.INSTANCE.convert(usuarioActual);
-                return new ResponseEntity<UsuarioDTO>(usuarioDTO, HttpStatus.OK); 
-            }
+        if (usuario == null) {
+            return new ResponseEntity<Usuario>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>("Correo o contraseña incorrectos", HttpStatus.UNAUTHORIZED); 
+        return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity loginUsuario(@RequestBody Usuario usuarioDTO) {
+
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(usuarioDTO.getCedula(), "123"));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String token = jwtGenerator.generateToken(authentication);
+
+            return new ResponseEntity<String>(token, HttpStatus.OK);
+                        
     }
 
 
@@ -79,32 +106,22 @@ public class UsuarioController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Usuario> agregarUsuario(@RequestBody Usuario usuario) {
-        // Mensaje para verificar los datos recibidos
-        System.out.println("Datos recibidos: " + usuario);
+    public ResponseEntity agregarUsuario(@RequestBody Usuario usuario) {
+        
 
-        if (usuario.getCedula() <= 0) {
-            System.out.println("Error: Cédula no válida.");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(userRepository.existsByUsername(String.valueOf(usuario.getCedula()))) {
+            return new ResponseEntity<String>("Este usuario ya existe",HttpStatus.CONFLICT);
         }
 
-        // Verificar si el usuario ya existe por cédula
-        if (service.searchByCedula(usuario.getCedula()) != null) {
-            System.out.println("Error: Usuario con cédula " + usuario.getCedula() + " ya existe.");
-            return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 Conflict
+        UserEntity userEntity = customUserDetailService.UserToUser(usuario);
+        usuario.setUser(userEntity);
+        Usuario newUsuario = service.add(usuario);
+
+        if(newUsuario == null) {
+            return new ResponseEntity<Usuario>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        // Verificar si el usuario ya existe por correo
-        if (service.findByCorreo(usuario.getCorreo()) != null) {
-            System.out.println("Error: Usuario con correo " + usuario.getCorreo() + " ya existe.");
-            return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 Conflict
-        }
-
-        // Guardar el usuario
-        Usuario saved = service.add(usuario);
-        System.out.println("Usuario guardado exitosamente: " + saved);
-
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        return new ResponseEntity<Usuario>(newUsuario, HttpStatus.CREATED);
     }
 
 

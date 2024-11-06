@@ -1,17 +1,24 @@
 package com.example.demo.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private JwtAuthEntryPoint jwtAuthEntryPoint;
     
     @Bean 
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -24,9 +31,21 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(requests -> requests
             .requestMatchers("h2/**").permitAll()
-            .requestMatchers("/veterinario/**").authenticated()
-                .anyRequest().permitAll()
-                );
+            .requestMatchers("/usuario/login").permitAll()
+            .requestMatchers("/veterinario/login").permitAll()
+            //.requestMatchers("veterinario/details").hasAuthority("Veterinario")
+            //.requestMatchers("usuario/details").hasAuthority("Usuario")
+            //.requestMatchers("/usuario/all").hasAuthority("Veterinario")
+            //requestMatchers("/veterinario/**").authenticated()
+            //.requestMatchers("/cliente/add").hasAuthority("Veterinario")
+            //.requestMatchers("/cliente/update").hasAuthority("Veterinario")
+            //.requestMatchers("/cliente/delete").hasAuthority("Veterinario")
+            //.requestMatchers("/veterinario/all").hasAuthority("Admin")
+            .anyRequest().permitAll())
+
+        .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint));
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -34,4 +53,18 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authenticationConfiguration
+    )throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+        return new JWTAuthenticationFilter();
+    }
+
 }
