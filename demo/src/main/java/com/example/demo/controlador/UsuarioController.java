@@ -53,6 +53,7 @@ public class UsuarioController {
     JWTGenerator jwtGenerator;
 
 
+
     @GetMapping("/registro")
     public ResponseEntity<String> crearUsuario() {
         return new ResponseEntity<>("crear_usuario", HttpStatus.OK);

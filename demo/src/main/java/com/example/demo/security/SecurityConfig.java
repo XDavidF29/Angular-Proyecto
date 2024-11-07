@@ -33,6 +33,7 @@ public class SecurityConfig {
             .requestMatchers("h2/**").permitAll()
             .requestMatchers("/usuario/login").permitAll()
             .requestMatchers("/veterinario/login").permitAll()
+            .requestMatchers("/veterinario/add").permitAll()
             .requestMatchers("veterinario/details").hasAuthority("Veterinario")
             .requestMatchers("usuario/details").hasAuthority("Usuario")
             .requestMatchers("/usuario/all").hasAuthority("Veterinario")

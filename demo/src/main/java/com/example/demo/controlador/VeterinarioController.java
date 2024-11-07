@@ -35,7 +35,7 @@ import com.example.demo.security.JWTGenerator;
 
 @RestController
 @RequestMapping("/veterinario")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class VeterinarioController {
 
     @Autowired
