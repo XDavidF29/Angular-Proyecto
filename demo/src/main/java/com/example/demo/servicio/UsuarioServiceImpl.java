@@ -36,42 +36,20 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario update(Usuario usuario) {
         // Buscar el usuario actual en la base de datos
         Usuario usuarioExistente = repo.findById(usuario.getId()).orElse(null);
-
+    
         if (usuarioExistente != null) {
             // Actualizar los detalles del usuario
             usuarioExistente.setNombre(usuario.getNombre());
             usuarioExistente.setCorreo(usuario.getCorreo());
             usuarioExistente.setCelular(usuario.getCelular());
             usuarioExistente.setCedula(usuario.getCedula());
-
-            // Actualizar las mascotas
-            for (Mascota mascotaActualizada : usuario.getMascotas()) {
-                // Verificar si la mascota ya existe o es nueva
-                if (mascotaActualizada.getId() == null) {
-                    // Si no tiene ID, es una nueva mascota, se asigna el usuario existente
-                    mascotaActualizada.setUsuario(usuarioExistente);
-                    usuarioExistente.getMascotas().add(mascotaActualizada);
-                } else {
-                    // Si tiene ID, actualizar los detalles de la mascota existente
-                    for (Mascota mascotaExistente : usuarioExistente.getMascotas()) {
-                        if (mascotaExistente.getId().equals(mascotaActualizada.getId())) {
-                            mascotaExistente.setNombre(mascotaActualizada.getNombre());
-                            mascotaExistente.setRaza(mascotaActualizada.getRaza());
-                            mascotaExistente.setEdad(mascotaActualizada.getEdad());
-                            mascotaExistente.setPeso(mascotaActualizada.getPeso());
-                            mascotaExistente.setEnfermedad(mascotaActualizada.getEnfermedad());
-                            mascotaExistente.setEstado(mascotaActualizada.getEstado());
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // Guardar el usuario con las mascotas actualizadas
+    
+            // Guardar el usuario actualizado (sin tocar las mascotas)
             repo.save(usuarioExistente);
         }
         return usuarioExistente;
     }
+    
 
     @Override
     public Usuario add(Usuario usuario) {

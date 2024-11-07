@@ -31,7 +31,7 @@ public class Usuario {
 
     private String nombre;
     private String correo;
-    private int celular;
+    private long celular;
     private int cedula;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,7 +40,7 @@ public class Usuario {
 
 
     // Constructor con todos los campos
-    public Usuario(Integer id, String nombre, String correo, int celular, int cedula, List<Mascota> mascotas) {
+    public Usuario(Integer id, String nombre, String correo, long celular, int cedula, List<Mascota> mascotas) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
