@@ -20,6 +20,7 @@ export class DetallesUsuarioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    /*
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       const id = Number(idParam);
@@ -50,5 +51,11 @@ export class DetallesUsuarioComponent implements OnInit {
     } else {
       this.errorMessage = 'No se encontró el ID del usuario en la URL';
     }
+    */
+   this.usuarioService.usuarioHome().subscribe(
+    (data)=>{
+      this.usuario = data;
+    }
+  )
   }
 }

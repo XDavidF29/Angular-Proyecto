@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Mascota } from '../models/Mascota';
 import { Usuario } from '../models/Usuario'; // Asegúrate de ajustar la ruta según tu estructura de proyecto
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -38,12 +39,19 @@ export class UsuarioServicioService {
   findMascotasByUsuarioId(usuarioId: number): Observable<Mascota[]> {
     return this.http.get<Mascota[]>(`http://localhost:8090/usuario/${usuarioId}/mascotas`); // Ajusta la URL según tu API
   }
-  loginUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(`http://localhost:8090/usuario/login`, usuario);
+  
+  loginUsuario(user: User): Observable<String> {
+    return this.http.post(`http://localhost:8090/usuario/login`, user,{
+      responseType: 'text' 
+    });
   }
 
 
   buscarUsuarios(nombre: string): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(`http://localhost:8090/usuario/buscar?nombre=${nombre}`);
+  }
+
+  usuarioHome():Observable<Usuario>{
+    return this.http.get<Usuario>(`http://localhost:8090/usuario/details`);
   }
 }

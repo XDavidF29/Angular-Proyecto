@@ -16,11 +16,11 @@
             <p class="tblanco">Por favor ingrese su cédula para continuar</p>
 
             <!-- Formulario Angular -->
-            <form #formLogin="ngForm" (ngSubmit)="login()">
+            <form #formLogin="ngForm" (ngSubmit)="login(formLogin)">
                 
                 <div class="form-group">
                     <label for="cedula" class="form-label">Cédula</label>
-                    <input type="text" id="cedula" class="form-control" placeholder="Ingrese su cédula" name="cedula" [(ngModel)]="cedula" required>
+                    <input type="text" id="cedula" class="form-control" placeholder="Ingrese su cédula" name="cedula" [(ngModel)]="formUser.cedula" required>
                 </div>
 
                 <div *ngIf="error" class="alert alert-danger text-center">

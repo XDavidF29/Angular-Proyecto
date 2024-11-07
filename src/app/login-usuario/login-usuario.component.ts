@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router'; // Para redirigir
 import { Usuario } from '../models/Usuario';
 import { UsuarioServicioService } from '../servicio/usuario-servicio.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-login-usuario',
@@ -9,25 +10,25 @@ import { UsuarioServicioService } from '../servicio/usuario-servicio.service';
   styleUrls: ['./login-usuario.component.css']
 })
 export class LoginUsuarioComponent {
-  cedula: number = 0;
+  constructor(private usuarioService: UsuarioServicioService, private router: Router) {}
   error: string = '';
 
-  constructor(private usuarioService: UsuarioServicioService, private router: Router) {}
+  formUser:User = {
+    cedula: '',
+    password: ''
+  };
 
-  login() {
 
-    const usuario = {
-      cedula: this.cedula,
-    } as Usuario;
+  login(form:any) {
 
-    this.usuarioService.loginUsuario(usuario).subscribe({
-      next: (usuario: Usuario) => {
+    this.usuarioService.loginUsuario(this.formUser).subscribe({
+      next: (data) => {
         // Redirigir a la página de detalles del usuario
-        this.router.navigate(['/usuario/find/', usuario.id]);
+        localStorage.setItem('token', String(data));
+        this.router.navigate(['/usuario/home']);
       },
       error: (err) => {
         this.error = 'Cédula incorrecta o usuario no encontrado';
-        this.cedula = 0;
       }
     });
   }

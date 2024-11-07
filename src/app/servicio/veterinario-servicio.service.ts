@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Mascota } from '../models/Mascota';
 import { Tratamiento} from  '../models/Tratamiento';
 import { Veterinario } from '../models/Veterinario'; // Asegúrate de ajustar la ruta según tu estructura de proyecto
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -46,12 +47,19 @@ export class VeterinarioServicioService {
   }
 
   // Accede a la información del veterinario en el login
-  loginVeterinario(veterinario:Veterinario): Observable<Veterinario> {
-    return this.http.post<Veterinario>(`http://localhost:8090/veterinario/login`, veterinario);
+  loginVeterinario(user: User): Observable<String> {
+    return this.http.post(`http://localhost:8090/veterinario/login`, user,
+      {
+      responseType: 'text' 
+    });
   }
 
 
   buscarVeterinarios(nombre: string): Observable<Veterinario[]> {
     return this.http.get<Veterinario[]>(`http://localhost:8090/veterinario/buscar?nombre=${nombre}`);
+  }
+
+  veterinarioHome():Observable<Veterinario>{
+    return this.http.get<Veterinario>(`http://localhost:8090/vVeterinario/details`);
   }
 }

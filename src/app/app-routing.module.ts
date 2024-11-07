@@ -36,6 +36,8 @@ const routes: Routes = [
   { path: 'usuario/add', component: CrearUsuarioComponent },
   { path: 'usuario/find/:id', component: DetallesUsuarioComponent },
   { path: 'mascota/find/:id', component: DetallesMascotaComponent },
+  { path: 'usuario/home', component: DetallesUsuarioComponent },
+  { path: 'veterinario/home', component: DetallesVeterinarioComponent },
   { path: 'error', component: ErrorComponent },
   { path: 'veterinario/find/:id', component: DetallesVeterinarioComponent },
   { path: 'veterinario/add', component: CrearVeterinarioComponent },

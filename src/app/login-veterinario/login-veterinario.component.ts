@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router'; // Para redirigir
 import { Veterinario } from '../models/Veterinario'; // Asegúrate de que la ruta sea correcta
 import { VeterinarioServicioService } from '../servicio/veterinario-servicio.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-login-veterinario',
@@ -9,29 +10,27 @@ import { VeterinarioServicioService } from '../servicio/veterinario-servicio.ser
   styleUrls: ['./login-veterinario.component.css']
 })
 export class LoginVeterinarioComponent {
+  constructor(private veterinarioService: VeterinarioServicioService, private router: Router) {}
   cedula: string = '';  // Cambiado a string para coincidir con el tipo esperado
   contrasena: string = '';
   error: string = '';
 
-  constructor(private veterinarioService: VeterinarioServicioService, private router: Router) {}
+  formUser:User = {
+    cedula: '',
+    password: ''
+  };
+
 
   login() {
-    // Crear el objeto veterinario con la cédula y la contraseña
-    const veterinario = {
-      cedula: this.cedula,
-      password: this.contrasena
-    } as Veterinario;
 
-    
-    this.veterinarioService.loginVeterinario(veterinario).subscribe({
-      next: (veterinario: Veterinario) => {
+    this.veterinarioService.loginVeterinario(this.formUser).subscribe({
+      next: (data) => {
         // Redirigir a la página de detalles del usuario
-        this.router.navigate(['/veterinario/find/', veterinario.id]);
+        localStorage.setItem('token', String(data));
+        this.router.navigate(['/usuario/home']);
       },
       error: (err) => {
-        this.error = 'Cédula o contraseña incorrecta';
-        this.cedula = '';
-        this.contrasena = '';
+        this.error = 'Cédula incorrecta o usuario no encontrado';
       }
     });
   }

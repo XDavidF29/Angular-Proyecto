@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AppComponent } from './app.component';
@@ -31,6 +31,7 @@ import { CrearVeterinarioComponent } from './crear-veterinario/crear-veterinario
 import { ModificarVeterinarioComponent } from './modificar-veterinario/modificar-veterinario.component';
 import { LoginVeterinarioComponent } from './login-veterinario/login-veterinario.component';
 import { AsignarTratamientoComponent } from './asignar-tratamiento/asignar-tratamiento.component';
+import { AuthInterceptor } from './helpers/auth.interceptor';
 
 
 @NgModule({
@@ -69,7 +70,9 @@ import { AsignarTratamientoComponent } from './asignar-tratamiento/asignar-trata
     FormsModule,
     HttpClientModule
 ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
