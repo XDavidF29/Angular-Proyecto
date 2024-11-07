@@ -22,16 +22,19 @@ export class LoginVeterinarioComponent {
 
 
   login() {
-
+    console.log('Datos enviados al servicio:', this.formUser); // Depuración
     this.veterinarioService.loginVeterinario(this.formUser).subscribe({
       next: (data) => {
-        // Redirigir a la página de detalles del usuario
+        console.log('Respuesta recibida del servicio:', data); // Depuración
+        
         localStorage.setItem('token', String(data));
-        this.router.navigate(['/usuario/home']);
+        this.router.navigate(['/veterinario/home']);
       },
       error: (err) => {
+        console.error('Error en la autenticación:', err); // Depuración
         this.error = 'Cédula incorrecta o usuario no encontrado';
       }
     });
   }
+  
 }

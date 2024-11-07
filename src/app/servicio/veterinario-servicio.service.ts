@@ -47,19 +47,23 @@ export class VeterinarioServicioService {
   }
 
   // Accede a la información del veterinario en el login
-  loginVeterinario(user: User): Observable<String> {
-    return this.http.post(`http://localhost:8090/veterinario/login`, user,
-      {
-      responseType: 'text' 
+  loginVeterinario(user: User): Observable<string> {
+    console.log('Datos enviados al backend:', user); // Log de depuración
+    return this.http.post(`http://localhost:8090/veterinario/login`, user, {
+      responseType: 'text'
     });
   }
+
+  
 
 
   buscarVeterinarios(nombre: string): Observable<Veterinario[]> {
     return this.http.get<Veterinario[]>(`http://localhost:8090/veterinario/buscar?nombre=${nombre}`);
   }
 
-  veterinarioHome():Observable<Veterinario>{
-    return this.http.get<Veterinario>(`http://localhost:8090/vVeterinario/details`);
+  veterinarioHome(): Observable<Veterinario> {
+    console.log('Enviando solicitud GET al backend...'); // Depuración
+    return this.http.get<Veterinario>(`http://localhost:8090/veterinario/details`);
   }
+  
 }

@@ -20,35 +20,45 @@ export class DetallesVeterinarioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      const id = Number(idParam);
-      if (!isNaN(id)) {
-        this.veterinarioService.findById(id).subscribe(
-          (data: Veterinario) => {
-            this.veterinario = data;
-            // Cargar los tratamientos del veterinario
-            this.veterinarioService.findTratamientosByVeterinarioId(this.veterinario.id).subscribe(
-              (tratamientos: Tratamiento[]) => {
-                this.tratamientos = tratamientos; // Asigna los tratamientos cargados
-                console.log(this.tratamientos); // Verifica los tratamientos
-              },
-              (error: any) => {
-                console.error('Error al obtener los tratamientos del veterinario:', error);
-                this.errorMessage = 'Error al obtener los tratamientos del veterinario';
-              }
-            );
-          },
-          (error) => {
-            console.error('Error al obtener los detalles del veterinario:', error);
-            this.errorMessage = 'Error al obtener los detalles del veterinario';
-          }
-        );
-      } else {
-        this.errorMessage = 'ID de veterinario no válido';
-      }
-    } else {
-      this.errorMessage = 'No se encontró el ID del veterinario en la URL';
+  //   const idParam = this.route.snapshot.paramMap.get('id');
+  //   if (idParam) {
+  //     const id = Number(idParam);
+  //     if (!isNaN(id)) {
+  //       this.veterinarioService.findById(id).subscribe(
+  //         (data: Veterinario) => {
+  //           this.veterinario = data;
+  //           // Cargar los tratamientos del veterinario
+  //           this.veterinarioService.findTratamientosByVeterinarioId(this.veterinario.id).subscribe(
+  //             (tratamientos: Tratamiento[]) => {
+  //               this.tratamientos = tratamientos; // Asigna los tratamientos cargados
+  //               console.log(this.tratamientos); // Verifica los tratamientos
+  //             },
+  //             (error: any) => {
+  //               console.error('Error al obtener los tratamientos del veterinario:', error);
+  //               this.errorMessage = 'Error al obtener los tratamientos del veterinario';
+  //             }
+  //           );
+  //         },
+  //         (error) => {
+  //           console.error('Error al obtener los detalles del veterinario:', error);
+  //           this.errorMessage = 'Error al obtener los detalles del veterinario';
+  //         }
+  //       );
+  //     } else {
+  //       this.errorMessage = 'ID de veterinario no válido';
+  //     }
+  //   } else {
+  //     this.errorMessage = 'No se encontró el ID del veterinario en la URL';
+  //   }
+  this.veterinarioService.veterinarioHome().subscribe({
+    next: (data) => {
+      console.log('Datos recibidos:', data); // Depuración
+      this.veterinario = data;
+    },
+    error: (err) => {
+      console.error('Error al obtener los detalles del veterinario:', err); // Depuración
     }
+  });
+  
   }
 }
