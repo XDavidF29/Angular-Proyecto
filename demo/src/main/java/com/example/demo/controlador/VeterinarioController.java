@@ -95,12 +95,12 @@ public class VeterinarioController {
 
         UserEntity userEntity = customUserDetailService.VeterinarioToUser(veterinario);
         veterinario.setUser(userEntity);
+        veterinario.setEstado(Veterinario.Estado.Activo);
         Veterinario veterinarioDB = service.add(veterinario);
         VeterinarioDTO newVeterinario = VeterinarioMapper.INSTANCE.convert(veterinarioDB);
 
-        if(newVeterinario == null) {
-            return new ResponseEntity<VeterinarioDTO>(HttpStatus.BAD_REQUEST);
-        }
+        veterinarioDB=veterinarioRepository.findByCedula(veterinario.getCedula());
+        newVeterinario.setId(veterinarioDB.getId());
         return new ResponseEntity<VeterinarioDTO>(newVeterinario, HttpStatus.CREATED);
     }
 

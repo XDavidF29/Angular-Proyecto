@@ -45,6 +45,7 @@ public class SecurityConfig {
             .requestMatchers("/veterinario/update").hasAuthority("Admin")
             .requestMatchers("/veterinario/delete").hasAuthority("Admin")
             .requestMatchers("/usuario/all").hasAuthority("Admin")
+            .requestMatchers("/mascota/**").hasAnyAuthority("Veterinario","Admin")
 
             .anyRequest().permitAll()
             )

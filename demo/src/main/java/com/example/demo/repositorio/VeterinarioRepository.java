@@ -19,4 +19,6 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long>{
     @Query("SELECT m FROM Veterinario m WHERE LOWER(m.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     List<Veterinario> buscarPorNombre(String nombre);
 
+    
+
 }
