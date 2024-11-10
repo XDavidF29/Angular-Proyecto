@@ -166,7 +166,7 @@ public class VeterinarioController {
 
 
     @GetMapping("/details")
-    public ResponseEntity<VeterinarioDTO> buscarEstudiante() {
+    public ResponseEntity buscarEstudiante() {
 
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Veterinario veterinario = service.searchByCedula(cedula);
@@ -177,7 +177,7 @@ public class VeterinarioController {
             return new ResponseEntity<VeterinarioDTO>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<VeterinarioDTO>(veterinarioDTO, HttpStatus.OK);
+        return new ResponseEntity<Veterinario>(veterinario, HttpStatus.OK);
     }
 
     @GetMapping("/buscar")

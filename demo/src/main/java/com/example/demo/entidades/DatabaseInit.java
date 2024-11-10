@@ -69,9 +69,17 @@ public class DatabaseInit implements ApplicationRunner {
 
         rolRepository.save(new Rol("Veterinario"));
         rolRepository.save(new Rol("Usuario"));
+        rolRepository.save(new Rol("Admin"));
+
 
         Usuario userSave;
         UserEntity userEntity;
+        UserEntity admin=new UserEntity();
+
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("pass123*"));
+        admin.setRoles(new ArrayList<Rol>(Arrays.asList(rolRepository.findByName("Admin").get())));
+        userRepository.save(admin);
 
 
         // Guardar 50 usuarios
@@ -380,46 +388,42 @@ public class DatabaseInit implements ApplicationRunner {
         mascotaRepository.save(new Mascota("sasha", "grande", 3, 59.0f, "https://plus.unsplash.com/premium_photo-1667030783942-05351fd6c3fc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fGRvZ3xlbnwwfHwwfHx8MA%3D%3D", "ninguna", Estado.Activo));
 
 
-        Veterinario veterinarioEntity = Veterinario.builder().cedula("V024").password("pass456").especialidad("Medicina Felina").atenciones(115).nombre("Dra. Patricia Gómez").foto("https://www.shutterstock.com/image-photo/veterinarian-cute-dog-on-white-260nw-1538054498.jpg").estado(Veterinario.Estado.Activo).build();
+        
+        Veterinario veterinarioEntity= Veterinario.builder().cedula("V001").password("pass123").especialidad("Cardiología").atenciones(100).nombre("Dr. Juan Pérez").foto("https://img.freepik.com/foto-gratis/apuesto-joven-medico-clinica-veterinaria-apuntando-dedo-arriba-sonriendo-impresionado-pie-cerca-lindo-perro-pug-negro-fondo-blanco_1258-75927.jpg").estado(Veterinario.Estado.Activo).build();
         userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
-        veterinarioEntity= Veterinario.builder().cedula("V001").password("pass123").especialidad("Cardiología").atenciones(100).nombre("Dr. Juan Pérez").foto("https://images.unsplash.com/photo-1532615863397-4a6b7ad973d1?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
-        userEntity=saveUserVeterinario(veterinarioEntity);
-        veterinarioEntity.setUser(userEntity);
-        veterinarioRepository.save(veterinarioEntity);
-
-        veterinarioEntity= Veterinario.builder().cedula("V002").password("pass234").especialidad("Dermatología").atenciones(120).nombre("Dra. Ana López").foto("https://images.unsplash.com/photo-1513244904703-e01f705cce44?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+        
+        veterinarioEntity= Veterinario.builder().cedula("V002").password("pass234").especialidad("Dermatología").atenciones(120).nombre("Dra. Ana López").foto("https://st.depositphotos.com/1258191/3258/i/450/depositphotos_32580957-stock-photo-healthy-cat.jpg").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
-        veterinarioEntity.setUser(userEntity);
-        veterinarioRepository.save(veterinarioEntity);
+         veterinarioEntity.setUser(userEntity);
+         veterinarioRepository.save(veterinarioEntity);
 
-        veterinarioEntity= Veterinario.builder().cedula("V003").password("pass345").especialidad("Odontología").atenciones(150).nombre("Dr. Carlos Gómez").foto("https://images.unsplash.com/photo-1517351683210-3d58f3e2a2e1?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         veterinarioEntity= Veterinario.builder().cedula("V003").password("pass345").especialidad("Odontología").atenciones(150).nombre("Dr. Carlos Gómez").foto("https://images.unsplash.com/photo-1517351683210-3d58f3e2a2e1?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
-        veterinarioEntity.setUser(userEntity);
+         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V004").password("pass456").especialidad("Oncología").atenciones(80).nombre("Dra. Laura Fernández").foto("https://images.unsplash.com/photo-1542902322-28ae53d46f96?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V005").password("pass567").especialidad("Neurología").atenciones(90).nombre("Dr. Jorge Ramírez").foto("https://images.unsplash.com/photo-1509092276505-431b39b9b5cb?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V006").password("pass678").especialidad("Ortopedia").atenciones(110).nombre("Dra. María Torres").foto("https://images.unsplash.com/photo-1519133456630-d95ecedc58b0?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
-        veterinarioEntity.setUser(userEntity);
-        veterinarioRepository.save(veterinarioEntity);
-
-        veterinarioEntity= Veterinario.builder().cedula("V007").password("pass789").especialidad("Reproducción").atenciones(130).nombre("Dr. Luis Martínez").foto("https://images.unsplash.com/photo-1555685818-5f3c5a18c637?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         veterinarioEntity.setUser(userEntity);
+         veterinarioRepository.save(veterinarioEntity);
+         
+         veterinarioEntity= Veterinario.builder().cedula("V007").password("pass789").especialidad("Reproducción").atenciones(130).nombre("Dr. Luis Martínez").foto("https://images.unsplash.com/photo-1555685818-5f3c5a18c637?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
-        veterinarioEntity.setUser(userEntity);
-        veterinarioRepository.save(veterinarioEntity);
-
+         veterinarioEntity.setUser(userEntity);
+         veterinarioRepository.save(veterinarioEntity);
+         
         veterinarioEntity= Veterinario.builder().cedula("V008").password("pass890").especialidad("Medicina Interna").atenciones(140).nombre("Dra. Isabel García").foto("https://images.unsplash.com/photo-1606765086304-f69c4a774062?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
@@ -437,41 +441,41 @@ public class DatabaseInit implements ApplicationRunner {
 
         veterinarioEntity= Veterinario.builder().cedula("V011").password("pass123").especialidad("Geriatría").atenciones(95).nombre("Dr. Roberto Morales").foto("https://images.unsplash.com/photo-1543441330-4d717f8a2306?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
-        veterinarioEntity.setUser(userEntity);
-        veterinarioRepository.save(veterinarioEntity);
-
-        veterinarioEntity= Veterinario.builder().cedula("V012").password("pass234").especialidad("Psiquiatría").atenciones(105).nombre("Dra. Verónica Pérez").foto("https://images.unsplash.com/photo-1529665213090-9b23559a5827?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
+         veterinarioEntity.setUser(userEntity);
+         veterinarioRepository.save(veterinarioEntity);
+         
+         veterinarioEntity= Veterinario.builder().cedula("V012").password("pass234").especialidad("Psiquiatría").atenciones(105).nombre("Dra. Verónica Pérez").foto("https://images.unsplash.com/photo-1529665213090-9b23559a5827?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
-        veterinarioEntity.setUser(userEntity);
+         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V013").password("pass345").especialidad("Cirugía General").atenciones(200).nombre("Dr. Felipe Gómez").foto("https://images.unsplash.com/photo-1542255974-e0f3d2e1f865?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V014").password("pass456").especialidad("Medicina Preventiva").atenciones(85).nombre("Dra. Patricia Fernández").foto("https://images.unsplash.com/photo-1546454364-cb1eaf27f6c5?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
-         userEntity=saveUserVeterinario(veterinarioEntity);
+        userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V015").password("pass567").especialidad("Hematología").atenciones(70).nombre("Dr. Álvaro López").foto("https://images.unsplash.com/photo-1543278583-9dc6576581cb?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
-         userEntity=saveUserVeterinario(veterinarioEntity);
+        userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V016").password("pass678").especialidad("Neumología").atenciones(60).nombre("Dra. Carmen Jiménez").foto("https://images.unsplash.com/photo-1514294236627-3bb26d50c5c7?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
          userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
 
         veterinarioEntity= Veterinario.builder().cedula("V017").password("pass789").especialidad("Terapia Física").atenciones(110).nombre("Dr. Nicolás Silva").foto("https://images.unsplash.com/photo-1530972758556-79d3e7d95cb1?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
-         userEntity=saveUserVeterinario(veterinarioEntity);
+        userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
         veterinarioEntity= Veterinario.builder().cedula("V018").password("pass890").especialidad("Medicina Tropical").atenciones(125).nombre("Dra. Julia Mendoza").foto("https://images.unsplash.com/photo-1589397094520-bd226a15ff7e?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
-         userEntity=saveUserVeterinario(veterinarioEntity);
+        userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
 
@@ -506,10 +510,14 @@ public class DatabaseInit implements ApplicationRunner {
         veterinarioRepository.save(veterinarioEntity);
 
         veterinarioEntity= Veterinario.builder().cedula("V025").password("pass567").especialidad("Medicina Canina").atenciones(140).nombre("Dr. Hugo Martínez").foto("https://images.unsplash.com/photo-1565070851-0a8b023e9448?w=500&auto=format&fit=crop&q=60").estado(Veterinario.Estado.Activo).build();
-         userEntity=saveUserVeterinario(veterinarioEntity);
+        userEntity=saveUserVeterinario(veterinarioEntity);
         veterinarioEntity.setUser(userEntity);
         veterinarioRepository.save(veterinarioEntity);
-
+        
+        veterinarioEntity = Veterinario.builder().cedula("V024").password("pass456").especialidad("Medicina Felina").atenciones(115).nombre("Dra. Patricia Gómez").foto("https://www.shutterstock.com/image-photo/veterinarian-cute-dog-on-white-260nw-1538054498.jpg").estado(Veterinario.Estado.Activo).build();
+        userEntity=saveUserVeterinario(veterinarioEntity);
+        veterinarioEntity.setUser(userEntity);
+        veterinarioRepository.save(veterinarioEntity);
 
 
         List<Usuario> usuarios = usuarioRepository.findAll();
