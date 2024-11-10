@@ -18,4 +18,5 @@ describe('InstalacionesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });
