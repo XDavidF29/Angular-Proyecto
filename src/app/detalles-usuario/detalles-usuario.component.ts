@@ -21,10 +21,11 @@ export class DetallesUsuarioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const rolActual = this.obtenerRolUsuario();
-    console.log('Rol actual:', rolActual);
+    this.rolActual = this.obtenerRolUsuario();
+    console.log('Rol actual:', this.rolActual);
+    
 
-    if (rolActual === 'Usuario') {
+    if (this.rolActual === 'Usuario') {
       // Si el rol es 'usuario', utilizar el método usuarioHome()
       this.usuarioService.usuarioHome().subscribe({
         next: (data) => {

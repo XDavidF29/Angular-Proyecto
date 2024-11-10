@@ -20,7 +20,9 @@
             </ul>
         </div>
         <br>
-        <a [routerLink]="['/mascota/add', usuario?.cedula]" class="btn btn-success mt-3 mb-3" id="agregarMascota">Agregar Mascota <i class="bi bi-plus-lg"></i></a>
+        <a [routerLink]="['/mascota/add', usuario?.cedula]" *ngIf="rolActual !== 'Usuario'" class="btn btn-success mt-3 mb-3" id="agregarMascota">
+            Agregar Mascota <i class="bi bi-plus-lg"></i>
+        </a>
         <h2>Mascotas</h2>
         <div *ngIf="mascotas.length > 0; else noMascotas">
             <table class="table table-striped margin-top-50">
