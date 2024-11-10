@@ -1,13 +1,43 @@
 .dashboard-container {
   padding: 20px;
-  background-color: #EEEEEE;
+  background-color: #f5f8fa;
 }
 
 .dashboard-container h2 {
   text-align: center;
   font-size: 32px;
-  color: #134B70;
+  color: #134b70;
   margin-bottom: 30px;
+}
+
+.management-section {
+  background-color: white;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.management-section h3 {
+  font-size: 24px;
+  color: #134b70;
+  border-bottom: 2px solid #134b70;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.management-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.management-buttons .btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .dashboard-section {
@@ -20,8 +50,8 @@
 
 .dashboard-section h3 {
   font-size: 24px;
-  color: #134B70;
-  border-bottom: 2px solid #134B70;
+  color: #134b70;
+  border-bottom: 2px solid #134b70;
   padding-bottom: 10px;
   margin-bottom: 15px;
 }
@@ -47,7 +77,7 @@
 
 .stats-card h4 {
   font-size: 18px;
-  color: #134B70;
+  color: #134b70;
   margin-bottom: 10px;
 }
 
@@ -64,7 +94,7 @@
 
 #ganancias-totales p {
   font-size: 22px;
-  color: #134B70;
+  color: #134b70;
   font-weight: bold;
   margin-top: 10px;
 }

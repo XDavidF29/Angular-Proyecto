@@ -1,9 +1,23 @@
-
 <div class="contenido p-20">
-  <div class="dashboard-container container ">
-    
+  <div class="dashboard-container container">
     <h2>Dashboard Administrativo</h2>
-    
+
+    <!-- Sección: Gestión -->
+    <div class="management-section">
+      <h3>Gestión</h3>
+      <div class="management-buttons">
+        <a [routerLink]="['/usuario/all']" class="btn btn-primary">
+          Todos los Usuarios <i class="bi bi-person-plus-fill"></i>
+        </a>
+        <a [routerLink]="['/veterinario/all']" class="btn btn-success">
+          Todos los Veterinarios <i class="bi bi-plus-lg"></i>
+        </a>
+        <a [routerLink]="['/mascota/all']" class="btn btn-danger">
+          Todas las Mascotas <i class="bi bi-house-fill"></i>
+        </a>
+      </div>
+    </div>
+
     <!-- Sección: Atenciones por Veterinario -->
     <div class="dashboard-section">
       <h3>Atenciones por Veterinario</h3>
@@ -14,7 +28,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Sección: Estadísticas de Mascotas -->
     <div class="dashboard-section">
       <h3>Estadísticas de Mascotas</h3>
@@ -25,7 +39,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Sección: Crecimiento de Usuarios -->
     <div class="dashboard-section">
       <h3>Crecimiento de Usuarios</h3>
@@ -36,41 +50,16 @@
         </div>
       </div>
     </div>
-    
-    <div class="dashboard-section" id ="ganancias-totales">
+
+    <!-- Otras secciones de tu dashboard -->
+    <div class="dashboard-section" id="ganancias-totales">
       <h3>Ganancias Totales</h3>
       <p>Ganancias: {{ gananciasTotales | currency }}</p>
     </div>
-    
+
     <div class="dashboard-section">
       <h3>Mascotas</h3>
       <p>Total de mascotas: {{ mascotasTotales }}</p>
     </div>
-    
-    <div class="dashboard-section">
-      <!-- <h3>Top 3 Tratamientos</h3>
-      <ul>
-        <li *ngFor="let tratamiento of top3Tratamientos">
-          Tratamiento: {{ tratamiento[0].nombre }} - Unidades vendidas: {{ tratamiento[1] }}
-        </li>
-      </ul> -->
-    </div>
-    
-    <div class="dashboard-section">
-      <h3>Tratamientos en el último mes</h3>
-      <p>Total: {{ tratamientosUltimoMes }}</p>
-    </div>
-    
-    <!--    <div class="dashboard-section">
-      <h3>Tratamientos por medicamento (último mes)</h3>
-      <ul>
-        <li *ngFor="let tratamiento of tratamientosPorMedicamentoUltimoMes">
-          Medicamento: {{ tratamiento[0] }} - Cantidad: {{ tratamiento[1] }}
-        </li>
-      </ul>
-    </div>-->
-    
   </div>
-  
-  
 </div>
