@@ -25,7 +25,7 @@ export class LoginUsuarioComponent {
     this.usuarioService.loginUsuario(this.formUser).subscribe({
       next: (data) => {
         // Redirigir a la página de detalles del usuario
-        this.authService.login(String(data));
+        //this.authService.login(String(data));
         this.router.navigate(['/usuario/home']);
       },
       error: (err) => {

@@ -18,8 +18,9 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  login(token: string): void {
+  login(token: string, role: string): void {
     localStorage.setItem('token', token);
+    localStorage.setItem('role', role);
     this.isLoggedInSubject.next(true); // Emitir que el usuario está logueado
   }
 

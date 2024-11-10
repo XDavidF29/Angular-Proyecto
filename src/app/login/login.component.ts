@@ -74,7 +74,7 @@ export class LoginComponent {
       };
       this.veterinarioService.loginVeterinario(credentials).subscribe({
         next: (data) => {
-          this.authService.login(String(data));
+          this.authService.login(String(data),'Veterinario');
           this.router.navigate(['/veterinario/home']);
         },
         error: () => {
@@ -90,7 +90,7 @@ export class LoginComponent {
       this.usuarioService.loginUsuario(credentials).subscribe({
         next: (data) => {
           // Redirigir a la página de detalles del usuario
-          this.authService.login(String(data));
+          this.authService.login(String(data),'Usuario');
           this.router.navigate(['/usuario/home']);
         },
         error: (err) => {
@@ -106,7 +106,7 @@ export class LoginComponent {
       console.log(credentials);
       this.adminService.loginAdmin(credentials).subscribe({
         next: (data) => {
-          this.authService.login(String(data));
+          this.authService.login(String(data),'Admin');
           this.router.navigate(['/admin/dashboard']);
         },
         error: () => {
