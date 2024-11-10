@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -29,7 +30,7 @@ import { AplicarTratamientoComponent } from './aplicar-tratamiento/aplicar-trata
 import { DetallesVeterinarioComponent } from './detalles-veterinario/detalles-veterinario.component';
 import { CrearVeterinarioComponent } from './crear-veterinario/crear-veterinario.component';
 import { ModificarVeterinarioComponent } from './modificar-veterinario/modificar-veterinario.component';
-import { LoginVeterinarioComponent } from './login-veterinario/login-veterinario.component';
+import { LoginComponent } from './login/login.component';
 import { AsignarTratamientoComponent } from './asignar-tratamiento/asignar-tratamiento.component';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 
@@ -60,7 +61,7 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
     DetallesVeterinarioComponent,
     CrearVeterinarioComponent,
     ModificarVeterinarioComponent,
-    LoginVeterinarioComponent,
+    LoginComponent,
     AsignarTratamientoComponent
   ],
   imports: [
@@ -68,7 +69,8 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
     AppRoutingModule,
     RouterModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
 ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}

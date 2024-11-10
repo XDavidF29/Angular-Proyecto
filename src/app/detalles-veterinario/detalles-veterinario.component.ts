@@ -50,15 +50,39 @@ export class DetallesVeterinarioComponent implements OnInit {
   //   } else {
   //     this.errorMessage = 'No se encontró el ID del veterinario en la URL';
   //   }
+  // Obtener los detalles del veterinario
   this.veterinarioService.veterinarioHome().subscribe({
     next: (data) => {
       console.log('Datos recibidos:', data); // Depuración
       this.veterinario = data;
+
+      // Cargar los tratamientos del veterinario
+      this.loadVeterinarioTratamientos(this.veterinario.id);
     },
     error: (err) => {
-      console.error('Error al obtener los detalles del veterinario:', err); // Depuración
+      console.error('Error al obtener los detalles del veterinario:', err);
+      this.errorMessage = 'Error al obtener los detalles del veterinario';
     }
   });
-  
+}
+
+  // Método separado para cargar los tratamientos del veterinario
+  private loadVeterinarioTratamientos(veterinarioId: number) {
+    this.veterinarioService.findTratamientosByVeterinarioId(veterinarioId).subscribe({
+      next: (tratamientos: Tratamiento[]) => {
+        this.tratamientos = tratamientos;
+        console.log(this.tratamientos); // Verifica los tratamientos cargados
+      },
+      error: (error) => {
+        console.error('Error al obtener los tratamientos del veterinario:', error);
+        this.errorMessage = 'Error al obtener los tratamientos del veterinario';
+      }
+    });
   }
+
+  // Método para manejar el error al cargar la imagen
+  onImageError(veterinario: Veterinario): void {
+    veterinario.foto = 'assets/images/error.png'; // Quitar la URL de la imagen para mostrar el mensaje de error
+  }
+
 }

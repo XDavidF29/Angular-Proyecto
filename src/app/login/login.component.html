@@ -1,0 +1,95 @@
+<main>
+  <div class="contenido">
+    <h1 class="text-center">Iniciar Sesión</h1>
+    <p class="text-center tblanco">Por favor seleccione su tipo de usuario y credenciales para continuar</p>
+
+    <!-- Formulario Angular -->
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="mb-3">
+        <label for="type" class="form-label">Tipo de usuario</label>
+        <select
+          id="user-type"
+          class="form-select"
+          formControlName="type"
+          (change)="onUserTypeChange($event)"
+          required
+        >
+          <option value="" disabled selected>Seleccione su tipo de usuario</option>
+          <option value="1">Veterinario</option>
+          <option value="2">Administrador</option>
+          <option value="3">Cliente</option>
+        </select>
+      </div>
+
+      <!-- Campos para Veterinario -->
+      <div *ngIf="selectedType === '1'" class="dynamic-fields">
+        <div class="mb-3">
+          <label for="cedulaVet" class="form-label">Cédula</label>
+          <input
+            id="cedulaVet"
+            type="text"
+            class="form-control"
+            formControlName="cedulaVeterinario"
+            placeholder="Ingrese su cédula"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="passVet" class="form-label">Contraseña</label>
+          <input
+            id="passVet"
+            type="password"
+            class="form-control"
+            formControlName="passwordVet"
+            placeholder="Ingrese su contraseña"
+          />
+        </div>
+      </div>
+
+      <!-- Campos para Administrador -->
+      <div *ngIf="selectedType === '2'" class="dynamic-fields">
+        <div class="mb-3">
+          <label for="usuarioAdmin" class="form-label">Usuario</label>
+          <input
+            id="usuarioAdmin"
+            type="text"
+            class="form-control"
+            formControlName="usuario"
+            placeholder="Ingrese su usuario"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="passAdmin" class="form-label">Contraseña</label>
+          <input
+            id="passAdmin"
+            type="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="Ingrese su contraseña"
+          />
+        </div>
+      </div>
+
+      <!-- Campos para Cliente -->
+      <div *ngIf="selectedType === '3'" class="dynamic-fields">
+        <div class="mb-3">
+          <label for="cedulaCliente" class="form-label">Cédula</label>
+          <input
+            id="cedulaCliente"
+            type="text"
+            class="form-control"
+            formControlName="cedula"
+            placeholder="Ingrese su cédula"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary w-100" id="btn-vlogin" [disabled]="!loginForm.valid">Ingresar</button>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger text-center">
+        {{ error }}
+      </div>
+    </form>
+  </div>
+</main>

@@ -52,10 +52,35 @@ export class DetallesUsuarioComponent implements OnInit {
       this.errorMessage = 'No se encontró el ID del usuario en la URL';
     }
     */
-   this.usuarioService.usuarioHome().subscribe(
-    (data)=>{
-      this.usuario = data;
-    }
-  )
+    this.usuarioService.usuarioHome().subscribe(
+      {
+        next: (data) => {
+          this.usuario = data;
+          console.log(this.usuario);
+    
+          // Cargar las mascotas del usuario utilizando el ID recuperado
+          this.loadUsuarioMascotas(this.usuario.cedula);
+        },
+        error: (error) => {
+          console.error('Error fetching user details:', error);
+          this.errorMessage = 'Error al obtener los detalles del usuario';
+        }
+      }
+    )
+  }
+
+  private loadUsuarioMascotas(cedula: number) {
+    this.usuarioService.findMascotasByUsuarioId(cedula).subscribe(
+      {
+        next: (mascotas: Mascota[]) => {
+          this.mascotas = mascotas;
+          console.log(this.mascotas);
+        },
+        error: (error) => {
+          console.error('Error fetching user mascotas:', error);
+          this.errorMessage = 'Error al obtener las mascotas del usuario';
+        }
+      }
+    );
   }
 }

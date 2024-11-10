@@ -15,10 +15,15 @@
       <a [routerLink]="['/promociones']" class = "opciones">Promociones</a>
       <a [routerLink]="['/servicios']" class = "opciones">Servicios</a>
     
-      <div class="button-login-reg">
-      <a [routerLink]="['/login-usuario']" style="text-decoration: none;"> <button type="submit" class="opcionesSignIn">Sign In</button> </a>
+      <div class="button-login-reg" *ngIf="!isLoggedIn">
+        <a [routerLink]="['/login-usuario']" style="text-decoration: none;"> <button type="submit" class="opcionesSignIn">Sign In</button> </a>
         <a [routerLink]="['/usuario/add']" style="text-decoration: none;"> <button type="submit" class="opcionesRegister">Register</button> </a>
-    </div>
+      </div>
+
+      <div class="button-login-reg" *ngIf="isLoggedIn">
+        <a [routerLink]="['/']" style="text-decoration: none;"> <button type="submit" (click)="logout()" class="opcionesSignIn">Log Out</button> </a>
+        
+      </div>
   </div>
 </header>
 

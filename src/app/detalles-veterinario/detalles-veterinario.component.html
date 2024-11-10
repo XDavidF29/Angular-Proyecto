@@ -15,7 +15,12 @@
             <h1 class="text-center">Información de Veterinario</h1>
 
             <div *ngIf="veterinario" class="info">
-                <img [src]="veterinario.foto" alt="Foto del veterinario" class="info-item foto">
+                <ng-container *ngIf="veterinario.foto; else errorContent">
+                    <img [src]="veterinario.foto" alt="Foto del veterinario" class="info-item foto" (error)="onImageError(veterinario)">
+                </ng-container>
+                <ng-template #errorContent>
+                    <p>Error al cargar la imagen del veterinario.</p>
+                </ng-template>
                 <ul class="veterinario-info">
                     <li><strong>Nombre:</strong> {{ veterinario.nombre }}</li>
                     <li><strong>Cédula:</strong> {{ veterinario.cedula }}</li>

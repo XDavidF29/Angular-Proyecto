@@ -3,6 +3,7 @@ import { Router } from '@angular/router'; // Para redirigir
 import { Usuario } from '../models/Usuario';
 import { UsuarioServicioService } from '../servicio/usuario-servicio.service';
 import { User } from '../models/user';
+import { AuthService } from '../servicio/auth.service';
 
 @Component({
   selector: 'app-login-usuario',
@@ -10,7 +11,7 @@ import { User } from '../models/user';
   styleUrls: ['./login-usuario.component.css']
 })
 export class LoginUsuarioComponent {
-  constructor(private usuarioService: UsuarioServicioService, private router: Router) {}
+  constructor(private usuarioService: UsuarioServicioService, private router: Router, private authService: AuthService) {}
   error: string = '';
 
   formUser:User = {
@@ -24,7 +25,7 @@ export class LoginUsuarioComponent {
     this.usuarioService.loginUsuario(this.formUser).subscribe({
       next: (data) => {
         // Redirigir a la página de detalles del usuario
-        localStorage.setItem('token', String(data));
+        this.authService.login(String(data));
         this.router.navigate(['/usuario/home']);
       },
       error: (err) => {

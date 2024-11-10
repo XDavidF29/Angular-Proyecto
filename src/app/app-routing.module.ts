@@ -14,7 +14,7 @@ import { FindComponent } from './find/find.component';
 import { IndexComponent } from './index/index.component';
 import { InstalacionesComponent } from './instalaciones/instalaciones.component';
 import { LoginUsuarioComponent } from './login-usuario/login-usuario.component';
-import { LoginVeterinarioComponent } from './login-veterinario/login-veterinario.component';
+import { LoginComponent } from './login/login.component';
 import { ModificarMascotaComponent } from './modificar-mascota/modificar-mascota.component';
 import { ModificarUsuarioComponent } from './modificar-usuario/modificar-usuario.component';
 import { ModificarVeterinarioComponent } from './modificar-veterinario/modificar-veterinario.component';
@@ -45,7 +45,7 @@ const routes: Routes = [
   { path: 'index', component: IndexComponent },
   { path: 'instalaciones', component: InstalacionesComponent },
   { path: 'login-usuario', component: LoginUsuarioComponent },
-  { path: 'veterinario/login', component: LoginVeterinarioComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'mascota/update/:id', component: ModificarMascotaComponent },
   { path: 'usuario/update/:id', component: ModificarUsuarioComponent },
   {path: 'veterinario/update/:id', component: ModificarVeterinarioComponent},
