@@ -44,27 +44,29 @@ export class MostrarTodosUsuariosComponent {
   }
 
   deleteUsuario(id: number) {
-    this.usuarioService.delete(id).subscribe(
-      () => {
-        // Refrescar la lista de usuarios después de la eliminación
-        this.usuarioService.findAll().subscribe(
-          (data: Usuario[]) => {
-            this.usuarios = data;  // Verifica si data está siendo retornado correctamente
-            this.filtrarUsuarios(); // Filtrar usuarios después de la eliminación
-            console.log('Usuarios después de la eliminación:', this.usuarios);
-          },
-          error => {
-            console.error('Error al refrescar la lista de usuarios:', error);
-            alert('Error al actualizar la lista de usuarios');
-          }
-        );
-        alert('Usuario eliminado con éxito');
-      },
-      error => {
-        console.error('Error al eliminar el usuario:', error);
-        alert('Error al eliminar al usuario');
-      }
-    );
+    const confirmar = confirm('¿Estás seguro de que quieres eliminar este usuario?');
+    if(confirmar) {
+      this.usuarioService.delete(id).subscribe(
+        () => {
+          // Refrescar la lista de usuarios después de la eliminación
+          this.usuarioService.findAll().subscribe(
+            (data: Usuario[]) => {
+              this.usuarios = data;  // Verifica si data está siendo retornado correctamente
+              this.filtrarUsuarios(); // Filtrar usuarios después de la eliminación
+              console.log('Usuarios después de la eliminación:', this.usuarios);
+            },
+            error => {
+              console.error('Error al refrescar la lista de usuarios:', error);
+              alert('Error al actualizar la lista de usuarios');
+            }
+          );
+        },
+        error => {
+          console.error('Error al eliminar el usuario:', error);
+          alert('Error al eliminar al usuario');
+        }
+      );
+    }
   }
 
   filtrarUsuarios(): void {

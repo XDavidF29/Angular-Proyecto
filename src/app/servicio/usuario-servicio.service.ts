@@ -23,7 +23,7 @@ export class UsuarioServicioService {
 
   // Actualiza un usuario existente
   update(usuario: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>("http://localhost:8090/usuario/update/${usuario.id}", usuario);
+    return this.http.put<Usuario>(`http://localhost:8090/usuario/update/${usuario.id}`, usuario);
   }
 
   // Elimina un usuario por su id

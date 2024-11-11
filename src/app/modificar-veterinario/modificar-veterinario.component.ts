@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Veterinario } from '../models/Veterinario'; // Asegúrate de importar el modelo de Veterinario
 import { VeterinarioServicioService } from '../servicio/veterinario-servicio.service'; // Asegúrate de importar el servicio
 
@@ -14,7 +14,8 @@ export class ModificarVeterinarioComponent implements OnInit {
 
   constructor(
     private veterinarioService: VeterinarioServicioService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -37,7 +38,7 @@ export class ModificarVeterinarioComponent implements OnInit {
       // Llama al servicio de actualización y suscríbete para manejar el resultado
       this.veterinarioService.update(this.veterinario).subscribe(
         () => {
-          alert('Veterinario modificado con éxito');
+          this.router.navigate(['/veterinario/all']);
         },
         error => {
           console.error('Error al modificar el veterinario:', error);

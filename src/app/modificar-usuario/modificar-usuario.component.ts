@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Usuario } from '../models/Usuario';
 import { UsuarioServicioService } from '../servicio/usuario-servicio.service';
 
@@ -14,7 +14,8 @@ export class ModificarUsuarioComponent implements OnInit {
 
   constructor(
     private usuarioService: UsuarioServicioService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -37,7 +38,7 @@ export class ModificarUsuarioComponent implements OnInit {
       // Llama al servicio de actualización y suscríbete para manejar el resultado
       this.usuarioService.update(this.usuario).subscribe(
         () => {
-          alert('usuario modificada con éxito');
+          this.router.navigate(['/usuario/all']);
         },
         error => {
           console.error('Error al modificar la usuario:', error);
