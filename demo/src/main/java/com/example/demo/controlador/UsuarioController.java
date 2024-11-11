@@ -166,7 +166,7 @@ public class UsuarioController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> eliminarUsuario(@PathVariable("id") Integer idusuario) {
         Usuario usuario = service.searchById(idusuario);
-                //.orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        //.orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         service.deleteById(idusuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
