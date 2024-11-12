@@ -121,6 +121,7 @@ export class AsignarTratamientoComponent implements OnInit {
   agregarMedicamento(): void {
     if (this.medicamentoSeleccionado) {
       this.medicamentosSeleccionados.push(this.medicamentoSeleccionado);
+      this.tratamiento.precio += this.medicamentoSeleccionado.precio_venta;
       
       // Eliminar el medicamento seleccionado de la lista de disponibles
       if (this.medicamentoSeleccionado) {
@@ -137,9 +138,12 @@ export class AsignarTratamientoComponent implements OnInit {
   eliminarMedicamento(index: number): void {
     if (index > -1) {
       const medicamentoEliminado = this.medicamentosSeleccionados.splice(index, 1)[0];
+
+      this.tratamiento.precio -= medicamentoEliminado.precio_venta;
       
       // Agregar el medicamento de nuevo a la lista de disponibles
       this.medicamentosDisponibles.push(medicamentoEliminado);
+      
     }
   }
 }
