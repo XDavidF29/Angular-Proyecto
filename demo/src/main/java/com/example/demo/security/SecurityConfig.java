@@ -37,7 +37,7 @@ public class SecurityConfig {
             .requestMatchers("usuario/details").hasAnyAuthority("Admin", "Veterinario", "Usuario")
             .requestMatchers("/usuario/all").hasAnyAuthority("Admin","Veterinario")
             .requestMatchers("/veterinario/").authenticated()
-            .requestMatchers("/usuario/add").hasAnyAuthority("Admin","Veterinario")
+            //requestMatchers("/usuario/add").hasAnyAuthority("Admin","Veterinario")
             .requestMatchers("/usuario/update").hasAnyAuthority("Admin","Veterinario")
             .requestMatchers("/usuario/delete").hasAnyAuthority("Admin","Veterinario")
             .requestMatchers("/veterinario/all").hasAnyAuthority("Admin","Veterinario")
@@ -46,6 +46,8 @@ public class SecurityConfig {
             .requestMatchers("/veterinario/delete").hasAuthority("Admin")
             .requestMatchers("/usuario/all").hasAnyAuthority("Admin","Veterinario")
             .requestMatchers("/mascota/**").hasAnyAuthority("Veterinario","Admin")
+            .requestMatchers("/admin/dashboard").hasAuthority("Admin")
+            .requestMatchers("/admin/login").permitAll()
 
             .anyRequest().permitAll()
             )
