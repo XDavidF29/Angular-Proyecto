@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Mascota } from '../models/Mascota';
 import { MascotaServicioService } from '../servicio/mascota-servicio.service';
 
@@ -14,7 +14,8 @@ export class ModificarMascotaComponent implements OnInit {
 
   constructor(
     private mascotaService: MascotaServicioService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class ModificarMascotaComponent implements OnInit {
 
         this.mascotaService.update(this.mascota).subscribe(
             () => {
-                alert('Mascota modificada con éxito');
+              this.router.navigate(['/mascota/all'], { replaceUrl: true });
             },
             error => {
                 console.error('Error al modificar la mascota:', error);

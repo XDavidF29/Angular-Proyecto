@@ -38,7 +38,7 @@ export class ModificarUsuarioComponent implements OnInit {
       // Llama al servicio de actualización y suscríbete para manejar el resultado
       this.usuarioService.update(this.usuario).subscribe(
         () => {
-          this.router.navigate(['/usuario/all']);
+          this.router.navigate(['/usuario/all'], { replaceUrl: true });
         },
         error => {
           console.error('Error al modificar la usuario:', error);

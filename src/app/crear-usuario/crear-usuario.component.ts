@@ -39,7 +39,7 @@ export class CrearUsuarioComponent {
           next: (data) => {
             console.log('Inicio de sesión exitoso:', data);
             this.authService.login(String(data),'Usuario');
-            this.router.navigate(['/usuario/home']); // Redirigir a la página de inicio de usuario
+            this.router.navigate(['/usuario/home'], { replaceUrl: true }); // Redirigir a la página de inicio de usuario
           },
           error: (err) => {
             console.error('Error al iniciar sesión:', err);

@@ -17,12 +17,13 @@
     
       <div class="button-login-reg" *ngIf="!isLoggedIn">
         <a [routerLink]="['/login']" style="text-decoration: none;"> <button type="submit" class="opcionesSignIn">Sign In</button> </a>
-        <a [routerLink]="['/usuario/add']" style="text-decoration: none;"> <button type="submit" class="opcionesRegister">Register</button> </a>
       </div>
 
       <div class="button-login-reg" *ngIf="isLoggedIn">
+        <a *ngIf="userRole" (click)="goToProfile()" style="text-decoration: none;">
+          <button type="submit" class="opcionesRegister">Profile</button>
+        </a>
         <a [routerLink]="['/']" style="text-decoration: none;"> <button type="submit" (click)="logout()" class="opcionesSignIn">Log Out</button> </a>
-        
       </div>
   </div>
 </header>

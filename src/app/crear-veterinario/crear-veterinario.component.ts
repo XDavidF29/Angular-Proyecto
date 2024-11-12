@@ -32,7 +32,7 @@ export class CrearVeterinarioComponent {
     this.veterinarioServicio.addveterinario(this.nuevoVeterinario).subscribe({
       next: (response: Veterinario) => {
         console.log('Veterinario creado:', response);
-        this.router.navigate(['/veterinario/find/', response.id]); // Redirigir al veterinario creado
+        this.router.navigate(['/veterinario/find/', response.id], { replaceUrl: true }); // Redirigir al veterinario creado
       },
       error: (err) => {
         console.error('Error al registrar el Veterinario:', err);

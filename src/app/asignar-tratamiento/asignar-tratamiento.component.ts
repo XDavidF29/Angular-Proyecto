@@ -101,7 +101,7 @@ export class AsignarTratamientoComponent implements OnInit {
         // Llama al servicio para crear el tratamiento
         this.mascotaServicio.addTratamiento(this.mascota.id, nuevoTratamiento, this.veterinarioSeleccionado.cedula).subscribe({
             next: (response) => {
-                this.router.navigate(['/mascota/find/', response.id]);
+                this.router.navigate(['/mascota/find/', response.id], { replaceUrl: true });
             },
             error: (error) => {
                 if (error.status === 400) {

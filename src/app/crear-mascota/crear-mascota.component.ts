@@ -86,7 +86,7 @@ export class CrearMascotaComponent implements OnInit {
             this.mascotaServicio.addMascota(this.nuevaMascota).subscribe({
                 next: (response: Mascota) => {
                     // Redireccionar a la página de detalles de la mascota
-                    this.router.navigate(['/mascota/find/', response.id]);
+                    this.router.navigate(['/mascota/find/', response.id], { replaceUrl: true });
                 },
                 error: (err) => {
                     console.error('Error al registrar la mascota:', err);

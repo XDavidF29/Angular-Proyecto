@@ -38,7 +38,7 @@ export class ModificarVeterinarioComponent implements OnInit {
       // Llama al servicio de actualización y suscríbete para manejar el resultado
       this.veterinarioService.update(this.veterinario).subscribe(
         () => {
-          this.router.navigate(['/veterinario/all']);
+          this.router.navigate(['/veterinario/all'], { replaceUrl: true });
         },
         error => {
           console.error('Error al modificar el veterinario:', error);
